@@ -1,6 +1,6 @@
 <VirtualHost *:80>
 	#ServerAdmin hogbait@gmail.com
-	#ServerName hogbait.kicks-ass.net
+	ServerName pset.babymastodon.com
 	#Uncomment the following line to have the admin page via ssl
 	#Redirect /admin https://hogbait.kicks-ass.net/admin
 	
