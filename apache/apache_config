@@ -1,0 +1,46 @@
+<VirtualHost *:80>
+	#ServerAdmin hogbait@gmail.com
+	#ServerName hogbait.kicks-ass.net
+	#Uncomment the following line to have the admin page via ssl
+	#Redirect /admin https://hogbait.kicks-ass.net/admin
+	
+    WSGIDaemonProcess pset threads=25
+    WSGIProcessGroup pset
+	
+	DocumentRoot /var/www/pset/documents
+
+	Alias /robots.txt /var/www/pset/documents/robots.txt
+    Alias /favicon.ico /var/www/pset/documents/favicon.ico
+
+    Alias /media/ /var/www/pset/documents/media/
+    Alias /static/ /var/www/pset/documents/static/
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/pset/documents>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	WSGIScriptAlias / /var/www/pset/pset/wsgi.py
+
+	<Directory /var/www/pset/pset>
+        <Files wsgi.py>
+		    Order allow,deny
+		    allow from all
+        </Files>
+	</Directory>
+	
+    ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+</VirtualHost>

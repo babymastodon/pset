@@ -1,0 +1,9 @@
+*.pyc
+*.pyo
+*~
+*.scssc
+*.css
+*.bak
+*local_settings.py
+*.vim
+*.swp

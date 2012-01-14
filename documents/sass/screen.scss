@@ -1,0 +1,118 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+
+$gray : #cccccc;
+$dark : #666666;
+
+
+body{
+    font-family: 'Nimbus Mono L', courier, sans-serif;
+    font-size: 16px;
+    color: $dark;
+    a{
+        color: $dark;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+}
+
+h1{font-size: 30px;}
+h2{font-size: 20px;}
+h3{font-size: 15px;}
+
+#page{
+    width: 600px;
+    margin: 20px auto;
+    border: 1px solid $gray;
+}
+
+#content{
+    margin: 30px 30px 30px 30px;
+}
+
+#header{
+    font-size: 40px;
+    text-align: center;
+    margin: 50px 0px;
+    color: $gray;
+}
+
+#footer{
+    text-align: center;
+    margin: 80px 0px 40px 0px;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.content_block{
+    margin: 0 0 20px 0;
+    display: block;
+    h2{
+        margin-bottom: 20px;
+        display: inline;
+    }
+}
+
+@mixin button{
+    font-family: inherit;
+    border: 1px solid $gray;
+    color: $dark;
+    font-size: 13px;
+    background-color: white;
+    padding: 2px 5px;
+    display: inline-block;
+    &:hover{
+        color: $dark - #111111;
+        background-color: #f3f3f3;
+        text-decoration: none;
+    }
+    &:disabled{
+        background-color: white;
+        color: $gray;
+    }
+    &:active{
+        padding-left:6px;
+        padding-right:4px;
+    }
+}
+
+input[type="button"], input[type="submit"], .button{
+    @include button;
+}
+
+@mixin input_box{
+    font-family: inherit;
+    border: 1px solid $gray;
+    color: $dark;
+    overflow: hidden;
+}
+
+textarea{
+    @include input_box;
+    margin-bottom: 20px;
+    display: block;
+    padding: 5px;
+}
+
+input[type="text"], input[type="password"]{
+    @include input_box;
+    width: 90px;
+    padding: 2px 5px;
+    font-size: 13px;
+}
+
+.hcenter{
+    display: table;
+    margin: 0px auto;
+}
+
+.errorlist{
+    display:none;
+}
