@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'main',
+    'haystack'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -159,11 +160,32 @@ LOGGING = {
 }
     
 
-LOGIN_URL='/accounts/login/'
-LOGOUT_URL='/accounts/logout/'
-LOGIN_REDIRECT_URL='/'
+LOGIN_URL='/login/'
+LOGOUT_URL='/logout/'
+LOGIN_REDIRECT_URL='/home/'
 
 f = os.path.join(os.path.dirname(__file__),'local_settings.py')
 if os.path.exists(f):
     execfile(f)
-    
+
+import os
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        #'PATH' : os.path.join(os.path.dirname(__file__),'whoosh_index'),
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL' : 'http://127.0.0.1:8983/solr/pset',
+    },
+}
+
+EMAIL_HOST='localhost'
+EMAIL_PORT=25
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
+EMAIL_USE_TLS=False
+
+RESULTS_PER_PAGE=10
+HAYSTACK_SEARCH_RESULTS_PER_PAGE=RESULTS_PER_PAGE
+ORPHANS_PER_PAGE=1
+
+ROOT_EMAIL_URL='http://pset.babymastodon.com'

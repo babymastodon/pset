@@ -1,0 +1,7 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+Sorry, this verification link is no longer valid.
+<a href="{% url 'main.account_views.create_account_page' %}">Please re-register here.</a>
+{% endblock %}

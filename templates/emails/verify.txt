@@ -1,0 +1,3 @@
+Dear {{ username }},{% load url from future %}
+Congratz on registuring!! click the link
+{{web_root}}{% url 'main.account_views.verify'  hashcode=h %}

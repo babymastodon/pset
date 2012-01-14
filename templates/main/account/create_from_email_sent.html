@@ -1,0 +1,6 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+An email containing a verification link has been sent to {{ email }}. Please visit that link to complete the registration process.
+{% endblock %}

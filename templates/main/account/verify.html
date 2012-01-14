@@ -1,0 +1,7 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+Welcome to moo. Registration done. Please login with your username and password.
+{% include 'main/account/login_form.html' %}
+{% endblock %}

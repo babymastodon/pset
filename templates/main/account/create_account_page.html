@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+{% if error %}
+{{ error }}
+{% endif %}
+<form action="." method="post">{% csrf_token %}
+    <ul>
+        {{ form.as_ul}}
+    </ul>
+    <input type="submit" value="Register" class="button" />
+</form>
+{% endblock %}

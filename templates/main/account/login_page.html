@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+{% include 'main/account/login_form.html' %}
+<a href="{{facebook_url}}">Login with Facebook</a>
+<a href="{{youtube_url}}">Login with Youtube</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+# Defaults for jetty see /etc/init.d/jetty for more
+
+START_STOP_DAEMON=0
+VERBOSE=yes
+
+JETTY_PORT=8983
+
+#JAVA_HOME=/usr/java/default
+JAVA_OPTIONS="-Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
+JETTY_HOME=/opt/solr
+JETTY_USER=solr
+JETTY_LOGS=/opt/solr/logs
