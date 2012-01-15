@@ -56,12 +56,12 @@ h3{font-size: 15px;}
     height: 50px;
     margin-bottom: 10px;
     color: $hue1-light;
+    @include unselectable;
     input, a{
         color: $hue1-mid-light;
         @include text-shadow(1px 1px 1px $hue1-dark);
     }
     .logo{
-        @include unselectable;
         margin-top: 10px;
         a{
             &:hover{
@@ -110,10 +110,9 @@ h3{font-size: 15px;}
         @include border-radius(5px);
         a{
             padding: 5px;
-            @include border-radius(5px);
+            @include border-radius(3px);
             &:hover{
-                background-color: $gray-light;
-                text-decoration: none;
+                color: $hue1-light;
             }
             &.selected{
                 @include border-corner-radius(bottom,left,0px);
@@ -510,9 +509,10 @@ $bc : $hue1-mid-dark;
     }
     h1{
         font-size: 30;
-        margin: 30px 0px 15px 0px;
+        margin: 30px 0px 25px 0px;
         &.underlined{
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
             border-top: none;
             border-bottom: 2px solid $hue1-mid-dark;
         }
@@ -528,5 +528,8 @@ $bc : $hue1-mid-dark;
     .hline{
         margin: 20px 0px;
         border-top: 2px solid $hue1-mid-dark;
+    }
+    .right{
+        text-align: right;
     }
 }
