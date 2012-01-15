@@ -3,6 +3,8 @@
 <html>{% load staticfiles %}{% load url from future%}
 <head>
     <title>{% block title %}Title - {% block subtitle %}{% endblock %}{% endblock %}</title>
+    <script type="text/javascript" src="http://use.typekit.com/vbz1ezk.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <link href="{% static "960.css" %}" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="{% static "screen.css" %}" media="screen, projection" rel="stylesheet" type="text/css" />
     <!--[if IE]>
@@ -20,8 +22,20 @@
     <div id="page" class="container_12">
         {% block header %}
         <div id="header" class="grid_12">
-            <div class="grid_4 alpha"><h1>Welcome</h1></div>
+            <div class="grid_3 alpha logo"><a href="{% url 'main.home_views.front_page' %}" >Welcome</a></div>
+            <div class="grid_4">
+                <form id="top_search_box" action="{% url 'main.search_views.search_page' %}" method="get">
+                    <input id="top_search_text" type="text" class="label_if_blank" title="Search for classes or people..." name="q" value="{{query}}" /><input id="top_search_button" type="submit" value=""/>
+                </form>
             </div>
+            <div class="grid_3 prefix_2 omega">
+                {% if user.is_authenticated %}
+                <div id="account_menu">Hello <b>{{user.username}}</b> | <a href="{% url 'main.account_views.my_profile_page' %}">Profile</a></div>
+                {% else %}
+                <div id="account_menu"><a href="{% url 'main.account_views.create_account_page' %}">Create Account</a> | <a href="{% url 'main.account_views.login_page' %}">Login</a></div>
+                {% endif %}
+            </div>
+        </div>
         {% endblock %}
         <div class="clear"></div>
         {% block content %}{% endblock %}

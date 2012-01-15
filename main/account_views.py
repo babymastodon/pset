@@ -30,9 +30,9 @@ def createAccount(email="", username="", first_name="", last_name="", password="
     return user
 
 #views start here
-def profile_details(request, pk):
+def profile_page(request, pk):
     rc={}
-    return render_to_response("main/account/profile_details.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def my_profile_page(request):
@@ -114,8 +114,6 @@ def login_page(request):
         rc['error']=True
     if n:
         rc['next']=n
-    rc['facebook_url']=reverse("main.account_views.login_facebook")+"?next="+urllib.quote(n)
-    rc['youtube_url']=reverse("main.account_views.login_youtube")+"?next="+urllib.quote(n)
     rc['form']=form
     return render_to_response("main/account/login_page.html", rc, context_instance=RequestContext(request))
 

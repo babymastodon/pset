@@ -13,11 +13,10 @@ urlpatterns += patterns('main.account_views',
     url(r'^profile/me/$', 'my_profile_page'),#basically a wrapper for the previous rule but using the pk of the logged-in user
     url(r'^profile/edit/$', 'profile_edit'),#page for editing profile info
     url(r'^newaccount/$', 'create_account_page'),#gives a form to create an accoutn from email, or possibly ssl certificate
-    url(r'^linkaccount/$', 'link_account_page'),#gives option to a) link to youtube b) link to facebook
     url(r'^newaccount/verify/(?P<hashcode>.+)/$', 'verify'),#the user gets sent an email and the verification link goes here, the verification link will have a unique hash
     url(r'^newaccount/info/$', 'verify'),#the page where a new user inputs info such as major, grade, etc, connect with facebook, etc.
     url(r'^linkaccount/facebook/$', 'link_to_facebook'),#page when the user wants to link account to facebook
-    url(r'^login/$', 'login'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not
+    url(r'^login/$', 'login_page'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
 )
 

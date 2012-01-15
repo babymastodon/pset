@@ -3,7 +3,7 @@
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-<form method="post" action="{% url 'main.account_views.login_choices' %}">
+<form method="post" action="{% url 'main.account_views.login_page' %}">
     {% csrf_token %}
     <table>
         <tr>

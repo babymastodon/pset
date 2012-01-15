@@ -7,16 +7,49 @@
 @import "compass/css3";
 @import "compass";
 
-$gray : #cccccc;
-$dark : #666666;
-$light: #EEEEEE;
+@mixin unselectable{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none; 
+    cursor:default;
+}
+
+$hue1-mid-light : #FF9840;
+$hue1-mid-dark : #BF7230;
+$hue1-mid : #FF7600;
+$hue1-dark : #A64D00;
+$hue1-light: #FFB473;
+
+$hue2-mid-light : #FFC040;
+$hue2-mid-dark : #BF9030;
+$hue2-mid : #FFAB00;
+$hue2-dark : #A66F00;
+$hue2-light: #FFD173;
+
+$hue3-mid-light : #FF4540;
+$hue3-mid-dark : #BF3330;
+$hue3-mid : #FF0700;
+$hue3-dark : #A60400;
+$hue3-light: #FF7673;
+
+$white: white;
+$gray-light: #EEEEEE;
+$gray-mid: #CCCCCC;
+$gray-dark: #555555;
+$black: black;
+$transparent: rgba($black, 0);
+$maroon: #a72726;
 
 body{
-    font-family: 'Nimbus Mono L', courier, sans-serif;
+    font-family: "angie-sans";
     font-size: 16px;
-    color: $dark;
+    color: $hue1-light;
+    @include background(linear-gradient(left,$black,rgba($black, .25) 20%, $transparent 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
+    background-color: white;
     a{
-        color: $dark;
+        color: $hue1-light;
         text-decoration: none;
         &:hover{
             text-decoration: underline;
@@ -29,35 +62,76 @@ h2{font-size: 20px;}
 h3{font-size: 15px;}
 
 #page{
+    border-left: 1px dotted $gray-mid;
+    border-right: 1px dotted $gray-mid;
+    $op : .75;
+    @include background(image-url("header.png"));
+    background-repeat: repeat-x;
 }
 
 #header{
-    height: 60px;
-    background-color: $light;
+    height: 50px;
+    border-bottom: 1px dotted $gray-mid;
     margin-bottom: 10px;
+    .logo{
+        @include unselectable;
+        margin-top: 10px;
+        a{
+            &:hover{
+                text-decoration: none;
+            }
+            font-size: 30px;
+            line-height: 30px;
+            display: block;
+        }
+    }
+    form{
+        margin-top: 10px;
+        display: block;
+        input{
+            display: block;
+            float: left;
+        }
+        input[type='submit']{
+            width: 60px;
+            height: 30px;
+            margin: 0px;
+            padding: 0px;
+            border: 4px solid $hue1-dark;
+        }
+        input[type='text']{
+            height: 28px;
+            padding: 0px 5px 0px 5px;
+            width: 208px;
+            margin-right: 20px;
+        }
+    }
 }
 
 #footer{
     text-align: center;
     font-size: 13px;
+    margin-top: 120px;
+    margin-bottom: 60px;
 }
 
 @mixin button{
+    @include border-radius(5px);
     font-family: inherit;
-    border: 1px solid $gray;
-    color: $dark;
-    font-size: 13px;
-    background-color: white;
+    border: 1px solid $hue1-dark;
+    color: $white;
+    font-size: 15px;
+    background-color: $hue1-mid;
     padding: 2px 5px;
     display: inline-block;
     &:hover{
-        color: $dark - #111111;
-        background-color: #f3f3f3;
+        color: $hue1-mid - #111111;
+        background-color: $hue1-light;
         text-decoration: none;
     }
     &:disabled{
-        background-color: white;
-        color: $gray;
+        background-color: $hue1-light;
+        color: $hue1-mid-light;
     }
     &:active{
         padding-left:6px;
@@ -71,19 +145,14 @@ input[type="button"], input[type="submit"], .button{
 
 @mixin input_box{
     font-family: inherit;
-    border: 1px solid $gray;
-    color: $dark;
+    border: 1px solid $hue1-dark;
     overflow: hidden;
+    color: $hue1-dark;
+    &.blank{
+        color: $gray-mid;
+    }
 }
 
-@mixin unselectable{
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-    user-select: none; 
-    cursor:default;
-}
 textarea{
     @include input_box;
     margin-bottom: 20px;
@@ -111,14 +180,14 @@ $tb : $rb + $lb;
     @include border-corner-radius(top,left,10px);
     @include border-corner-radius(top,right,10px);
     @include unselectable;
-    background-color: $dark;
+    background-color: $hue1-dark;
     line-height: $h_height;
     div{
         height: $h_height;
     }
     #category_head{
         width: $left_width - $tb;
-        border-right: $rb solid $light;
+        border-right: $rb solid $hue1-light;
         overflow:hidden;
     }
     #category_head_container{
@@ -138,49 +207,46 @@ $tb : $rb + $lb;
         width: 40px;
         height: 40px;
         @include border-radius(10px);
-        background-color: $light;
+        background-color: $hue1-light;
         margin-top: 10px;
         margin-left: 20px;
         float: left;
-        &:hover{background-color: $gray;}
+        &:hover{background-color: $hue1-mid-light;}
         &:active{background-color: black;}
     }
     #big_search_bar{
         height: 20px;
         font-size: 20px;
-        border: 4px solid $gray;
+        border: 4px solid $hue1-mid-light;
         margin-top: 10px;
         padding: 6px;
         width: 300px - 20px;
         @include border-radius(10px);
-        &.blank{
-            color: $gray;
-        }
     }
     #search_button{
         height:40px;
         width:40px;
-        border: 4px solid $gray;
+        border: 4px solid $hue1-mid-light;
         padding:0px;
         margin:10px;
         @include border-radius(10px);
-        background-color: white;
-        &:hover{background-color:$light;}
-        &:active{background-color:$gray;}
+        background-color: $hue1-light;
+        &:hover{background-color:$hue1-light;}
+        &:active{background-color:$hue1-mid-light;}
     }
     #search_nav_bar{
         text-align: right;
         padding-right: 20px;
     }
-    color: $light;
+    color: $hue1-light;
 }
 #search_container_body{
     @include border-corner-radius(bottom,left,10px);
     @include border-corner-radius(bottom,right,10px);
-    background-color: $light;
+    background-color: $hue1-light;
     #category_list{
         width: $left_width - $tb;
-        border-right: $rb solid $dark;
+        border-right: $rb solid $hue1-dark;
         overflow:hidden;
     }
     #category_list_container{
@@ -194,8 +260,8 @@ $tb : $rb + $lb;
         overflow: hidden;
         float:left;
         div{
-            $category_color1:white;
-            $category_color2:$gray;
+            $category_color1:$hue1-light;
+            $category_color2:$hue1-mid-light;
             $category_shade: #0d0d0d;
             @include background-image(linear-gradient($category_color1, $category_color2));
             @include unselectable;
@@ -248,16 +314,55 @@ $tb : $rb + $lb;
                     }
                 }
                 &:hover{
-                    background-color: white;
-                    @include single-box-shadow($gray,3px,3px,3px);
+                    background-color: $hue1-light;
+                    @include single-box-shadow($hue1-mid-light,3px,3px,3px);
                 }
                 &:active{
                     position: relative;
                     top: 1px;
                     left: 1px;
-                    @include single-box-shadow($gray,1px,1px,3px);
+                    @include single-box-shadow($hue1-mid-light,1px,1px,3px);
                 }
             }
         }
     }
+}
+
+.front_picture{
+}
+
+#animated_box{
+    margin-top: 50px;
+    margin-bottom: 30px;
+    @include border-radius(10px);
+    background-color: $hue1-mid-light;
+    overflow: hidden;
+    .sub_animated_box{
+        width: 300px;
+        height: 150px;
+    }
+    .state1{
+        @include background-image(linear-gradient(top,$hue1-light,$hue1-mid-light));
+    }
+}
+
+#account_menu{
+    margin-top: 10px;
+    line-height: 30px;
+    text-align: right;
+    float: right;
+    @include border-radius(5px);
+    a{
+        padding: 5px;
+        @include border-radius(5px);
+        &:hover{
+            background-color: $gray-light;
+            text-decoration: none;
+        }
+        &.selected{
+            @include border-corner-radius(bottom,left,0px);
+            @include border-corner-radius(bottom,right,0px);
+        }
+    }
+
 }
