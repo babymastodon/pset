@@ -37,6 +37,7 @@ $hue3-light: #FF7673;
 $white: white;
 $gray-light: #EEEEEE;
 $gray-mid: #CCCCCC;
+$gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
 $transparent: rgba($black, 0);
@@ -53,9 +54,6 @@ body{
     a{
         color: $gray-dark;
         text-decoration: none;
-        &:hover{
-            text-decoration: underline;
-        }
     }
 
 h1{font-size: 30px;}
@@ -378,19 +376,6 @@ $tb : $rb + $lb;
 .front_picture{
 }
 
-#animated_box{
-    margin-bottom: 20px;
-    background-color: $hue1-mid-dark;
-    overflow: hidden;
-    .sub_animated_box{
-        width: 300px;
-        height: 150px;
-    }
-    .state1{
-        background-color: $hue1-mid-light;
-    }
-}
-
 .grid_4_button{
     background-color: $hue1-mid-dark;
     color: $hue1-mid-light;
@@ -412,9 +397,116 @@ $tb : $rb + $lb;
     line-height: 80px - 2 * $b_width;
 }
 
-.test_rect{
-    $b_width : 1px;
-    height: 250px - 2 * $b_width;
-    border: 1px solid $hue1-dark;
-    margin-bottom: 30px;
+$b : 2px;
+$h : 250px - 2 * $b;
+$w : 620px - 2 * $b;
+#slideshow{
+    width: $w;
+    border: $b solid $hue1-dark;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+    @include border-radius(3px);
 }
+
+#slide_container{
+    width: 5 * $w;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide_contents{
+    width: $w;
+    height: $h;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    a{
+        display: block;
+    }
+}
+
+#doppleganger{
+    @include opacity(.7);
+    position: absolute;
+    left: $w / 2 - 60px;
+    top: $h - 30;
+}
+
+.dopple{
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+    float: left;
+    @include border-radius(8px);
+    &:last-child{
+        margin-right:0px;
+    }
+    background-color: $gray-mid-dark;
+    &.selected{
+        background-color: $gray-mid;
+    }
+}
+
+.slide_img{
+    display: block;
+    width: $w;
+    height: $h;
+}
+
+.slide_text{
+    background-color: $hue1-mid-dark;
+    color: $hue1-mid-light;
+    font-size: 16px;
+    padding: 10px 15px;
+    &:hover{
+        background-color: $hue1-mid;
+    }
+    b{
+        font-size: 20px;
+    }
+    position: absolute;
+}
+
+.s_0{
+    width: 300px - 30px - $b;
+    bottom: 0px;
+    left: 0px;
+    border-top: $b solid $hue1-dark;
+    border-right: $b solid $hue1-dark;
+}
+
+.s_1{
+    padding: 0px 15px 0px 15px;
+    width: $w - 30px;
+    line-height: 30px - $b;
+    top: 0px;
+    border-bottom: $b solid $hue1-dark;
+}
+
+.s_2{
+    width: 250px - 30px - $b;
+    top: 30px;
+    left: 0px;
+    border-top: $b solid $hue1-dark;
+    border-bottom: $b solid $hue1-dark;
+    border-right: $b solid $hue1-dark;
+}
+
+.s_3{
+    width: 250px - 30px - $b;
+    bottom: 30px;
+    right: 0px;
+    border-top: $b solid $hue1-dark;
+    border-bottom: $b solid $hue1-dark;
+    border-left: $b solid $hue1-dark;
+}
+
+.s_4{
+    width: 300px - 30px - $b;
+    top: 0px;
+    right: 0px;
+    border-bottom: $b solid $hue1-dark;
+    border-left: $b solid $hue1-dark;
+}
+

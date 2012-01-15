@@ -1,14 +1,35 @@
 {% extends 'main/base.html' %}
 {% load url from future %}{% load staticfiles %}
 
+{% block head %}
+{{block.super}}
+<script type="text/javascript" src="{% static 'js/front_page.js' %}"></script>
+{% endblock %}
+
 {% block main_content %}
 <div class="grid_8">
-    <div class="test_rect">
+    <div id="slideshow">
+        <div id="slide_container">
+            {% for i in 12345|make_list %}
+            <div id="slide_{{forloop.counter0}}" class="slide_contents">
+                <img class="slide_img" src="{{STATIC_URL}}slider_test/img{{forloop.counter0}}.jpg"/>
+                <a href="{% url 'main.home_views.front_page' %}">
+                    <div class="slide_text s_{{forloop.counter0}}"><b>Galois Theory with Donuts:</b> 10pm Simmons common room</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="doppleganger">
+            {% for i in 12345|make_list %}
+            <div id="dopple_{{forloop.counter0}}" class="dopple">
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 <div class="grid_4">
     <div class="grid_4 alpha">
-        <a class="grid_4_button" href="{% url 'main.search_views.parties_by_date' %}">Join a Party</a>
+        <a class="grid_4_button" href="{% url 'main.search_views.parties_by_date' %}">Join the Party!</a>
     </div>
     <div id="animated_box" class="grid_4 alpha">
         <div class="state1 sub_animated_box">
