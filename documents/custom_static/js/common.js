@@ -1,5 +1,3 @@
-
-
 function addBlankHandlers(){
     ob=$(this);
     ob.focus(function(){
@@ -35,6 +33,15 @@ function submit_top_search_form(){
     $("#top_search_box").submit();
 }
 
+function loginPressed(event){
+    $("#login_div").show().animate({height:100}, 'fast');
+}
+
+function loginMouseOut(event){
+    alert("Blur Event Called");
+    $("#login_div").hide().animate({height:0}, 'fast');
+}
+
 $(document).ready(function(){
     $(".label_if_blank").each(addBlankHandlers);
     $("#top_search_button").click(submit_top_search_form);
@@ -42,4 +49,6 @@ $(document).ready(function(){
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13){submit_top_search_form}
     });
+    $("#login_button").removeAttr("href").click(loginPressed)
+    $("#login_div").focusin(loginMouseOut)
 });
