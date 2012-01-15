@@ -25,7 +25,7 @@
             <div class="grid_3 alpha logo"><a href="{% url 'main.home_views.front_page' %}" >Welcome</a></div>
             <div class="grid_4">
                 <form id="top_search_box" action="{% url 'main.search_views.search_page' %}" method="get">
-                    <input id="top_search_text" type="text" class="label_if_blank" title="Search for classes or people..." name="q" value="{{query}}" /><input id="top_search_button" type="submit" value=""/>
+                    <input id="top_search_text" type="text" class="label_if_blank" title="Search for classes or people..." name="q" value="{{query}}" /><input id="top_search_button" type="submit" class="search_icon" value=""/>
                 </form>
             </div>
             <div class="grid_3 prefix_2 omega">
