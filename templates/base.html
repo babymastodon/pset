@@ -33,11 +33,15 @@
                 <div id="account_menu">Hello <b>{{user.username}}</b> | <a href="{% url 'main.account_views.my_profile_page' %}">Profile</a></div>
                 {% else %}
                 <div id="account_menu"><a href="{% url 'main.account_views.create_account_page' %}">Create Account</a> | <a id="login_button" href="{% url 'main.account_views.login_page' %}">Login</a></div>
-                <div id="login_div" style="width:220px; height:0px; background-color: #EEEEEE; color:maroon; border:1px; margin-top: 40px; position: absolute; display:none;">
+                <div id="login_div">
                         {% csrf_token %}
-                        Login:
-                        <BR> Password:
-                        <BR> Submit
+                        <form action = "">
+                        <label for='loginform_username'>Username:</label>
+                        <input type='text' id='loginform_username'/><BR>
+                        <label for='loginform_password'">Password:</label>
+                        <input type='password' id='loginform_password' />
+                        <input type='submit' />
+                        </form>
                 </div>
                 {% endif %}
             </div>

@@ -34,7 +34,7 @@ function submit_top_search_form(){
 }
 
 function loginPressed(event){
-    $("#login_div").show().animate({height:100}, 'fast');
+    $("#login_div").show().animate({height:150}, 'fast');
 }
 
 function loginMouseOut(event){
@@ -50,5 +50,5 @@ $(document).ready(function(){
         if (code==13){submit_top_search_form}
     });
     $("#login_button").removeAttr("href").click(loginPressed)
-    $("#login_div").focusin(loginMouseOut)
+    $("#login_div").blur(loginMouseOut)
 });

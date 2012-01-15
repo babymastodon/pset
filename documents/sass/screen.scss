@@ -126,6 +126,8 @@ h3{font-size: 15px;}
             padding: 5px;
             @include border-radius(5px);
             &:hover{
+                @include border-corner-radius(bottom,left,0px);
+                @include border-corner-radius(bottom,right,0px);
                 background-color: $gray-light;
                 text-decoration: none;
             }
@@ -508,7 +510,33 @@ $w : 620px - 2 * $b;
 }
 
 #login_div{
+    width:220px;
+    height:0px;
+    background-color: #EEEEEE;
+    color:maroon;
+    border:1px;
+    margin-top: 40px;
+    position: absolute;
+    display:none;
 
+    form{
+        background: none;
+        border:none;
+        font-size:12;
+        color: $hue1-dark;
+        width:200px;
+        padding-left:5px;
+
+        input{
+            border:1px solid;
+            width:200px;
+        }
+        input[type='text']{
+            background:none;
+            float:none;
+            width:200px;
+        }
+    }
 }
 
 .page_text{
