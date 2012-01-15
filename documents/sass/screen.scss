@@ -51,10 +51,10 @@ body{
     @include background(linear-gradient(left,$black,rgba($black, .25) 20%, $transparent 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
     background-color: white;
 }
-    a{
-        color: $gray-dark;
-        text-decoration: none;
-    }
+a{
+    color: $gray-dark;
+    text-decoration: none;
+}
 
 h1{font-size: 30px;}
 h2{font-size: 20px;}
@@ -180,10 +180,10 @@ input[type="button"], input[type="submit"], .button{
     height: 24px;
     width: 24px;
     &:hover{
-        @include background(image-url("icons/search24_hover.png"));
+        background-position: -24px;
     }
     &:active{
-        @include background(image-url("icons/search24_active.png"));
+        background-position: -48px;
     }
 }
 
@@ -373,9 +373,6 @@ $tb : $rb + $lb;
     }
 }
 
-.front_picture{
-}
-
 .grid_4_button{
     background-color: $hue1-mid-dark;
     color: $hue1-mid-light;
@@ -403,7 +400,7 @@ $w : 620px - 2 * $b;
 #slideshow{
     width: $w;
     border: $b solid $hue1-dark;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     overflow: hidden;
     position: relative;
     @include border-radius(3px);
@@ -510,3 +507,30 @@ $w : 620px - 2 * $b;
     border-left: $b solid $hue1-dark;
 }
 
+.page_text{
+    line-height: 20px;
+    h1, h2, h3{
+        color: $hue1-mid-dark;
+    }
+    h1{
+        font-size: 30;
+        margin: 30px 0px 15px 0px;
+        &.underlined{
+            padding-bottom: 10px;
+            border-top: none;
+            border-bottom: 2px solid $hue1-mid-dark;
+        }
+    }
+    h2{
+        font-size: 24px;
+        margin: 20px 0px 10px 0px;
+    }
+    h3{
+        display: inline;
+        font-size: 20px;
+    }
+    .hline{
+        margin: 20px 0px;
+        border-top: 2px solid $hue1-mid-dark;
+    }
+}

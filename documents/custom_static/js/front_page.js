@@ -15,7 +15,6 @@ function slide_to(i){
     $("#slide_container").animate({left:-pos},'slow', function(){
         moving=false;
     });
-    console.log(i);
 }
 
 function slide_next(){
