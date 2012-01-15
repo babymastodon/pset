@@ -22,33 +22,18 @@ $hue1-mid : #880011;
 $hue1-dark : #3a0d0d;
 $hue1-light: #FFF5D9;
 
-$hue2-mid-light : #FFC040;
-$hue2-mid-dark : #BF9030;
-$hue2-mid : #FFAB00;
-$hue2-dark : #A66F00;
-$hue2-light: #FFD173;
-
-$hue3-mid-light : #FF4540;
-$hue3-mid-dark : #BF3330;
-$hue3-mid : #FF0700;
-$hue3-dark : #A60400;
-$hue3-light: #FF7673;
-
 $white: white;
 $gray-light: #EEEEEE;
 $gray-mid: #CCCCCC;
 $gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
-$transparent: rgba($black, 0);
-$maroon: #a72726;
-$page-back: $hue1-light;
 
 body{
     font-family: "angie-sans";
     font-size: 16px;
     color: $gray-dark;
-    @include background(linear-gradient(left,$black,rgba($black, .25) 20%, $transparent 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
+    @include background(linear-gradient(left,$black,rgba($black, .25) 20%, rgba($black, 0) 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
     background-color: white;
 }
 a{
@@ -73,6 +58,7 @@ h3{font-size: 15px;}
     color: $hue1-light;
     input, a{
         color: $hue1-mid-light;
+        @include text-shadow(1px 1px 1px $hue1-dark);
     }
     .logo{
         @include unselectable;
@@ -373,20 +359,27 @@ $tb : $rb + $lb;
     }
 }
 
+$d: #110505;
 .grid_4_button{
-    background-color: $hue1-mid-dark;
+    @include background(linear-gradient(top,$hue1-mid, $hue1-mid-dark));
+    @include box-shadow(3px 3px 5px 0 $gray-dark, 2px 2px 5px -2px $hue1-mid-light inset);
+    @include text-shadow(1px 1px 1px $hue1-dark);
     color: $hue1-mid-light;
     display: block;
     $b_width: 1px;
     height: 80px - 2 * $b_width;
     @include border-radius(5px);
-    border: 1px solid $hue1-dark;
+    border: 1px solid $hue1-mid-dark;
     &:hover{
-        background-color: $hue1-mid;
+        @include background(linear-gradient(top,$hue1-mid + $d, $hue1-mid-dark + $d));
         text-decoration: none;
     }
     &:active{
-        background-color: $hue1-dark;
+        position: relative;
+        left: 1px;
+        top: 1px;
+        @include box-shadow(1px 1px 2px 0 $gray-dark, 2px 2px 4px -2px $hue1-mid-light inset);
+        @include background(linear-gradient(top,$hue1-mid-dark, $hue1-mid));
     }
     margin-bottom: 20px;
     font-size: 30px;
@@ -397,13 +390,13 @@ $tb : $rb + $lb;
 $b : 2px;
 $h : 250px - 2 * $b;
 $w : 620px - 2 * $b;
+$bc : $hue1-mid-dark;
 #slideshow{
     width: $w;
-    border: $b solid $hue1-dark;
+    border: $b solid $bc;
     margin-bottom: 30px;
     overflow: hidden;
     position: relative;
-    @include border-radius(3px);
 }
 
 #slide_container{
@@ -453,11 +446,14 @@ $w : 620px - 2 * $b;
 
 .slide_text{
     background-color: $hue1-mid-dark;
+    @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
     color: $hue1-mid-light;
+    @include text-shadow(2px 2px 2px $hue1-dark);
     font-size: 16px;
     padding: 10px 15px;
     &:hover{
         background-color: $hue1-mid;
+        @include background(linear-gradient(top,$hue1-mid + $d,$hue1-mid-dark + $d));
     }
     b{
         font-size: 20px;
@@ -469,8 +465,8 @@ $w : 620px - 2 * $b;
     width: 300px - 30px - $b;
     bottom: 0px;
     left: 0px;
-    border-top: $b solid $hue1-dark;
-    border-right: $b solid $hue1-dark;
+    border-top: $b solid $bc;
+    border-right: $b solid $bc;
 }
 
 .s_1{
@@ -478,33 +474,33 @@ $w : 620px - 2 * $b;
     width: $w - 30px;
     line-height: 30px - $b;
     top: 0px;
-    border-bottom: $b solid $hue1-dark;
+    border-bottom: $b solid $bc;
 }
 
 .s_2{
     width: 250px - 30px - $b;
     top: 30px;
     left: 0px;
-    border-top: $b solid $hue1-dark;
-    border-bottom: $b solid $hue1-dark;
-    border-right: $b solid $hue1-dark;
+    border-top: $b solid $bc;
+    border-bottom: $b solid $bc;
+    border-right: $b solid $bc;
 }
 
 .s_3{
     width: 250px - 30px - $b;
     bottom: 30px;
     right: 0px;
-    border-top: $b solid $hue1-dark;
-    border-bottom: $b solid $hue1-dark;
-    border-left: $b solid $hue1-dark;
+    border-top: $b solid $bc;
+    border-bottom: $b solid $bc;
+    border-left: $b solid $bc;
 }
 
 .s_4{
     width: 300px - 30px - $b;
     top: 0px;
     right: 0px;
-    border-bottom: $b solid $hue1-dark;
-    border-left: $b solid $hue1-dark;
+    border-bottom: $b solid $bc;
+    border-left: $b solid $bc;
 }
 
 .page_text{
