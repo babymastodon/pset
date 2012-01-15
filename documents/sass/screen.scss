@@ -126,8 +126,6 @@ h3{font-size: 15px;}
             padding: 5px;
             @include border-radius(5px);
             &:hover{
-                @include border-corner-radius(bottom,left,0px);
-                @include border-corner-radius(bottom,right,0px);
                 background-color: $gray-light;
                 text-decoration: none;
             }

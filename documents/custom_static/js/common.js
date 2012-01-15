@@ -34,7 +34,7 @@ function submit_top_search_form(){
 }
 
 function loginPressed(event){
-    $("#login_div").show().animate({height:150}, 'fast');
+    $("#login_div").show().addClass('selected').animate({height:150}, 'fast');
 }
 
 function loginMouseOut(event){
