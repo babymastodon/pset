@@ -2,15 +2,17 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-<div class="grid_12 front_picture">
-    <div class="grid_4 alpha omega prefix_8">
-        <div id="animated_box" class="grid_4 alpha omega">
-            <div class="state1 sub_animated_box">
-                fancy changing box of text
-            </div>
-        </div>
-        <div class="grid_4 alpha omega">
-            <a class="button" href="{% url 'main.search_views.parties_by_date' %}">Parties Happening Now</a>
+<div class="grid_8">
+    <div class="test_rect">
+    </div>
+</div>
+<div class="grid_4">
+    <div class="grid_4 alpha">
+        <a class="grid_4_button" href="{% url 'main.search_views.parties_by_date' %}">Join a Party</a>
+    </div>
+    <div id="animated_box" class="grid_4 alpha">
+        <div class="state1 sub_animated_box">
+            fancy changing box of text
         </div>
     </div>
 </div>

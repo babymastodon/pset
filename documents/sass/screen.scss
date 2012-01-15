@@ -16,11 +16,11 @@
     cursor:default;
 }
 
-$hue1-mid-light : #FF9840;
+$hue1-mid-light : #ffcb9c;
 $hue1-mid-dark : #6b1919;
-$hue1-mid : #FF7600;
+$hue1-mid : #880011;
 $hue1-dark : #3a0d0d;
-$hue1-light: #FFB473;
+$hue1-light: #FFF5D9;
 
 $hue2-mid-light : #FFC040;
 $hue2-mid-dark : #BF9030;
@@ -41,38 +41,41 @@ $gray-dark: #555555;
 $black: black;
 $transparent: rgba($black, 0);
 $maroon: #a72726;
+$page-back: $hue1-light;
 
 body{
     font-family: "angie-sans";
     font-size: 16px;
-    color: $hue1-light;
+    color: $gray-dark;
     @include background(linear-gradient(left,$black,rgba($black, .25) 20%, $transparent 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
     background-color: white;
+}
     a{
-        color: $hue1-light;
+        color: $gray-dark;
         text-decoration: none;
         &:hover{
             text-decoration: underline;
         }
     }
-}
 
 h1{font-size: 30px;}
 h2{font-size: 20px;}
 h3{font-size: 15px;}
 
 #page{
-    border-left: 1px dotted $gray-mid;
-    border-right: 1px dotted $gray-mid;
     $op : .75;
     @include background(image-url("header.png"));
+    background-color: $hue1-light;
     background-repeat: repeat-x;
 }
 
 #header{
     height: 50px;
-    border-bottom: 1px dotted $gray-mid;
     margin-bottom: 10px;
+    color: $hue1-light;
+    input, a{
+        color: $hue1-mid-light;
+    }
     .logo{
         @include unselectable;
         margin-top: 10px;
@@ -91,7 +94,7 @@ h3{font-size: 15px;}
         width: 296px;
         @include background(image-url("background.png"));
         overflow: hidden;
-        border: 2px solid $hue1-light;
+        border: 1px solid $hue1-mid-light;
         @include border-radius(3px);
         input{
             border: none;
@@ -105,10 +108,35 @@ h3{font-size: 15px;}
         }
         input[type='text']{
             padding: 0px 0px 0px 5px;
-            width: 257px;
+            width: 262px;
             float: left;
             height: 28px;
+            background-color: $gray-dark;
+            @include background(image-url("background.png"));
+            &.blank{
+                color: $gray-mid;
+            }
         }
+    }
+    #account_menu{
+        margin-top: 10px;
+        line-height: 30px;
+        text-align: right;
+        float: right;
+        @include border-radius(5px);
+        a{
+            padding: 5px;
+            @include border-radius(5px);
+            &:hover{
+                background-color: $gray-light;
+                text-decoration: none;
+            }
+            &.selected{
+                @include border-corner-radius(bottom,left,0px);
+                @include border-corner-radius(bottom,right,0px);
+            }
+        }
+
     }
 }
 
@@ -130,7 +158,7 @@ h3{font-size: 15px;}
     display: inline-block;
     &:hover{
         color: $hue1-mid - #111111;
-        background-color: $hue1-light;
+        background-color: $hue1-mid-light;
         text-decoration: none;
     }
     &:disabled{
@@ -163,14 +191,12 @@ input[type="button"], input[type="submit"], .button{
 
 @mixin input_box{
     font-family: inherit;
-    border: 2px solid $hue1-light;
+    border: 1px solid $hue1-mid-dark;
     overflow: hidden;
-    color: $hue1-light;
-    background-color: $gray-dark;
-    @include background(image-url("background.png"));
+    color: $gray-dark;
     @include border-radius(3px);
     &.blank{
-        color: $gray-mid;
+        color: $gray-light;
     }
 }
 
@@ -353,37 +379,42 @@ $tb : $rb + $lb;
 }
 
 #animated_box{
-    margin-top: 50px;
-    margin-bottom: 30px;
-    @include border-radius(10px);
-    background-color: $hue1-mid-light;
+    margin-bottom: 20px;
+    background-color: $hue1-mid-dark;
     overflow: hidden;
     .sub_animated_box{
         width: 300px;
         height: 150px;
     }
     .state1{
-        @include background-image(linear-gradient(top,$hue1-light,$hue1-mid-light));
+        background-color: $hue1-mid-light;
     }
 }
 
-#account_menu{
-    margin-top: 10px;
-    line-height: 30px;
-    text-align: right;
-    float: right;
+.grid_4_button{
+    background-color: $hue1-mid-dark;
+    color: $hue1-mid-light;
+    display: block;
+    $b_width: 1px;
+    height: 80px - 2 * $b_width;
     @include border-radius(5px);
-    a{
-        padding: 5px;
-        @include border-radius(5px);
-        &:hover{
-            background-color: $gray-light;
-            text-decoration: none;
-        }
-        &.selected{
-            @include border-corner-radius(bottom,left,0px);
-            @include border-corner-radius(bottom,right,0px);
-        }
+    border: 1px solid $hue1-dark;
+    &:hover{
+        background-color: $hue1-mid;
+        text-decoration: none;
     }
+    &:active{
+        background-color: $hue1-dark;
+    }
+    margin-bottom: 20px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 80px - 2 * $b_width;
+}
 
+.test_rect{
+    $b_width : 1px;
+    height: 250px - 2 * $b_width;
+    border: 1px solid $hue1-dark;
+    margin-bottom: 30px;
 }
