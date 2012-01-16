@@ -34,11 +34,15 @@ function submit_top_search_form(){
 }
 
 function loginPressed(event){
-    $("#login_div").show().animate({height:150}, 'fast');
+    event.preventDefault();
+    $("#login_div").toggle();
+        //.animate({height:150}, 'fast');
+    $("#login_button").toggleClass('selected');
+    $("#loginform_username").focus()
 }
 
 function loginMouseOut(event){
-    alert("Blur Event Called");
+    $("#login_button").removeClass('selected');
     $("#login_div").hide().animate({height:0}, 'fast');
 }
 
@@ -49,6 +53,6 @@ $(document).ready(function(){
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13){submit_top_search_form}
     });
-    $("#login_button").removeAttr("href").click(loginPressed)
-    $("#login_div").blur(loginMouseOut)
+    $("#login_button").click(loginPressed);
+    $("#login_div").blur(loginMouseOut);
 });
