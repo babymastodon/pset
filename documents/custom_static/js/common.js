@@ -34,9 +34,7 @@ function submit_top_search_form(){
 }
 
 function loginPressed(event){
-    //if($("#login_button").hasClass('selected')){
-    //    return
-    //}
+    event.preventDefault();
     $("#login_div").toggle();
         //.animate({height:150}, 'fast');
     $("#login_button").toggleClass('selected');
@@ -55,6 +53,6 @@ $(document).ready(function(){
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13){submit_top_search_form}
     });
-    $("#login_button").removeAttr("href").click(loginPressed);
+    $("#login_button").click(loginPressed);
     $("#login_div").blur(loginMouseOut);
 });

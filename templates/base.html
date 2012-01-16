@@ -35,12 +35,13 @@
                 <div id="account_menu"><a href="{% url 'main.account_views.create_account_page' %}">Create Account</a> | <a id="login_button" href="{% url 'main.account_views.login_page' %}">Login</a></div>
                 <div id="login_div">
                         {% csrf_token %}
-                        <form action = "">
+                        <form action = "{% url 'main.account_views.login_page' %}">
                         <label for='loginform_username'>Username:</label>
                         <input type='text' id='loginform_username'/>
                         <label for='loginform_password'>Password:</label>
                         <input type='password' id='loginform_password' />
-                        <input type='submit' />
+                        <input type='submit' value="Login"/>
+                        <a href="/forgot/">Forgot password?</a>
                         </form>
                 </div>
                 {% endif %}
