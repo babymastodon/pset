@@ -71,8 +71,21 @@ class Resource(models.Model):
         return ""
 
 class Course(models.Model):
-    number = models.CharField(max_length=20)
+    number = models.CharField(max_length=5)
+
+class Class(models.Model):
     title = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return unicode(self.title)
+
+class ClassNumber(models.Model):
+    number = models.CharField(max_length=20)
+    _class = models.ForeignKey(Class, null=True)#default related name is classnumber_set
+
+    def __unicode__(self):
+        return unicode(self.number)
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, related_name="user_info")
@@ -80,9 +93,17 @@ class UserInfo(models.Model):
     description = models.TextField() #user description
     facebook_id = models.CharField(blank=True, max_length=100) #facebook id etc
     courses = models.ManyToManyField(Course)
+    graduation_year = models.IntegerField()
+    current_classes = models.ManyToManyField(Class, through="UserClassData")
+    friends = models.ManyToManyField("self")
 
     def __unicode__(self):
         return str(self.user) + " info"
+
+class UserClassData(models.Model):
+    #things like confidence
+    userinfo = models.ForeignKey(UserInfo)
+    _class = models.ForeignKey(Class)
 
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
@@ -90,7 +111,11 @@ class PendingHash(models.Model):
 
 class Party(models.Model):
     courses = models.ManyToManyField(Course)
-    #location??
-    #description??
+    starttime = models.DateTimeField()
+    endtime = models.DateTimeField()
+    title = models.CharField(max_length=30)
+    description = models.TextField()
+    #location?
     #icon for map?? color?
-    attendees = models.ManyToManyField(User)
+    admins = models.ManyToManyField(User, related_name="admin_set")
+    attendees = models.ManyToManyField(User, related_name="attendee_set")

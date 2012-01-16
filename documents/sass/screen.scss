@@ -28,6 +28,7 @@ $gray-mid: #CCCCCC;
 $gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
+$d: #110505;
 
 body{
     font-family: "angie-sans";
@@ -130,32 +131,28 @@ h3{font-size: 15px;}
     margin-bottom: 60px;
 }
 
-@mixin button{
+.button{
     @include border-radius(5px);
+    @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
+    @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
+    @include text-shadow(1px 1px 1px $hue1-dark);
     font-family: inherit;
-    border: 1px solid $hue1-dark;
-    color: $white;
-    font-size: 15px;
-    background-color: $hue1-mid;
-    padding: 2px 5px;
-    display: inline-block;
+    border: 1px solid $hue1-mid-dark;
+    color: $hue1-mid-light;
+    background-color: $hue1-mid-dark;
+    font-size: 16px;
+    padding: 3px 6px;
     &:hover{
-        color: $hue1-mid - #111111;
-        background-color: $hue1-mid-light;
-        text-decoration: none;
+        @include background(linear-gradient(top,$hue1-mid + $d,$hue1-mid-dark + $d));
+        background-color: $hue1-mid;
     }
     &:disabled{
         background-color: $hue1-light;
         color: $hue1-mid-light;
     }
     &:active{
-        padding-left:6px;
-        padding-right:4px;
+        @include background(linear-gradient(top,$hue1-mid-dark,$hue1-mid));
     }
-}
-
-input[type="button"], input[type="submit"], .button{
-    @include button;
 }
 
 .search_icon{
@@ -358,7 +355,6 @@ $tb : $rb + $lb;
     }
 }
 
-$d: #110505;
 .grid_4_button{
     @include background(linear-gradient(top,$hue1-mid, $hue1-mid-dark));
     @include box-shadow(3px 3px 5px 0 $gray-dark, 2px 2px 5px -2px $hue1-mid-light inset);
