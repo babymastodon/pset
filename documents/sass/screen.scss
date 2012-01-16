@@ -28,6 +28,7 @@ $gray-mid: #CCCCCC;
 $gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
+$dropdown_color:#870A21;
 
 body{
     font-family: "angie-sans";
@@ -112,11 +113,14 @@ h3{font-size: 15px;}
             padding: 5px;
             @include border-radius(3px);
             &:hover{
-                background-color: $gray-light;
+                // background-color: $dropdown_color;
                 text-decoration: none;
                 color: $hue1-light;
             }
             &.selected{
+                background-color: $dropdown_color;
+                text-decoration: none;
+                // color: $hue1-light;
                 @include border-corner-radius(bottom,left,0px);
                 @include border-corner-radius(bottom,right,0px);
             }
@@ -506,30 +510,57 @@ $bc : $hue1-mid-dark;
 
 #login_div{
     width:220px;
-    height:0px;
-    background-color: #EEEEEE;
-    color:maroon;
-    border:1px;
-    margin-top: 40px;
+    height:150px;
+    background-color: $dropdown_color;
+    color:#F8C489;
+    margin-top: 39px;
     position: absolute;
     display:none;
+    @include border-corner-radius(bottom,left,5px);
+    @include border-corner-radius(bottom,right,5px);
+    //border-color: #F8C489;
+    //border:1px solid;
+    border-top:none;
 
     form{
         background: none;
-        border:none;
         font-size:12;
-        color: $hue1-dark;
-        width:200px;
+        color: #F8C489;
+        width:209px;
+        height:145px;
+        margin-top:5px;
         padding-left:5px;
+        padding-right:5px;
+        border:none;
 
+        label{
+            font-weight:lighter;
+            font-size:16px;
+        }
         input{
-            border:1px solid;
+            border:1px dashed;
             width:200px;
+            margin-bottom: 8px;
+            font-size:20px;
+            font-weight: bold;
         }
         input[type='text']{
             background:none;
             float:none;
             width:200px;
+            padding:0;
+            margin-top:1px;
+        }
+        input[type='password']{
+            height:28px;
+            padding:0,0,0,5px;
+            margin-top:1px;
+        }
+        input[type='submit']{
+            font-size:18px;
+            font-weight:normal;
+            border: 1px solid;
+            padding-top:5px;
         }
     }
 }
