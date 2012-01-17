@@ -38,12 +38,17 @@ function loginPressed(event){
     $("#login_div").toggle();
         //.animate({height:150}, 'fast');
     $("#login_button").toggleClass('selected');
-    $("#loginform_username").focus()
+    $("#loginform_username").focus();
+    event.stopPropagation();
 }
 
-function loginMouseOut(event){
+function CloseLoginDiv(event){
     $("#login_button").removeClass('selected');
-    $("#login_div").hide().animate({height:0}, 'fast');
+    $("#login_div").hide();
+}
+
+function OnLoginDivClick(event){
+    event.stopPropagation();
 }
 
 $(document).ready(function(){
@@ -54,5 +59,6 @@ $(document).ready(function(){
         if (code==13){submit_top_search_form}
     });
     $("#login_button").click(loginPressed);
-    $("#login_div").blur(loginMouseOut);
+    $("body").click(CloseLoginDiv)
+    $("#login_div").click(OnLoginDivClick);
 });
