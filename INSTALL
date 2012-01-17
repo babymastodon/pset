@@ -1,0 +1,9 @@
+Stick the attached folder in your /opt/solr/solr/ directory and do chown -R
+solr:solr . and then add the appropriate line to /opt/solr/solr/solr.xml and
+then clone the repository and put a link in /var/www/ and then remember to copy
+over local_settings.py from the old project (we can just use the old database)
+and then link the project_dir/apache/apache_config file into
+/etc/apache/sites-available/pset and then do a2ensite pset and then service
+apache2 reload and service jetty restart and then run the project_dir/reload.sh
+script and then ur done.
+
