@@ -7,105 +7,24 @@
 {% endblock %}
 
 {% block main_content %}
-<div id="search_container_head" class="grid_12">
-    <div class="grid_3 alpha" id="category_head">
-        <div id="category_head_container">
-            <div class="category_head"><span id="cat" >Subjects</span></div>
-            <div class="category_head"><div id="cat_back"></div><span id="subcat">Topics</span></div>
-         </div>
-    </div>
-    <div class="grid_9 omega">
-            <div class="grid_4 alpha">
-                <input id="big_search_bar" class="label_if_blank" type="text" title="Search..."/>
-            </div>
-            <div class="grid_1">
-                <input type="submit" id="search_button" value=""/>
-            </div>
-        <div class="grid_4 omega">
-            <div id="search_nav_bar">&lt; 1 2 3 4 5 &gt;</div>
-        </div>
-    </div>
+<div class="grid_3" id="category_col">
+    <a href="."><div id="cat_0" class="category_button" name="classes">Classes</div></a>
+    <a href="."><div id="cat_1"  class="category_button selected selected_fallback" name="people">People</div></a>
+    <div id="cat_selector">&nbsp;</div>
 </div>
-<div id="search_container_body" class="grid_12">
-    <div class="grid_3 alpha" id="category_list">
-        <div id="category_list_container" class="clearfix">
-            <div id="cat_col" class="category_list_column">
-                <div id="cat_1">
-                    BlahBlahBlah
-                </div>
-                <div id="cat_2">
-                    BlahBlahBlah
-                </div>
-                <div id="cat_3">
-                    BlahBlahBlah
-                </div>
-                <div id="cat_4">
-                    BlahBlahBlah
-                </div>
-            </div>
-            <div id="subcat_col" class="category_list_column">
-                <div id="subcat_1">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_2">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_3">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_4">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_5">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_6">
-                    BlahBlahBlah
-                </div>
-                <div id="subcat_1">
-                    BlahBlahBlah
-                </div>
-            </div>
-        </div>
+<div class="grid_9" id="result_col">
+    <div id="result_head" class="clearfix">
+        <div id="search_title" class="grid_6 alpha">Classes matching "5.111"</div>
+        <div id="search_nav" class="grid_3 omega">&lt; 1 2 3 4 5 6 7 &gt;</div>
     </div>
-    <div class="grid_9 omega" id="result_list">
-        <div class="wrapper1">
-            <a href=".">
+    <div id="result_col" class="clearfix">
+        <div class="result_block clearfix">
+            <a href="." class="clearfix">
                 <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
                 <div class="result_text grid_6 omega">
-                    <div class="result_title">Title of the video</div>
-                    <div class="result_description">Description of the video Blah blah blah blahbhawi mooooooooooo moo moo.</div>
-                    <div class="result_metadata">various <b>statistics</b> | and such</div>
-                </div>
-            </a>
-        </div>
-        <div class="wrapper1">
-            <a href=".">
-                <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
-                <div class="result_text grid_6 omega">
-                    <div class="result_title">Title of the video</div>
-                    <div class="result_description">Description of the video Blah blah blah blahbhawi mooooooooooo moo moo.</div>
-                    <div class="result_metadata">various <b>statistics</b> | and such</div>
-                </div>
-            </a>
-        </div>
-        <div class="wrapper1">
-            <a href=".">
-                <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
-                <div class="result_text grid_6 omega">
-                    <div class="result_title">Title of the video</div>
-                    <div class="result_description">Description of the video Blah blah blah blahbhawi mooooooooooo moo moo.</div>
-                    <div class="result_metadata">various <b>statistics</b> | and such</div>
-                </div>
-            </a>
-        </div>
-        <div class="wrapper1">
-            <a href=".">
-                <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
-                <div class="result_text grid_6 omega">
-                    <div class="result_title">Title of the video</div>
-                    <div class="result_description">Description of the video Blah blah blah blahbhawi mooooooooooo moo moo.</div>
-                    <div class="result_metadata">various <b>statistics</b> | and such</div>
+                    <div class="result_title">5.112E Priciples of Chemistry</div>
+                    <div class="result_description">Introduction to chemistry, with emphasis on basic principles of atomic and molecular electronic structure, thermodynamics, acid-base and redox equilibria, chemical kinetics, and catalysis. Introduction to the chemistry of biological, inorganic, and organic molecules. </div>
+                    <div class="result_metadata">Related Classes: <span class="result_related">5.111 5.111E 5.112</span></div>
                 </div>
             </a>
         </div>

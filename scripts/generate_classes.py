@@ -52,6 +52,7 @@ for p in detail_pages:
         d = re.compile(r'f">[\r\n]+<br>([^<]*)$', re.M)#gets the description
         s = re.compile(r'<br>\(Same.*\)')#gets the related classes
         ss = re.compile(r'<br>\(Subject.*\)')#gets more related classes
+        sss = re.compile(r'<br>Credit c.*')#gets the un-related classes
         s2 = re.compile(r'\w+\.\w+')#splits the related classes
         n=0
         for m in r.split(table)[1:]:
@@ -76,11 +77,28 @@ for p in detail_pages:
                     for a in s2.findall(tmp.group(0)):
                         if 'html' not in a:
                             moo['numbers'].append(a)
-                moo['numbers']=[x[:-1] if x[-1]=='J' else x for x in moo['numbers']]
-                print moo['numbers']
+                tmp = sss.search(m)
+                moo['not_related']=[]
+                if tmp:
+                    for a in s2.findall(tmp.group(0)):
+                        if 'html' not in a:
+                            moo['not_related'].append(a)
+                moo['numbers']=list(set([x[:-1] if x[-1]=='J' else x for x in moo['numbers']])) #remove duplicates
+                moo['not_related']=list(set([x[:-1] if x[-1]=='J' else x for x in moo['not_related']])) #remove duplicates
+                moo['not_related']=[x for x in moo['not_related'] if x not in moo['numbers']] #remove from not_related if it is indeed in the relaed list of classes
                 courses.append(moo)
     except urllib2.HTTPError:
         pass
+
+#generated dicts of sets for related and unrelated:
+unrelated={}
+for c in courses:
+    for n in c['numbers']+c['not_related']:
+        unrelated[n]=set()
+for c in courses:
+    for n in c['numbers']:
+        for m in c['not_related']:
+            unrelated[n].add(m)
 
 #first loop through the database ensures that all of the course numbers have been created
 for c in courses:
@@ -122,7 +140,7 @@ for c in courses:
     if up:#if there is a number in our list that need to be updated
         found_neighbor=False
         for b in c['numbers']:#try to find a neighbor that already has a class
-            ob2 = ClassNumber.objects.get(number=d)
+            ob2 = ClassNumber.objects.get(number=b)
             if ob2._class:
                 print "Found related classname with class: " + ob2.number
                 found_neighbor=True
@@ -131,10 +149,14 @@ for c in courses:
         if not found_neighbor:
             #no neighbors had a class, first search for a class with the same name
             cl = Class.objects.filter(title=c['title'])
-            if cl.exists():
-                update_ob_with_class(c,cl[0])
+            found_class=False
+            #we only want to attach to this class if it doesn't have any titles that are in our not_related list
+            for single_class in list(cl):
+                if not [x for x in list(single_class.classnumber_set.all()) if x.number in [d for a in c['numbers'] for d in unrelated[a]]]: #if the intersection of the lists is empty
+                    update_ob_with_class(c,single_class)
+                    found_class=True
             #if no class already has that name, make new class
-            else:
+            if not found_class:
                 cl = Class()
                 print "Created class for: " + str(c['title'])
                 update_ob_with_class(c, cl)
