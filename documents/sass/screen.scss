@@ -41,6 +41,8 @@ body{
 a{
     color: $gray-dark;
     text-decoration: none;
+    outline: none;
+    -moz-outline-style: none;
 }
 
 h1{font-size: 30px;}
@@ -104,7 +106,7 @@ h3{font-size: 15px;}
         }
     }
     #account_menu{
-        margin-top: 10px;
+        padding-top: 10px;
         line-height: 30px;
         text-align: right;
         float: right;
@@ -112,38 +114,58 @@ h3{font-size: 15px;}
         span{
             display: block;
             float: right;
-            margin: 0px 5px;
+            padding: 0px 5px;
         }
-        a{
+        .header_button{
             display: block;
             float: right;
-            @include border-radius(3px);
-            &:hover{
-                text-decoration: none;
-                color: $hue1-light;
+            position: relative;
+            a{
+                display: block;
+                span{float: none;}
+                .dropdown_arrow{
+                    @include background(image-url("icons/down24.png"));
+                    background-position: 0px;
+                    float: right;
+                    width: 24px;
+                    height: 24px;
+                    margin-top: 3px;
+                }
+                &:hover{
+                    text-decoration: none;
+                    color: $hue1-light;
+                    .dropdown_arrow{
+                        background-position: -24px;
+                    }
+                }
             }
             &.selected{
-                background-color: $hue1-mid;
-                text-decoration: none;
-                @include border-corner-radius(bottom,left,0px);
-                @include border-corner-radius(bottom,right,0px);
+                span{
+                    background-color: $hue1-mid;
+                    text-decoration: none;
+                    @include border-corner-radius(top,left,3px);
+                    @include border-corner-radius(top,right,3px);
+                    @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
+                    position: relative;
+                    z-index: 5;
+                }
+                .dropdown_list{
+                    display: block;
+                }
+            }
+            .dropdown_list{
+                top: 28px;
+                position: absolute;
+                right: 0px;
+                display:none;
+                z-index: 4;
+                @include border-corner-radius(bottom,left,5px);
+                @include border-corner-radius(bottom,right,5px);
+                @include border-corner-radius(top,left,5px);
+                @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
                 @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
-                position: relative;
-                z-index: 5;
-            }
-            #dropdown_arrow{
-                @include background(image-url("icons/down24.png"));
-                background-position: 0px;
-                float: right;
-                width: 24px;
-                height: 24px;
-                margin-top: 3px;
-            }
-            &:hover #dropdown_arrow{
-                background-position: -24px;
             }
         }
-
     }
 }
 
@@ -461,30 +483,10 @@ $bc : $hue1-mid-dark;
 }
 
 #login_div{
-    $w: 220px;
-    width:$w;
-    background-color: $hue1-mid;
-    color:#F8C489;
-    margin-top: 38px;
-    position: absolute;
-    display:none;
-    z-index: 4;
-    @include border-corner-radius(bottom,left,5px);
-    @include border-corner-radius(bottom,right,5px);
-    @include border-corner-radius(top,right,0px);
-    @include border-corner-radius(top,left,5px);
-    @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
-    @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
-
     form{
         margin: 0px;
-        width: $w - 20px;
-        background: none;
-        font-size:12;
-        color: #F8C489;
+        width: 200px;
         padding: 10px;
-        border:none;
-
         label{
             font-weight:lighter;
             font-size:13px;
@@ -508,12 +510,18 @@ $bc : $hue1-mid-dark;
             float: right;
         }
         a{
-            display: block;
             float: left;
-            margin-top:10px;
             font-size:13px;
         }
     }
+}
+
+#account_dropdown{
+    a{
+        padding-left: 20px;
+        text-align: left;
+    }
+    width: 160px;
 }
 
 .page_text{

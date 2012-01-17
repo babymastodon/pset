@@ -32,37 +32,46 @@
             <div class="grid_3 prefix_1 omega">
                 {% if user.is_authenticated %}
                 <div id="account_menu">
-                    <a href="{% url 'main.account_views.my_profile_page' %}">
-                        <span>Profile<div id="dropdown_arrow"></div></span>
-                    </a>
-                    <span> | </span>
-                    <span>Hello <b>{{user.username}}</b></span>
+                    <div class="header_button dropdown">
+                        <a href="{% url 'main.account_views.my_profile_page' %}">
+                            <span>{{ user.username }}<div class="dropdown_arrow"></div></span>
+                        </a>
+                        <div class="dropdown_list" id="account_dropdown">
+                            <a href="{% url 'main.account_views.my_profile_page' %}">Profile</a>
+                            <a href="{% url 'main.account_views.my_profile_page' %}">Account Settings</a>
+                            <a href="{% url 'main.account_views.logout_view' %}">Logout</a>
+                        </div>
+                    </div>
                 </div>
                 {% else %}
                 <div id="account_menu">
-                    <a id="login_button" href="{% url 'main.account_views.login_page' %}">
-                        <span>Login</span>
-                    </a>
+                    <div class="dropdown header_button">
+                        <a href="{% url 'main.account_views.login_page' %}">
+                            <span>Login<div class="dropdown_arrow"></div></span>
+                        </a>
+                        <div id="login_div" class="dropdown_list">
+                            <form action = "{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
+                                {% csrf_token %}
+                                <div class="clearfix">
+                                    <label for='loginform_username'>Username:</label>
+                                    <input type='text' id='loginform_username' name="username"/>
+                                </div>
+                                <div class="clearfix">
+                                    <label for='loginform_password'>Password:</label>
+                                    <input type='password' id='loginform_password' name="password" />
+                                </div>
+                                <input type='submit' class="button" value="Login"/>
+                                <input type='hidden' name="next" value="{{ request.get_full_path }}"/>
+                                <a href="/forgot/">Forgot password?</a>
+                            </form>
+                        </div>
+                    </div>
                     <span>|</span>
-                    <a href="{% url 'main.account_views.create_account_page' %}">
-                        <span>Create Account</span>
-                    </a>
-                </div>
-                <div id="login_div">
-                    <form action = "{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
-                        {% csrf_token %}
-                        <div class="clearfix">
-                            <label for='loginform_username'>Username:</label>
-                            <input type='text' id='loginform_username' name="username"/>
-                        </div>
-                        <div class="clearfix">
-                            <label for='loginform_password'>Password:</label>
-                            <input type='password' id='loginform_password' name="password" />
-                        </div>
-                        <input type='submit' class="button" value="Login"/>
-                        <input type='hidden' name="next" value="{{ request.get_full_path }}"/>
-                        <a href="/forgot/">Forgot password?</a>
-                    </form>
+                    <div class="header_button">
+                        <a href="{% url 'main.account_views.create_account_page' %}">
+                            <span>Create Account</span>
+                        </a>
+                    </div>
                 </div>
                 {% endif %}
             </div>

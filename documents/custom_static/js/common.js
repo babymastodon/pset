@@ -35,19 +35,17 @@ function submit_top_search_form(){
 
 function loginPressed(event){
     event.preventDefault();
-    $("#login_div").toggle();
         //.animate({height:150}, 'fast');
-    $("#login_button").toggleClass('selected');
+    $(".dropdown").toggleClass('selected');
     $("#loginform_username").focus();
     event.stopPropagation();
 }
 
-function CloseLoginDiv(event){
-    $("#login_button").removeClass('selected');
-    $("#login_div").hide();
+function closeDropdown(event){
+    $(".dropdown").removeClass('selected');
 }
 
-function OnLoginDivClick(event){
+function preventDropdownClose(event){
     event.stopPropagation();
 }
 
@@ -58,7 +56,7 @@ $(document).ready(function(){
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13){submit_top_search_form}
     });
-    $("#login_button").click(loginPressed);
-    $("body").click(CloseLoginDiv)
-    $("#login_div").click(OnLoginDivClick);
+    $(".dropdown").click(loginPressed);
+    $("body").click(closeDropdown);
+    $(".dropdown_list").click(preventDropdownClose);
 });
