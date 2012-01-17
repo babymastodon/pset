@@ -281,7 +281,7 @@ $rb : 2px;
 }
 #result_head{
     margin-top: 10px;
-    #search_title{
+    #search_title, #no_query_title{
         font-size: 30px;
     }
     #search_nav{
@@ -289,6 +289,11 @@ $rb : 2px;
         text-align: right;
         margin-top: 14px;
     }
+}
+.no_results_found{
+    font-size: 20px;
+    margin-top: 80px;
+    margin-left: 20px;
 }
 #result_col{
     .result_block{

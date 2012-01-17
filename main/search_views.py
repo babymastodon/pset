@@ -27,6 +27,7 @@ def search_page(request):
     rc={}
     query = request.GET.get('q','')
     rc['query']=query
+    rc['category']="classes"
     return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
 
 def ajax_s(request):

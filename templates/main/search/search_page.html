@@ -8,14 +8,34 @@
 
 {% block main_content %}
 <div class="grid_3" id="category_col">
-    <a href="."><div id="cat_0" class="category_button" name="classes">Classes</div></a>
-    <a href="."><div id="cat_1"  class="category_button selected_cat selected_fallback" name="people">People</div></a>
+    <a href="."><div id="cat_0" class="category_button selected_cat selected_fallback" name="classes">Classes</div></a>
+    <a href="."><div id="cat_1"  class="category_button" name="people">People</div></a>
     <div id="cat_selector">&nbsp;</div>
 </div>
-<div class="grid_9" id="result_col">
+<div class="grid_9">
     <div id="result_head" class="clearfix">
-        <div id="search_title" class="grid_6 alpha">Classes matching "5.111"</div>
-        <div id="search_nav" class="grid_3 omega">&lt; 1 2 3 4 5 6 7 &gt;</div>
+        <div id="search_title" class="grid_7 alpha" {% if not query %}style="display: none;{% endif %}">
+            <span id="cat_title">{{category|capfirst}}</span> matching "<span id="q_title">{{query}}</span>"
+        </div>
+        <div id="no_query_title" class="grid_7 alpha" {% if query %}style="display: none;"{%endif%}>
+            <span>Nothing to search for.</span>
+        </div>
+        <div id="search_nav" class="grid_2 omega">&lt; 1 2 3 4 5 6 7 &gt;</div>
+    </div>
+    <div style="display:none;" id="result_template">
+        <div class="result_block clearfix">
+            <a href="." class="clearfix">
+                <div class="result_thm grid_2 alpha"><img src=""/></div>
+                <div class="result_text grid_6 omega">
+                    <div class="result_title"></div>
+                    <div class="result_description"></div>
+                    <div class="result_metadata"><span class="related_label"></span><span class="result_related"></span></div>
+                </div>
+            </a>
+        </div>
+        <div class="no_results_found">
+            No results found.
+        </div>
     </div>
     <div id="result_col" class="clearfix">
         <div class="result_block clearfix">
