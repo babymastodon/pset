@@ -66,7 +66,7 @@ for p in detail_pages:
                 if not tmp:
                     moo['description']=""
                 else:
-                    moo['description']=tmp.group(1)
+                    moo['description']=unicode(tmp.group(1), 'utf-8', 'ignore')
                 tmp = s.search(m)
                 if tmp:
                     for a in s2.findall(tmp.group(0)):
@@ -116,12 +116,14 @@ updated = {}
 def update_ob_with_class(dic, cl):
     flag=False
     if len(cl.title)<len(dic['title']):
-        cl.title=dic['title']
+        cl.title=unicode(dic['title'], 'utf-8')
         flag=True
     if len(cl.description)<len(dic['description']):
         cl.description=dic['description']
         flag=True
-    if flag: cl.save()
+    if flag:
+        print cl.title + " " + cl.description
+        cl.save()
     for d in dic['numbers']:
         if d not in updated:
             ob2 = ClassNumber.objects.get(number=d)
