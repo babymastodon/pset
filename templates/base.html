@@ -31,16 +31,34 @@
             </div>
             <div class="grid_3 prefix_1 omega">
                 {% if user.is_authenticated %}
-                <div id="account_menu">Hello <b>{{user.username}}</b> | <a href="{% url 'main.account_views.my_profile_page' %}">Profile</a></div>
+                <div id="account_menu">
+                    <a href="{% url 'main.account_views.my_profile_page' %}">
+                        <span>Profile<div id="dropdown_arrow"></div></span>
+                    </a>
+                    <span> | </span>
+                    <span>Hello <b>{{user.username}}</b></span>
+                </div>
                 {% else %}
-                <div id="account_menu"><a href="{% url 'main.account_views.create_account_page' %}">Create Account</a> | <a id="login_button" href="{% url 'main.account_views.login_page' %}">Login</a></div>
+                <div id="account_menu">
+                    <a id="login_button" href="{% url 'main.account_views.login_page' %}">
+                        <span>Login</span>
+                    </a>
+                    <span>|</span>
+                    <a href="{% url 'main.account_views.create_account_page' %}">
+                        <span>Create Account</span>
+                    </a>
+                </div>
                 <div id="login_div">
-                    <form action = "{% url 'main.account_views.login_page' %}" method="POST">
+                    <form action = "{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
                         {% csrf_token %}
-                        <label for='loginform_username'>Username:</label>
-                        <input type='text' id='loginform_username' name="username"/>
-                        <label for='loginform_password'>Password:</label>
-                        <input type='password' id='loginform_password' name="password" />
+                        <div class="clearfix">
+                            <label for='loginform_username'>Username:</label>
+                            <input type='text' id='loginform_username' name="username"/>
+                        </div>
+                        <div class="clearfix">
+                            <label for='loginform_password'>Password:</label>
+                            <input type='password' id='loginform_password' name="password" />
+                        </div>
                         <input type='submit' class="button" value="Login"/>
                         <input type='hidden' name="next" value="{{ request.get_full_path }}"/>
                         <a href="/forgot/">Forgot password?</a>

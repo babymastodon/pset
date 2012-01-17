@@ -30,7 +30,6 @@ $gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
 $d: #110505;
-$dropdown_color:#870A21;
 
 body{
     font-family: "angie-sans";
@@ -60,7 +59,7 @@ h3{font-size: 15px;}
     margin-bottom: 10px;
     color: $hue1-light;
     @include unselectable;
-    input, a{
+    input, a, label{
         color: $hue1-mid-light;
         @include text-shadow(1px 1px 1px $hue1-dark);
     }
@@ -75,7 +74,7 @@ h3{font-size: 15px;}
             display: block;
         }
     }
-    form{
+    #top_search_box{
         margin-top: 10px;
         display: block;
         width: 296px;
@@ -86,12 +85,11 @@ h3{font-size: 15px;}
         input{
             border: none;
             margin: 0px;
-            padding: 0px;
             display: block;
-            background-color: transparent;
         }
         input[type='submit']{
             margin: 2px 5px 0px 0px;
+            padding: 0px;
         }
         input[type='text']{
             padding: 0px 0px 0px 5px;
@@ -111,20 +109,38 @@ h3{font-size: 15px;}
         text-align: right;
         float: right;
         @include border-radius(5px);
+        span{
+            display: block;
+            float: right;
+            margin: 0px 5px;
+        }
         a{
-            padding: 5px;
+            display: block;
+            float: right;
             @include border-radius(3px);
             &:hover{
-                // background-color: $dropdown_color;
                 text-decoration: none;
                 color: $hue1-light;
             }
             &.selected{
-                background-color: $dropdown_color;
+                background-color: $hue1-mid;
                 text-decoration: none;
-                // color: $hue1-light;
                 @include border-corner-radius(bottom,left,0px);
                 @include border-corner-radius(bottom,right,0px);
+                @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
+                position: relative;
+                z-index: 5;
+            }
+            #dropdown_arrow{
+                @include background(image-url("icons/down24.png"));
+                background-position: 0px;
+                float: right;
+                width: 24px;
+                height: 24px;
+                margin-top: 3px;
+            }
+            &:hover #dropdown_arrow{
+                background-position: -24px;
             }
         }
 
@@ -445,66 +461,57 @@ $bc : $hue1-mid-dark;
 }
 
 #login_div{
-    width:220px;
-    height:150px;
-    background-color: $dropdown_color;
+    $w: 220px;
+    width:$w;
+    background-color: $hue1-mid;
     color:#F8C489;
-    margin-top: 39px;
+    margin-top: 38px;
     position: absolute;
     display:none;
+    z-index: 4;
     @include border-corner-radius(bottom,left,5px);
     @include border-corner-radius(bottom,right,5px);
-    //border-color: #F8C489;
-    //border:1px solid;
     @include border-corner-radius(top,right,0px);
     @include border-corner-radius(top,left,5px);
+    @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
+    @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
 
     form{
+        margin: 0px;
+        width: $w - 20px;
         background: none;
         font-size:12;
         color: #F8C489;
-        width:209px;
-        height:165px;
-        margin-top:5px;
-        padding-left:5px;
-        padding-right:5px;
+        padding: 10px;
         border:none;
 
         label{
             font-weight:lighter;
+            font-size:13px;
+            line-height:28px;
+            display: block;
+            float: left;
+        }
+        input[type='text'], input[type='password']{
+            @include background(image-url("background.png"));
+            @include box-shadow($black 1px 1px 2px 0px inset);
+            padding: 3px 5px;
+            text-shadow: none;
+            margin-bottom: 10px;
+            width: 120px;
             font-size:16px;
-        }
-        input{
-            border:1px dashed;
-            width:200px;
-            margin-bottom: 8px;
-            font-size:20px;
-            font-weight: bold;
-        }
-        input[type='text']{
-            background:none;
-            float:none;
-            width:200px;
-            padding:0;
-            margin-top:1px;
-        }
-        input[type='password']{
-            height:28px;
-            padding:0,0,0,5px;
-            margin-top:1px;
-        }
-        input[type='submit']{
+            border:1px solid;
             float:right;
-            width:95px;
-            font-size:18px;
-            font-weight:normal;
-            border: 1px solid;
+            display: block;
+        }
+        .button{
+            float: right;
         }
         a{
-            margin-top:18px;
-            font-size:12px;
-        }
-        a:hover{
+            display: block;
+            float: left;
+            margin-top:10px;
+            font-size:13px;
         }
     }
 }
