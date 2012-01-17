@@ -8,8 +8,8 @@ function change_cat(){
         $("#cat_selector").animate({top:cat_height*new_index}, 'fast');
         selected_index=new_index;
     }
-    $(".selected").removeClass("selected");
-    $(this).addClass("selected");
+    $(".selected_cat").removeClass("selected_cat");
+    $(this).addClass("selected_cat");
 }
 
 function init_search_slider(){
