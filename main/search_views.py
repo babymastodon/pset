@@ -26,8 +26,9 @@ def parties_by_date(request):
 def search_page(request):
     rc={}
     query = request.GET.get('q','')
+    category = request.GET.get('c','Classes')
     rc['query']=query
-    rc['category']="classes"
+    rc['category']=category
     return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
 
 def ajax_s(request):

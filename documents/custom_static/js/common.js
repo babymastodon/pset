@@ -1,3 +1,9 @@
+function init_blank_text_box(ob){    
+    if (ob.val()=="" || ob.val()==ob.attr("title")){
+        ob.addClass("blank");
+        ob.val(ob.attr("title"));
+    }
+}
 function addBlankHandlers(){
     ob=$(this);
     ob.focus(function(){
@@ -14,10 +20,7 @@ function addBlankHandlers(){
             t.val(t.attr("title"));
         }
     });
-    if (ob.val()=="" || ob.val()==ob.attr("title")){
-        ob.addClass("blank");
-        ob.val(ob.attr("title"));
-    }
+    init_blank_text_box(ob);
 }
 
 function val2(object){
@@ -35,7 +38,7 @@ function submit_top_search_form(){
 
 function loginPressed(event){
     event.preventDefault();
-        //.animate({height:150}, 'fast');
+    //.animate({height:150}, 'fast');
     $(".dropdown").toggleClass('selected');
     $("#loginform_username").focus();
     event.stopPropagation();

@@ -8,8 +8,8 @@
 
 {% block main_content %}
 <div class="grid_3" id="category_col">
-    <a href="."><div id="cat_0" class="category_button selected_cat selected_fallback" name="classes">Classes</div></a>
-    <a href="."><div id="cat_1"  class="category_button" name="people">People</div></a>
+    <a href="."><div id="cat_0" class="category_button {% if category = 'Classes' %}selected_cat selected_fallback {% endif %}" name="Classes">Classes</div></a>
+    <a href="."><div id="cat_1"  class="category_button {% if category = 'People' %}selected_cat selected_fallback {% endif %}" name="People">People</div></a>
     <div id="cat_selector">&nbsp;</div>
 </div>
 <div class="grid_9">
