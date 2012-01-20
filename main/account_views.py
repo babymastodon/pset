@@ -143,5 +143,5 @@ def login_facebook(request):
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
-    return redirect("main.views.front_page")
+    return redirect("main.home_views.front_page")
 

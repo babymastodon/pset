@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.http import HttpResponseRedirect
 
 #generic views
 urlpatterns = patterns('main.home_views',
@@ -18,6 +19,7 @@ urlpatterns += patterns('main.account_views',
     url(r'^linkaccount/facebook/$', 'link_to_facebook'),#page when the user wants to link account to facebook
     url(r'^login/$', 'login_page'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
+    url(r'^logout/main/$', lambda x: HttpResponseRedirect('/'))
 )
 
 #search views
