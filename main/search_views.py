@@ -10,7 +10,6 @@ from django.conf import settings
 from datetime import datetime, date
 from django import forms
 from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
 import string
 
 #import models and forms here

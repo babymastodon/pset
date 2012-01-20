@@ -23,32 +23,14 @@
         <div id="search_nav" class="grid_2 omega">&lt; 1 2 3 4 5 6 7 &gt;</div>
     </div>
     <div style="display:none;" id="result_template">
-        <div class="result_block clearfix">
-            <a href="." class="clearfix">
-                <div class="result_thm grid_2 alpha"><img src=""/></div>
-                <div class="result_text grid_6 omega">
-                    <div class="result_title"></div>
-                    <div class="result_description"></div>
-                    <div class="result_metadata"></div>
-                </div>
-            </a>
-        </div>
-        <div class="no_results_found">
-            No results found.
-        </div>
+        {% include 'main/search/result_block_template.html' %}
+        {% include 'main/search/empty_block_template.html' %}
     </div>
     <div id="result_col" class="clearfix">
         {% for r in results %}
-        <div class="result_block clearfix">
-            <a href="{{r.link}}" class="clearfix">
-                <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
-                <div class="result_text grid_6 omega">
-                    <div class="result_title">{{r.title}}</div>
-                    <div class="result_description">{{r.description}}</div>
-                    <div class="result_metadata">{{r.metadata}}</div>
-                </div>
-            </a>
-        </div>
+        {% include 'main/search/result_block_template.html' %}
+        {% empty %}
+        {% include 'main/search/empty_block_template.html' %}
         {% endfor %}
     </div>
 </div>
