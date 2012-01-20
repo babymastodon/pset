@@ -76,6 +76,15 @@ class Course(models.Model):
 class Class(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    
+    def get_title(self):
+        return self.title
+
+    def get_description(self):
+        return self.description
+
+    def get_meta(self):
+        return list(self.classnumber_set.all())
 
     def __unicode__(self):
         return unicode(self.title)
@@ -83,6 +92,15 @@ class Class(models.Model):
 class ClassNumber(models.Model):
     number = models.CharField(max_length=20)
     class_obj = models.ForeignKey(Class, null=True)#default related name is classnumber_set
+
+    def get_title(self):
+        return self.number + " " + self.class_obj.title
+
+    def get_description(self):
+        return self.class_obj.description
+
+    def get_meta(self):
+        return list(self.class_obj.classnumber_set.exclude(pk=self.pk))
 
     def __unicode__(self):
         return unicode(self.number)

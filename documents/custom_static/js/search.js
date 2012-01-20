@@ -7,7 +7,6 @@ var search_delay_constant = 400;
 //creates a new result block from the hidden template and adds it to the bottom of the result column
 function append_result(name, description, img, meta){
     a = $("#result_template .result_block").clone();
-    console.log(name);
     a.find(".result_title").html(name);
     a.find(".result_description").html(description);
     a.find("img").attr("src",img);

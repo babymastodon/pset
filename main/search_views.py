@@ -10,7 +10,7 @@ from django.conf import settings
 from datetime import datetime, date
 from django import forms
 from haystack.query import SearchQuerySet
-import logging, simplejson, string
+import logging, simplejson, string, re
 from django.core import serializers
 
 #import models and forms here
@@ -29,23 +29,41 @@ def parties_by_date(request):
     rc={}
     return render_to_response("main/search/parties_by_date.html", rc, context_instance=RequestContext(request))
 
+trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
+
 #takes a search query and an optional category. If no category, it tries to intelligently guess the
 #cagetory. If the search query contains a class number, the search will try to make that result first
 #it returns a dict with name, description, (picture), and related classes if a class. If a person,
 #returns dict with name, class, department, (picture)
 #format: {'page':int, 'numpages':int, 'results':[{'title':string,'description':string,'metadata':string}]}
 def exec_search(query, category=None, page=0):
-    #sqs = SearchQuerySet().raw_search(query)
-    category='Classes'
-    q = string.join([a+"*" for a in query.split()])
-    q = q + ' django_ct:"main.class"'
-    sqs = SearchQuerySet().raw_search(q)
-    totalresults = len(sqs)
-    numpages = totalresults/RESULTS_PER_PAGE+1
-    pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
-    tmp = [a.object for a in sqs[page*RESULTS_PER_PAGE:(page+1)*RESULTS_PER_PAGE]]
-    results = [{'title':a.title[0:43]+"..." if len(a.title)>46 else a.title, 'description':a.description[0:250]+'...' if len(a.description)>253 else a.description, 'metadata':'Class Numbers: '+string.join([x.number for x in a.classnumber_set.all()],', '), 'link':reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})} for a in tmp]
-    return {'page':page,'numpages':numpages, 'result_items':results, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults}
+    page=0
+    numpages=0
+    result_items=[]
+    category=category
+    pageresults=0
+    totalresults=0
+    if query:
+        if not category:#do multiple searches and decide what the user is looking for
+            pass
+        if category=="Classes":
+            if re.match(".*\d+.*", query):
+                q = '"' + query+ '"' + ' django_ct:"main.classnumber"'
+            else:
+                q = string.join([a+'* ' for a in tokens]) + ' django_ct:"main.class"'
+            sqs = SearchQuerySet().raw_search(q)
+            totalresults = len(sqs)
+            numpages = totalresults/RESULTS_PER_PAGE+1
+            pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
+            tmp = [a.object for a in sqs[page*RESULTS_PER_PAGE:(page+1)*RESULTS_PER_PAGE]]
+            for a in tmp:
+                item={}
+                item['title'] = trunc(a.get_title(),45)
+                item['description'] = trunc(a.get_description(),250)
+                item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
+                item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
+                result_items.append(item)
+    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults}
 
 def search_page(request):
     rc={}
