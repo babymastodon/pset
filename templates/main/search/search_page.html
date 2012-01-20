@@ -25,6 +25,7 @@
     <div style="display:none;" id="result_template">
         {% include 'main/search/result_block_template.html' %}
         {% include 'main/search/empty_block_template.html' %}
+        <div id="ajax_url">{% url 'main.search_views.ajax_s' %}</div>
     </div>
     <div id="result_col" class="clearfix">
         {% for r in results %}

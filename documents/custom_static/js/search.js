@@ -37,11 +37,23 @@ function exec_search(push_state){
     $("#result_col div").remove();
     if ( history.pushState && push_state ){
         history.pushState({q:query,c:category}, document.title, location.pathname+"?q="+query+"&c="+category);
-    }
-   /* for (i=0; i<5; i++){
-        append_result("name", "description", "/static/images/default.jpg","5.333");
-    }*/
-    $("#result_template .no_results_found").clone().appendTo("#result_col");
+    }   
+    $.ajax({
+        type:'GET',
+        url:$("#ajax_url").html(),
+        data: {
+            'verb': 'search_page',
+            'q':query,
+            'c':category,
+            'page':0,
+        },
+        success: function(data){
+             $("#result_template .no_results_found").clone().appendTo("#result_col");
+             /* for (i=0; i<5; i++){
+                append_result("name", "description", "/static/images/default.jpg","5.333");
+                }*/
+         }
+    });
 }
 
 //the following two functions will initiate a search when there is a keypress event, and then a short delay of no more keypresses (aka, when the user presumably finishes typing a word or pauses for some other reason)
