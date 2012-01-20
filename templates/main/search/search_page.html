@@ -16,11 +16,14 @@
     <div id="result_head" class="clearfix">
         <div id="search_title" class="grid_7 alpha" {% if not query %}style="display: none;{% endif %}">
             <span id="cat_title">{{results.category|capfirst}}</span> matching "<span id="q_title">{{query}}</span>"
+            <span class=subscript>
+                <span id="result_num">{{results.totalresults}}</span> result<span id="result_plural">{{ results.totalresults|pluralize }}</span>
+            </span>
         </div>
         <div id="no_query_title" class="grid_7 alpha" {% if query %}style="display: none;"{%endif%}>
             <span>Type to begin searching</span>
         </div>
-        <div id="search_nav" class="grid_2 omega">&lt; 1 2 3 4 5 6 7 &gt;</div>
+        <div id="search_nav" class="grid_2 omega">&lt;{% for p in results.pagerange %} {{p}}{% endfor %} &gt;</div>
     </div>
     <div style="display:none;" id="result_template">
         {% include 'main/search/result_block_template.html' %}

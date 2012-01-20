@@ -55,6 +55,8 @@ function exec_search(push_state){
                     r = result['result_items'][i]
                         append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata']);
                 }
+                $("#result_num").html(result['totalresults']);
+                $("#result_plural").html(result['totalresults']==1 ? '' : 's');
             }
         }
     });

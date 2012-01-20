@@ -36,8 +36,7 @@ trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
 #it returns a dict with name, description, (picture), and related classes if a class. If a person,
 #returns dict with name, class, department, (picture)
 #format: {'page':int, 'numpages':int, 'results':[{'title':string,'description':string,'metadata':string}]}
-def exec_search(query, category=None, page=0):
-    page=0
+def exec_search(query, category=None, page=1):
     numpages=0
     result_items=[]
     pageresults=0
@@ -79,7 +78,9 @@ def exec_search(query, category=None, page=0):
                 item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
                 item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
-    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults}
+    prwidth = 4
+    pagerange = range(1,numpages+1)[max(page-prwidth-1,0):][:prwidth*2+1]
+    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange}
 
 def search_page(request):
     rc={}
