@@ -38,10 +38,11 @@ function submit_top_search_form(){
 
 function loginPressed(event){
     event.preventDefault();
-    //.animate({height:150}, 'fast');
-    $(".dropdown").toggleClass('selected');
-    $("#loginform_username").focus();
-    event.stopPropagation();
+    if (!$(this).hasClass('selected')){
+        $(".dropdown").removeClass("selected");
+        $(this).addClass('selected').find(":input").first().focus();
+        event.stopPropagation();
+    }
 }
 
 function closeDropdown(event){
