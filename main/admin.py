@@ -6,7 +6,7 @@ from main.models import *
 
 class ClassNumberInline(admin.StackedInline):
     model = ClassNumber
-    extra = 1
+    extra = 12
 
 class ClassAdmin(admin.ModelAdmin):
     inlines = [ClassNumberInline]

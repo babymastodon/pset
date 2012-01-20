@@ -21,11 +21,13 @@ RESULTS_PER_PAGE = getattr(settings,'RESULTS_PER_PAGE',10)
 
 def parties_by_class(request, pk):
     rc={}
-    return render_to_response("main/search/parties_by_class.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/search/parties_by_class.html", 
+                              rc, context_instance=RequestContext(request))
 
 def parties_by_date(request):
     rc={}
-    return render_to_response("main/search/parties_by_date.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/search/parties_by_date.html", rc,
+                              context_instance=RequestContext(request))
 
 #takes a search query and an optional category. If no category, it tries to intelligently guess the
 #cagetory. If the search query contains a class number, the search will try to make that result first
