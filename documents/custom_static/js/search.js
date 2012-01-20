@@ -5,16 +5,13 @@ var last_pressed=null;
 var search_delay_constant = 400;
 
 //creates a new result block from the hidden template and adds it to the bottom of the result column
-function append_result(name, description, img, related){
+function append_result(name, description, img, meta){
     a = $("#result_template .result_block").clone();
     console.log(name);
     a.find(".result_title").html(name);
     a.find(".result_description").html(description);
     a.find("img").attr("src",img);
-    if (related!=""){
-        a.find(".result_metadata .related_label").html("Related Classes: ");
-        a.find(".result_metadata .result_related").html(related);
-    }
+    a.find(".result_metadata").html(meta);
     a.appendTo("#result_col");
 }
 
@@ -23,21 +20,6 @@ function exec_search(push_state){
     push_state = typeof(push_state) != 'undefined' ? push_state : true;
     query = val2($("#top_search_text"));
     category = $("#cat_"+selected_index).html();
-    if (query==""){
-        $("#search_title").hide();
-        $("#no_query_title").show();
-    }
-    else{
-        $("#search_title").show();
-        $("#no_query_title").hide();
-    }
-    $("#cat_title").html(category);
-    $("#q_title").html(query);
-    console.log("" + query + " " + category);
-    $("#result_col div").remove();
-    if ( history.pushState && push_state ){
-        history.pushState({q:query,c:category}, document.title, location.pathname+"?q="+query+"&c="+category);
-    }   
     $.ajax({
         type:'GET',
         url:$("#ajax_url").html(),
@@ -48,11 +30,34 @@ function exec_search(push_state){
             'page':0,
         },
         success: function(data){
-             $("#result_template .no_results_found").clone().appendTo("#result_col");
-             /* for (i=0; i<5; i++){
-                append_result("name", "description", "/static/images/default.jpg","5.333");
-                }*/
-         }
+             //toggle the title of the page depending on whether there is a query
+             if (query==""){
+                 $("#search_title").hide();
+                 $("#no_query_title").show();
+             }
+             else{
+                 $("#search_title").show();
+                 $("#no_query_title").hide();
+             }
+            $("#cat_title").html(category);
+            $("#q_title").html(query);
+            //empty out the search results page
+            $("#result_col div").remove();
+            //push the new page into the history
+            if ( history.pushState && push_state ){
+                history.pushState({q:query,c:category}, document.title, location.pathname+"?q="+query+"&c="+category);
+            }
+            //add teh new search results to the page
+            result = data['results']
+            if (parseInt(result['pageresults'])==0){
+                $("#result_template .no_results_found").clone().appendTo("#result_col");
+            }else{
+                for (i=0; i<result['pageresults']; i++){
+                    r = result['result_items'][i]
+                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata']);
+                }
+            }
+        }
     });
 }
 

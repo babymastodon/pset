@@ -40,10 +40,12 @@ def exec_search(query, category=None, page=0):
     q = string.join([a+"*" for a in query.split()])
     q = q + ' django_ct:"main.class"'
     sqs = SearchQuerySet().raw_search(q)
-    numpages = len(sqs)/RESULTS_PER_PAGE+1
+    totalresults = len(sqs)
+    numpages = totalresults/RESULTS_PER_PAGE+1
+    pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
     tmp = [a.object for a in sqs[page*RESULTS_PER_PAGE:(page+1)*RESULTS_PER_PAGE]]
     results = [{'title':a.title[0:43]+"..." if len(a.title)>46 else a.title, 'description':a.description[0:250]+'...' if len(a.description)>253 else a.description, 'metadata':'Class Numbers: '+string.join([x.number for x in a.classnumber_set.all()],', '), 'link':reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})} for a in tmp]
-    return {'page':page,'numpages':numpages, 'results':results}
+    return {'page':page,'numpages':numpages, 'result_items':results, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults}
 
 def search_page(request):
     rc={}
@@ -52,10 +54,7 @@ def search_page(request):
     page = request.GET.get('page',0)
     rc['query']=query
     rc['category']=category
-    tmp = exec_search(query=query, category=category, page=page)
-    rc['results']=tmp['results']
-    rc['numpages']=tmp['numpages']
-    rc['page']=tmp['page']
+    rc['results'] = exec_search(query=query, category=category, page=page)
     return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
 
 def ajax_s(request):
@@ -65,13 +64,10 @@ def ajax_s(request):
             verb = request.GET.get('verb',None)
             query = request.GET.get('q',None)
             category = request.GET.get('c',None)
-            page = request.GET.get('page',0)
+            page = int(request.GET.get('page',"0"))
             if verb=='search_page':
-                tmp = exec_search(query=query, category=category, page=page)
-                result['results']=tmp['results']
-                result['numpages']=tmp['numpages']
-                result['page']=tmp['page']
-                result['status']="success"
+                result['results'] = exec_search(query=query, category=category, page=page)
+                result['status'] = "success"
             else:
                 result['status']="verb didn't match"
     except Exception as e:
