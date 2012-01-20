@@ -71,7 +71,6 @@ def exec_search(query, category=None, page=1):
                 sqs = SearchQuerySet().raw_search(q)
             totalresults = len(sqs)
             numpages = totalresults/RESULTS_PER_PAGE+1
-            pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
             for a in tmp:
                 item={}
@@ -80,12 +79,17 @@ def exec_search(query, category=None, page=1):
                 item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
                 item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
+            pageresults=len(result_items)
     prwidth = 3
     bottom = max(1, page-prwidth)
     top = min(numpages+1, bottom + 1 + 2* prwidth)
     bottom = max(1, top - 2 * prwidth - 1)
     pagerange = range(bottom, top)
-    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange}
+    rmin = RESULTS_PER_PAGE*(page-1)+1
+    rmax = rmin+pageresults-1
+    if totalresults==0:
+        rmin=rmax=0
+    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax}
 
 def search_page(request):
     rc={}
