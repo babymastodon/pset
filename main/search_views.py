@@ -40,18 +40,34 @@ def exec_search(query, category=None, page=0):
     page=0
     numpages=0
     result_items=[]
-    category=category
     pageresults=0
     totalresults=0
+    sqs=None
     if query:
+        wildcard_tokens = string.join([a+'* ' for a in query.split()])
         if not category:#do multiple searches and decide what the user is looking for
-            pass
-        if category=="Classes":
             if re.match(".*\d+.*", query):
-                q = '"' + query+ '"' + ' django_ct:"main.classnumber"'
+                category="Classes"
             else:
-                q = string.join([a+'* ' for a in tokens]) + ' django_ct:"main.class"'
-            sqs = SearchQuerySet().raw_search(q)
+                q1 = wildcard_tokens + ' django_ct:(main.class)'
+                q2 = wildcard_tokens + ' django_ct:(main.userinfo)'
+                sqs1 = SearchQuerySet().raw_search(q1)
+                sqs2 = SearchQuerySet().raw_search(q2)
+                l1 = len(sqs1)
+                l2 = len(sqs2)
+                if l1>l2:
+                    category="Classes"
+                    sqs = sqs1
+                else:
+                    category="People"
+                    sqs=sqs2
+        if category=="Classes":
+            if not sqs:
+                if re.match(".*\d+.*", query):
+                    q = '"' + query+ '"' + ' django_ct:(main.classnumber)'
+                else:
+                    q = wildcard_tokens + ' django_ct:(main.class)'
+                sqs = SearchQuerySet().raw_search(q)
             totalresults = len(sqs)
             numpages = totalresults/RESULTS_PER_PAGE+1
             pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
