@@ -17,11 +17,13 @@ from main.views_common import *
 
 def parties_by_class(request, pk):
     rc={}
-    return render_to_response("main/search/parties_by_class.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/search/parties_by_class.html", 
+                              rc, context_instance=RequestContext(request))
 
 def parties_by_date(request):
     rc={}
-    return render_to_response("main/search/parties_by_date.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/search/parties_by_date.html", rc,
+                              context_instance=RequestContext(request))
 
 def search_page(request):
     rc={}
@@ -29,7 +31,8 @@ def search_page(request):
     category = request.GET.get('c','Classes')
     rc['query']=query
     rc['category']=category
-    return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/search/search_page.html", rc, 
+                              context_instance=RequestContext(request))
 
 def ajax_s(request):
     pass

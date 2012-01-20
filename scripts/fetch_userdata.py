@@ -3,7 +3,7 @@ from BeautifulSoup import BeautifulSoup
 # if not installed, do easy_install BeautifulSoup
 # documentation: http://www.crummy.com/software/BeautifulSoup/documentation.html
 
-__author__ = 'pashamur'
+# __author__ = 'pashamur'
 
 def fetch_fullname(username):
     # Returns tuple: [firstName, lastName]
@@ -20,9 +20,6 @@ def fetch_fullname(username):
             return None
         name = (str(m.group(2)), str(m.group(1)))  # [firstName, lastName]
         return name
-        #m = re.search("(?<=address: )(\w+)\s+\n", data.contents[0])
-        #print m.group(0)
-        #print m.group(1)
 
 print 'Fetching data for zdrach:'
 print fetch_fullname('zdrach')
