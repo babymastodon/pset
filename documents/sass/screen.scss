@@ -319,16 +319,17 @@ $rb : 2px;
                 width:500px;
                 .result_title{
                     font-size: 20px;
-                    margin-top:3px;
+                    margin-top:0px;
                     margin-bottom:5px;
                     font-weight: bold;
                 }
                 .result_metadata{
-                    font-size: 11px;
+                    font-size: 16px;
                     font-style: oblique;
                 }
                 .result_description{
                     margin-bottom:5px;
+                    font-size: 13px;
                 }
             }
             &:hover{
@@ -522,7 +523,7 @@ $bc : $hue1-mid-dark;
     }
 }
 
-#account_dropdown{
+#account_dropdown, #actions_dropdown{
     a{
         padding-left: 20px;
         text-align: left;

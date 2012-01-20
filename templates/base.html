@@ -42,6 +42,18 @@
                             <a href="{% url 'main.account_views.logout_view' %}">Logout</a>
                         </div>
                     </div>
+                    <span>|</span>
+                    <div class="header_button dropdown">
+                        <a href="{% url 'main.account_views.my_profile_page' %}">
+                            <span>Menu<div class="dropdown_arrow"></div></span>
+                        </a>
+                        <div class="dropdown_list" id="actions_dropdown">
+                            <a href="{% url 'main.account_views.my_profile_page' %}">New Party</a>
+                            <a href="{% url 'main.account_views.my_profile_page' %}">My Classes</a>
+                            <a href="{% url 'main.account_views.logout_view' %}">My Friends</a>
+                            <a href="{% url 'main.account_views.logout_view' %}">Today's Events</a>
+                        </div>
+                    </div>
                 </div>
                 {% else %}
                 <div id="account_menu">
@@ -51,7 +63,6 @@
                         </a>
                         <div id="login_div" class="dropdown_list">
                             <form action = "{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
-                                {% csrf_token %}
                                 <div class="clearfix">
                                     <label for='loginform_username'>Username:</label>
                                     <input type='text' id='loginform_username' name="username"/>
@@ -63,6 +74,7 @@
                                 <input type='submit' class="button" value="Login"/>
                                 <input type='hidden' name="next" value="{{ request.get_full_path }}"/>
                                 <a href="/forgot/">Forgot password?</a>
+                                {% csrf_token %}
                             </form>
                         </div>
                     </div>

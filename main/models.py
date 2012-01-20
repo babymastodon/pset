@@ -82,7 +82,7 @@ class Class(models.Model):
 
 class ClassNumber(models.Model):
     number = models.CharField(max_length=20)
-    _class = models.ForeignKey(Class, null=True)#default related name is classnumber_set
+    class_obj = models.ForeignKey(Class, null=True)#default related name is classnumber_set
 
     def __unicode__(self):
         return unicode(self.number)

@@ -22,7 +22,7 @@ urlpatterns += patterns('main.account_views',
 
 #search views
 urlpatterns += patterns('main.search_views',
-    url(r'^parties/class/(?P<pk>)/$', 'parties_by_class'),#list the upcoming parties for this class
+    url(r'^parties/class/(?P<pk>\d+)/$', 'parties_by_class'),#list the upcoming parties for this class
     url(r'^parties/date/$', 'parties_by_date'),#list parties by day for the next week
     url(r'^search/$', 'search_page'),#search page for classes and people
     url(r'^ajax/br/$', 'ajax_s'),#ajax handler for search

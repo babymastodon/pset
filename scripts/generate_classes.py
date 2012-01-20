@@ -60,13 +60,13 @@ for p in detail_pages:
             tmp = t.search(m)
             if tmp:
                 tmp = tmp.groupdict()
-                moo['title']=tmp['title']
+                moo['title']=tmp['title'].strip()
                 moo['numbers']= an.findall(m)
                 tmp = d.search(m)
                 if not tmp:
                     moo['description']=""
                 else:
-                    moo['description']=unicode(tmp.group(1), 'utf-8', 'ignore')
+                    moo['description']=unicode(tmp.group(1).strip(), 'utf-8', 'ignore')
                 tmp = s.search(m)
                 if tmp:
                     for a in s2.findall(tmp.group(0)):
@@ -127,9 +127,9 @@ def update_ob_with_class(dic, cl):
     for d in dic['numbers']:
         if d not in updated:
             ob2 = ClassNumber.objects.get(number=d)
-            if ob2._class != cl:
+            if ob2.class_obj != cl:
                 print "Linking " + str(ob2.number) + " to class " + cl.title
-                ob2._class = cl
+                ob2.class_obj = cl
                 ob2.save()
                 updated[d]=True
 
@@ -143,10 +143,10 @@ for c in courses:
         found_neighbor=False
         for b in c['numbers']:#try to find a neighbor that already has a class
             ob2 = ClassNumber.objects.get(number=b)
-            if ob2._class:
+            if ob2.class_obj:
                 print "Found related classname with class: " + ob2.number
                 found_neighbor=True
-                update_ob_with_class(c,ob2._class)
+                update_ob_with_class(c,ob2.class_obj)
                 break;
         if not found_neighbor:
             #no neighbors had a class, first search for a class with the same name
