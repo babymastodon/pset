@@ -10,7 +10,7 @@ from django.conf import settings
 from datetime import datetime, date
 from django import forms
 from haystack.query import SearchQuerySet
-import logging, simplejson, string, re
+import logging, simplejson, string, re, urllib
 from django.core import serializers
 
 #import models and forms here
@@ -37,7 +37,9 @@ trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
 #returns dict with name, class, department, (picture)
 #format: {'page':int, 'numpages':int, 'results':[{'title':string,'description':string,'metadata':string}]}
 def exec_search(query, category=None, page=1):
-    numpages=0
+    if not category:
+        category = "Classes"
+    numpages=1
     result_items=[]
     pageresults=0
     totalresults=0
@@ -70,7 +72,7 @@ def exec_search(query, category=None, page=1):
             totalresults = len(sqs)
             numpages = totalresults/RESULTS_PER_PAGE+1
             pageresults = totalresults if totalresults < RESULTS_PER_PAGE else RESULTS_PER_PAGE
-            tmp = [a.object for a in sqs[page*RESULTS_PER_PAGE:(page+1)*RESULTS_PER_PAGE]]
+            tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
             for a in tmp:
                 item={}
                 item['title'] = trunc(a.get_title(),45)
@@ -78,18 +80,25 @@ def exec_search(query, category=None, page=1):
                 item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
                 item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
-    prwidth = 4
-    pagerange = range(1,numpages+1)[max(page-prwidth-1,0):][:prwidth*2+1]
+    prwidth = 3
+    bottom = max(1, page-prwidth)
+    top = min(numpages+1, bottom + 1 + 2* prwidth)
+    bottom = max(1, top - 2 * prwidth - 1)
+    pagerange = range(bottom, top)
     return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange}
 
 def search_page(request):
     rc={}
     query = request.GET.get('q','')
     category = request.GET.get('c',None)
-    page = request.GET.get('page',0)
+    page = int(request.GET.get('page',"1"))
     rc['query']=query
-    rc['category']=category
     rc['results'] = exec_search(query=query, category=category, page=page)
+    if (page!=rc['results']['numpages']):
+        rc['url_next_page']=request.path+"?"+urllib.urlencode({'q':query, 'c':rc['results']['category'], 'page':page+1})
+    if (page!=1):
+        rc['url_prev_page']=request.path+"?"+urllib.urlencode({'q':query, 'c':rc['results']['category'], 'page':page-1})
+    rc['url_no_page']=request.path+"?"+urllib.urlencode({'q':query, 'c':category})+"&page="
     return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
 
 def ajax_s(request):

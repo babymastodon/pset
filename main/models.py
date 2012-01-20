@@ -100,7 +100,7 @@ class ClassNumber(models.Model):
         return self.class_obj.description
 
     def get_meta(self):
-        return list(self.class_obj.classnumber_set.exclude(pk=self.pk))
+        return list(self.class_obj.classnumber_set.all())
 
     def __unicode__(self):
         return unicode(self.number)

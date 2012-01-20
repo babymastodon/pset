@@ -293,9 +293,25 @@ $rb : 2px;
         }
     }
     #search_nav{
+        @include unselectable;
         font-size: 16px;
         text-align: right;
         margin-top: 14px;
+        .arrow{
+            &.hidden{
+                color: $gray-mid;
+                cursor: default;
+            } 
+        }
+        .selected{
+            color: $hue1-dark;
+            font-weight: bold;
+        }
+        a{
+            display: block;
+            float: right;
+            width: 15px;
+        }
     }
 }
 .no_results_found{
