@@ -1,14 +1,8 @@
 var map;
 var mit_coord =  new google.maps.LatLng(42.35886, -71.09356);
-
-
-function showCoords(position) {
-    console.log("Latitude:" + position.coords.latitude + "\nLongitude:" + position.coords.longitude);
-}
-//Function automatically triggered on error
-function showError(error) {
-    console.log(error.code);
-}
+var top_left = new google.maps.LatLng(42.36425, -71.10798);
+var bottom_right = new google.maps.LatLng(42.35068, -71.07030);
+var my_loc = new google.maps.LatLng(0,0);
 
 function init_map(){
     var mapdiv = $("#mapdiv");
@@ -26,7 +20,6 @@ function init_map(){
         featureType: "landscape.man_made",
         elementType: "labels",
         stylers: [
-             {gamma: .7},
         ]
         },{
         featureType: "road",
@@ -72,6 +65,30 @@ function init_map(){
     mapStyle = new google.maps.StyledMapType(stylez, {});
     map = new google.maps.Map(mapdiv.get(0), mapoptions);
     map.mapTypes.set(MAP_TYPE_ID, mapStyle);
+}
+
+function showCoords(position) {
+    my_loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    console.log("Latitude:" + my_loc.lat() + "\nLongitude:" + my_loc.lng());
+    if (in_box(my_loc, top_left, bottom_right)){
+        alert("you are in the box");
+        me = new google.maps.Marker({
+            map: map,
+            position: my_loc,
+            title:"My Location",
+        });
+    }
+    else{
+        alert("you are not in the box " + my_loc.toString() + " " + top_left.toString() + " " + bottom_right.toString());
+    }
+}
+//Function automatically triggered on error
+function showError(error) {
+    console.log(error.code);
+}
+
+function in_box(coord, tl, br){
+    return coord.lat() < tl.lat() && coord.lng() > tl.lng() && coord.lat() > br.lat() && coord.lng() < br.lng();
 }
 
 $(document).ready(function(){
