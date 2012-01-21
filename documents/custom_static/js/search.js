@@ -13,6 +13,8 @@ var init_query="";
 var init_category="";
 var init_page="";
 
+var loaded=false;
+
 //creates a new result block from the hidden template and adds it to the bottom of the result column
 function append_result(name, description, img, meta){
     a = $("#result_template .result_block").clone();
@@ -111,7 +113,8 @@ function exec_search(options){
             $("#result_col div").remove();
             //push the new page into the history
             result = data['results']
-                mkstate(query, result['category'],result['page']);
+            mkstate(query, result['category'],result['page']);
+            loaded=true;
             //add teh new search results to the page
             reset_pagination(result['pagerange'], result['page']);
             if (parseInt(result['pageresults'])==0){
@@ -140,7 +143,7 @@ function exec_search(options){
 function check_for_pause_then_search(){
     d =  new Date().getTime();
     delta = d - last_pressed;
-    if (delta>search_delay_constant - 10){
+    if (delta>search_delay_constant - 30){
         exec_search({page:'1'});
         last_pressed=d;
     }
@@ -224,7 +227,7 @@ $(document).ready(function(){
             p=init_page;
         }
         init_blank_text_box($("#top_search_text").val(q));
-        exec_search({nopushstate:true, category:c, page: p});
+        if (loaded) exec_search({nopushstate:true, category:c, page: p});
     };
     manage_nav_events();
     //set cursor to end of text box

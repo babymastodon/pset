@@ -45,7 +45,7 @@ def exec_search(query, category=None, page=1):
     totalresults=0
     sqs=None
     if query:
-        wildcard_tokens = string.join([a+'* ' for a in query.split()])
+        wildcard_tokens = string.join([a.lower()+'* ' for a in query.split()])
         if not category:#do multiple searches and decide what the user is looking for
             if re.match(".*\d+.*", query):
                 category="Classes"
@@ -64,7 +64,7 @@ def exec_search(query, category=None, page=1):
                     sqs=sqs2
         if category=="Classes":
             if not sqs:
-                if re.match(".*\d+.*", query):
+                if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): #if they are searching for a class number, matches prefixes for course numbers that start in letters
                     q = wildcard_tokens + ' django_ct:(main.classnumber)'
                 else:
                     q = wildcard_tokens + ' django_ct:(main.class)'
