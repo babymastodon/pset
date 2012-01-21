@@ -16,8 +16,9 @@ var init_page="";
 var loaded=false;
 
 //creates a new result block from the hidden template and adds it to the bottom of the result column
-function append_result(name, description, img, meta){
+function append_result(name, description, img, meta, href){
     a = $("#result_template .result_block").clone();
+    a.find('a').attr('href',href);
     a.find(".result_title").html(name);
     a.find(".result_description").html(description);
     a.find("img").attr("src",img);
@@ -122,7 +123,7 @@ function exec_search(options){
             }else{
                 for (i=0; i<result['pageresults']; i++){
                     r = result['result_items'][i]
-                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata']);
+                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata'], r['link']);
                 }
             }
             $("#result_num").html(result['totalresults']);
