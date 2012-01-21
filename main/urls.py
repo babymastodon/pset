@@ -21,6 +21,7 @@ urlpatterns += patterns('main.account_views',
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
     url(r'^facebook/', include('django_facebook.urls')),
+    url(r'^accounts/', include('userena.urls')),
 )
 
 #search views

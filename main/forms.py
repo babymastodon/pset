@@ -33,8 +33,8 @@ class FileForm(forms.ModelForm):
 
 class EmailRegisterForm(forms.Form):
     email = forms.EmailField()
-    pw1 = forms.CharField(widget=forms.PasswordInput)
-    pw2 = forms.CharField(widget=forms.PasswordInput)
+    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password:')
+    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password:')
 
 class LoginForm(forms.Form):
     username = forms.CharField()

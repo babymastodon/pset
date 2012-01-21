@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import urllib2, cStringIO, itertools, datetime
 from django.core.files.base import ContentFile
+from userena.models import UserenaBaseProfile
 
 def resize_dimensions(width, height, longest_side):
     if width>height and width>longest_side:
@@ -105,7 +106,7 @@ class ClassNumber(models.Model):
     def __unicode__(self):
         return unicode(self.number)
 
-class UserInfo(models.Model):
+class UserInfo(UserenaBaseProfile):
     user = models.OneToOneField(User, related_name="user_info")
     profile_picture = models.OneToOneField(Picture, related_name="user_info", blank=True)
     description = models.TextField() #user description

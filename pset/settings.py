@@ -171,9 +171,13 @@ TEMPLATE_CONTEXT_PROCESSORS=(
     'django_facebook.context_processors.facebook',
 )
 
-LOGIN_URL='/login/'
-LOGOUT_URL='/logout/'
-LOGIN_REDIRECT_URL='/home/'
+# LOGIN_URL='/login/'
+# LOGOUT_URL='/logout/'
+# LOGIN_REDIRECT_URL='/home/'
+
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
 
 f = os.path.join(os.path.dirname(__file__),'local_settings.py')
 if os.path.exists(f):
@@ -190,8 +194,10 @@ HAYSTACK_CONNECTIONS = {
 }
 
 AUTHENTICATION_BACKENDS = {
-    'django.contrib.auth.backends.ModelBackend',
+    'userena.backends.UserenaAuthenticationBackend',
+    'guardian.backends.ObjectPermissionsBackend',
     'django_facebook.auth_backends.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
 }
 
 EMAIL_HOST='localhost'
@@ -207,3 +213,9 @@ ORPHANS_PER_PAGE=1
 FACEBOOK_APP_ID = '312191378824613'
 FACEBOOK_APP_SECRET = '30a35a0c9715d7cc2cc9ea8390c81c2f'
 ROOT_EMAIL_URL='http://pset.babymastodon.com'
+ANONYMOUS_USER_ID = -1
+AUTH_PROFILE_MODULE = 'main.UserInfo'
+
+
+
+
