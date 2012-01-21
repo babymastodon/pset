@@ -147,8 +147,9 @@ function add_draggable_marker(loc, text, dragend){
     return marker;
 }
 
-function drag_end(e){
-    query_whereis(e.latLng);
+//adds the static url and other path info to the front of name
+function marker_url(name){
+    return "http://www.mit.edu/~zdrach/static/marker/"+name+".png";
 }
 
 $(document).ready(function(){
@@ -157,5 +158,4 @@ $(document).ready(function(){
     google.maps.event.addListener(map, 'click', function(ob){
         query_whereis(ob.latLng);
     });
-    marker = add_draggable_marker(mit_coord, "Blah!!", drag_end);
 });

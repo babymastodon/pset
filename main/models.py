@@ -128,12 +128,15 @@ class PendingHash(models.Model):
     hashcode = models.CharField(max_length=100)
 
 class Party(models.Model):
-    courses = models.ManyToManyField(Course)
+    class_obj = models.ForeignKey(Class)
     starttime = models.DateTimeField()
     endtime = models.DateTimeField()
     title = models.CharField(max_length=30)
-    description = models.TextField()
-    #location?
-    #icon for map?? color?
+    description = models.TextField(blank=True)
+    building_name = models.CharField(max_length=100, blank=True)
+    building_number = models.CharField(max_length=10, blank=True)
+    building_img = models.CharField(max_length=200, blank=True)
+    lat = models.CharField(max_length=20)
+    lng = models.CharField(max_length=20)
     admins = models.ManyToManyField(User, related_name="admin_set")
     attendees = models.ManyToManyField(User, related_name="attendee_set")
