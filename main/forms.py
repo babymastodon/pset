@@ -1,5 +1,6 @@
 from django import forms
 from main.models import *
+from userena.forms import SignupForm, SignupFormOnlyEmail
 
 #Make forms here
 

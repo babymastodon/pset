@@ -193,9 +193,10 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+# 'guardian.backends.ObjectPermissionsBackend',
+
 AUTHENTICATION_BACKENDS = {
     'userena.backends.UserenaAuthenticationBackend',
-    'guardian.backends.ObjectPermissionsBackend',
     'django_facebook.auth_backends.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
 }
@@ -215,7 +216,8 @@ FACEBOOK_APP_SECRET = '30a35a0c9715d7cc2cc9ea8390c81c2f'
 ROOT_EMAIL_URL='http://pset.babymastodon.com'
 ANONYMOUS_USER_ID = -1
 AUTH_PROFILE_MODULE = 'main.UserInfo'
-
+FACEBOOK_REGISTRATION_FORM = 'userena.forms.SignupForm'
+FACEBOOK_REGISTRATION_TEMPLATE = 'userena/signup_form.html'
 
 
 

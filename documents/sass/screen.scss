@@ -587,6 +587,7 @@ $bc : $hue1-mid-dark;
     }
     .registration{
         background-color:$hue1-mid-light;
+        width:200px;
         @include border-radius(5px);
         h1, h2{
             margin-left: 10px;
@@ -601,8 +602,8 @@ $bc : $hue1-mid-dark;
         }
         form{
             margin: 0px;
-            width: 250px;
-            height: 220px;
+            width: 180px;
+            height: 300px;
             padding: 10px;
             label{
                 //font-weight:lighter;
