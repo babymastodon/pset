@@ -30,6 +30,7 @@ $gray-mid-dark: #999999;
 $gray-dark: #555555;
 $black: black;
 $d: #110505;
+$dg: #111111;
 
 body{
     font-family: "angie-sans";
@@ -589,5 +590,105 @@ $bc : $hue1-mid-dark;
 
 #mapdiv{
     width: 940px;
-    height: 600px;
+    height: 400px;
+    margin-bottom: 20px;
 }
+
+@mixin gray_button($bb){
+    border: $bb solid transparent;
+    @include box-shadow($gray-mid 1px 1px 2px 0px inset);
+    @include unselectable;
+    @include border-radius(3px);
+    text-align: center;
+            display: block;
+    &.selected, &:hover, &.active{
+        @include box-shadow($white 3px 3px 4px -2px inset);
+        @include background(linear-gradient(top, $gray-light + $dg , $gray-mid + $dg));
+        border: $bb solid $gray-mid;
+    }
+    &:active{
+        @include background(linear-gradient(top, $gray-mid + $dg , $gray-light + $dg));
+    }
+}
+
+#date_nav_bar{
+    div{
+        a{
+            $bb: 1px;
+            @include gray_button($bb);
+            line-height: 30px - 2*$bb;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+#date_result_list{
+    .result_item{
+        @include unselectable;
+        $dw : 460px;
+        $dp : 20px;
+        width: $dw - $dp * 2;
+        padding: $dp;
+        margin-bottom: 10px;
+        @include box-shadow($gray-mid 1px 1px 2px 0px);
+        &.active{
+            position: relative;
+            left: 1px;
+            top: 1px;
+            @include box-shadow(none);
+            &:hover{background-color: $hue1-light;}
+        }
+        &:hover{
+            background-color: $hue1-light + $d;
+        }
+        &.selected{
+            background-color: $hue1-light + 2*$d;
+        }
+        span{
+            display: block;
+            float: left;
+        }
+        .title, .details, .location, .class{
+            white-space: nowrap;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        .title{
+            font-size: 20px;
+            line-height: 24px;
+            width: 320px;
+        }
+        .details{
+            float: right;
+            line-height: 24px;
+            @include gray_button(1px);
+            padding: 0px 10px;
+        }
+        .location{
+            clear: both;
+            float: left;
+            font-style: oblique;
+            padding-left: 20px;
+            width: 120px;
+        }
+        .class{
+            float: left;
+            width: 120;
+        }
+        .day{
+            float: right;
+        }
+        .time{
+            float: right;
+            margin-right: 10px;
+        }
+        .description{
+            clear: both;
+            padding-left: 20px;
+            line-height: 20px;
+            height: 40px;
+            overflow: hidden;
+        }
+    }
+}
+

@@ -9,9 +9,30 @@
 {% endblock %}
 
 {% block main_content %}
-<div id="search_container_head" class="grid_12">
+<div id="date_nav_bar" class="grid_12">
+    <div id="date_0" class="grid_2 alpha"><a class="selected">Today</a></div>
+    <div id="date_1" class="grid_2"><a>Tomorrow</a></div>
+    <div id="date_2" class="grid_2"><a>Blah</a></div>
+    <div id="date_3" class="grid_2"><a>Blah</a></div>
+    <div id="date_4" class="grid_2"><a>Blah</a></div>
+    <div id="date_5" class="grid_2 omega"><a>Blah</a></div>
 </div>
 <div id="search_container_body" class="grid_12">
     <div id="mapdiv"></div>
+</div>
+<div class="grid_12">
+    <div id="date_result_list" class="clearfix" >
+        {% for i in 0123456789|make_list %}
+        <div class="result_item clearfix grid_6{% if forloop.counter0|divisibleby:'2' %} alpha{% else %} omega{% endif %}">
+            <span class="title">Title MoO mOo mOO moO Moo MOo</span>
+            <a class="details">Details</a>
+            <span class="location">Location</span>
+            <span class="class">5.111 5.112</span>
+            <span class="day">Day</span>
+            <span class="time">Time</span>
+            <span class="description">Description</span>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
