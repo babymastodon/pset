@@ -592,23 +592,25 @@ $bc : $hue1-mid-dark;
             height: 160px;
             padding: 10px;
             label{
-                font-weight:lighter;
-                font-size:13px;
-                line-height:24px;
+                //font-weight:lighter;
+                font-size:16px;
+                line-height:30px;
                 display: block;
-                float: left;
+                width:50px;
+                float:left;
             }
             input[type='text'], input[type='password']{
                 padding: 3px 3px;
                 text-shadow: none;
                 margin-bottom: 4px;
-                width: 120px;
+                width: 140px;
                 font-size:16px;
                 border:1px solid;
-                float:right;
                 display: block;
+                float:right;
             }
             input[type='submit']{
+                margin-top:10px;
                 float:right;
             }        
         }
