@@ -31,15 +31,11 @@ class ClassNumberIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare(self, obj):
         prepared_data = super(ClassNumberIndex, self).prepare(obj)
-        prepared_data['suggestions'] = obj.number + " " + obj.class_obj.title
+        prepared_data['suggestions'] = prepared_data['text']
         return prepared_data
 
     def prepare_text(self, obj):
-        l=[]
-        l.append(obj.class_obj.title)
-        for i in range(0, len(obj.number)):
-            l.append(obj.number[:i+1])
-        return string.join(l)
+        return obj.number + " " + obj.class_obj.title
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""

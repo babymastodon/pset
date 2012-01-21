@@ -65,7 +65,7 @@ def exec_search(query, category=None, page=1):
         if category=="Classes":
             if not sqs:
                 if re.match(".*\d+.*", query):
-                    q = '"' + query+ '"' + ' django_ct:(main.classnumber)'
+                    q = wildcard_tokens + ' django_ct:(main.classnumber)'
                 else:
                     q = wildcard_tokens + ' django_ct:(main.class)'
                 sqs = SearchQuerySet().raw_search(q)
