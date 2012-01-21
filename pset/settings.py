@@ -125,7 +125,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'main',
-    'haystack'
+    'haystack',
+    'django_facebook' 
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -167,6 +168,7 @@ TEMPLATE_CONTEXT_PROCESSORS=(
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
+    'django_facebook.context_processors.facebook',
 )
 
 LOGIN_URL='/login/'
@@ -177,7 +179,7 @@ f = os.path.join(os.path.dirname(__file__),'local_settings.py')
 if os.path.exists(f):
     execfile(f)
 
-import os
+#import os
 HAYSTACK_CONNECTIONS = {
     'default': {
         #'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
@@ -185,6 +187,11 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
         'URL' : 'http://127.0.0.1:8983/solr/pset',
     },
+}
+
+AUTHENTICATION_BACKENDS = {
+    'django.contrib.auth.backends.ModelBackend',
+    'django_facebook.auth_backends.FacebookBackend',
 }
 
 EMAIL_HOST='localhost'
@@ -197,4 +204,6 @@ RESULTS_PER_PAGE=10
 HAYSTACK_SEARCH_RESULTS_PER_PAGE=RESULTS_PER_PAGE
 ORPHANS_PER_PAGE=1
 
+FACEBOOK_APP_ID = '312191378824613'
+FACEBOOK_APP_SECRET = '30a35a0c9715d7cc2cc9ea8390c81c2f'
 ROOT_EMAIL_URL='http://pset.babymastodon.com'
