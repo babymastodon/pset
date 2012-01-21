@@ -13,9 +13,12 @@ var init_query="";
 var init_category="";
 var init_page="";
 
+var loaded=false;
+
 //creates a new result block from the hidden template and adds it to the bottom of the result column
-function append_result(name, description, img, meta){
+function append_result(name, description, img, meta, href){
     a = $("#result_template .result_block").clone();
+    a.find('a').attr('href',href);
     a.find(".result_title").html(name);
     a.find(".result_description").html(description);
     a.find("img").attr("src",img);
@@ -111,7 +114,8 @@ function exec_search(options){
             $("#result_col div").remove();
             //push the new page into the history
             result = data['results']
-                mkstate(query, result['category'],result['page']);
+            mkstate(query, result['category'],result['page']);
+            loaded=true;
             //add teh new search results to the page
             reset_pagination(result['pagerange'], result['page']);
             if (parseInt(result['pageresults'])==0){
@@ -119,7 +123,7 @@ function exec_search(options){
             }else{
                 for (i=0; i<result['pageresults']; i++){
                     r = result['result_items'][i]
-                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata']);
+                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata'], r['link']);
                 }
             }
             $("#result_num").html(result['totalresults']);
@@ -140,7 +144,7 @@ function exec_search(options){
 function check_for_pause_then_search(){
     d =  new Date().getTime();
     delta = d - last_pressed;
-    if (delta>search_delay_constant - 10){
+    if (delta>search_delay_constant - 30){
         exec_search({page:'1'});
         last_pressed=d;
     }
@@ -224,7 +228,7 @@ $(document).ready(function(){
             p=init_page;
         }
         init_blank_text_box($("#top_search_text").val(q));
-        exec_search({nopushstate:true, category:c, page: p});
+        if (loaded) exec_search({nopushstate:true, category:c, page: p});
     };
     manage_nav_events();
     //set cursor to end of text box
