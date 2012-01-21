@@ -585,9 +585,38 @@ $bc : $hue1-mid-dark;
     .right{
         text-align: right;
     }
+    .registration{
+        form{
+            margin: 0px;
+            width: 200px;
+            height: 160px;
+            padding: 10px;
+            label{
+                font-weight:lighter;
+                font-size:13px;
+                line-height:24px;
+                display: block;
+                float: left;
+            }
+            input[type='text'], input[type='password']{
+                padding: 3px 3px;
+                text-shadow: none;
+                margin-bottom: 4px;
+                width: 120px;
+                font-size:16px;
+                border:1px solid;
+                float:right;
+                display: block;
+            }
+            input[type='submit']{
+                float:right;
+            }        
+        }
+    }
 }
 
 #mapdiv{
     width: 940px;
     height: 600px;
 }
+
