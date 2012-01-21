@@ -9,6 +9,9 @@ var tmp_loc;
 
 var last_query={};
 
+//function that gets called when the page receives the user information
+var on_get_valid_loc = function(){return;};
+
 function init_map(){
     var mapdiv = $("#mapdiv");
     MAP_TYPE_ID = 'MY_MAP_TYPE';
@@ -82,6 +85,7 @@ function showCoords(position) {
             title:"My Location",
         });
         valid_loc = true;
+        on_get_valid_loc();
     }
 }
 //Function automatically triggered on error
@@ -93,10 +97,7 @@ function in_box(coord, tl, br){
     return coord.lat() < tl.lat() && coord.lng() > tl.lng() && coord.lat() > br.lat() && coord.lng() < br.lng();
 }
 
-//This callback function gets called when a successful location query has been made
-var on_loc_query = function(){console.log("location query made" + last_query);};
-
-function query_whereis(loc){
+function query_whereis(loc, on_loc_query){
     if (!loc.lat) return false;
     tmp_loc = loc;
     $.ajax({
@@ -116,7 +117,7 @@ function query_whereis(loc){
             last_query['bldg_num'] = d.bldgnum;
             last_query['bldg_loc'] = new google.maps.LatLng(d.lat_wgs84,d.long_wgs84);
             last_query['query_loc'] = tmp_loc;
-            on_loc_query();
+            if (on_loc_query) on_loc_query();
         }
     });
 }
@@ -129,14 +130,26 @@ function add_marker(loc, text, click){
         position: loc,
         title: text,
     });
-    if (click){
-        google.maps.event.addListener(marker, 'click', click);
-    }
+    if (click) google.maps.event.addListener(marker, 'click', click);
 }
 
-on_loc_query = function(){
-    add_marker(last_query['query_loc'], last_query['bldg_name']);
-};
+//add a marker that is draggable
+function add_draggable_marker(loc, text, dragend){
+    text = text || "";
+    marker = new google.maps.Marker({
+        map:map,
+        position: loc,
+        title: text,
+        clickable: false,
+        draggable: true,
+    });
+    if (dragend)google.maps.event.addListener(marker, 'dragend', dragend);
+    return marker;
+}
+
+function drag_end(e){
+    query_whereis(e.latLng);
+}
 
 $(document).ready(function(){
     navigator.geolocation.getCurrentPosition(showCoords,showError);
@@ -144,4 +157,5 @@ $(document).ready(function(){
     google.maps.event.addListener(map, 'click', function(ob){
         query_whereis(ob.latLng);
     });
+    marker = add_draggable_marker(mit_coord, "Blah!!", drag_end);
 });
