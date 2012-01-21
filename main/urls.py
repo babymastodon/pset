@@ -20,6 +20,8 @@ urlpatterns += patterns('main.account_views',
     url(r'^login/$', 'login_page'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
+    url(r'^facebook/', include('django_facebook.urls')),
+    url(r'^accounts/', include('userena.urls')),
 )
 
 #search views
@@ -37,7 +39,7 @@ urlpatterns += patterns('main.class_views',
     url(r'^ajax/s/$', 'ajax_s'),#ajax handler for various tasks
 )
 
-#party vies
+#party views
 urlpatterns += patterns('main.party_views',
     url(r'^party/(?P<pk>)/$', 'party_details'),#detailed lsit of party details, party admins can update vales via ajax
     url(r'^party/create/$', 'party_create'),#form for creating a new party

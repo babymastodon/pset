@@ -125,7 +125,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'main',
-    'haystack'
+    'haystack',
+    'django_facebook' 
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -167,17 +168,22 @@ TEMPLATE_CONTEXT_PROCESSORS=(
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
+    'django_facebook.context_processors.facebook',
 )
 
-LOGIN_URL='/login/'
-LOGOUT_URL='/logout/'
-LOGIN_REDIRECT_URL='/home/'
+# LOGIN_URL='/login/'
+# LOGOUT_URL='/logout/'
+# LOGIN_REDIRECT_URL='/home/'
+
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
 
 f = os.path.join(os.path.dirname(__file__),'local_settings.py')
 if os.path.exists(f):
     execfile(f)
 
-import os
+#import os
 HAYSTACK_CONNECTIONS = {
     'default': {
         #'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
@@ -185,6 +191,14 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
         'URL' : 'http://127.0.0.1:8983/solr/pset',
     },
+}
+
+# 'guardian.backends.ObjectPermissionsBackend',
+
+AUTHENTICATION_BACKENDS = {
+    'userena.backends.UserenaAuthenticationBackend',
+    'django_facebook.auth_backends.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
 }
 
 EMAIL_HOST='localhost'
@@ -197,4 +211,13 @@ RESULTS_PER_PAGE=6
 HAYSTACK_SEARCH_RESULTS_PER_PAGE=RESULTS_PER_PAGE
 ORPHANS_PER_PAGE=1
 
+FACEBOOK_APP_ID = '312191378824613'
+FACEBOOK_APP_SECRET = '30a35a0c9715d7cc2cc9ea8390c81c2f'
 ROOT_EMAIL_URL='http://pset.babymastodon.com'
+ANONYMOUS_USER_ID = -1
+AUTH_PROFILE_MODULE = 'main.UserInfo'
+FACEBOOK_REGISTRATION_FORM = 'userena.forms.SignupForm'
+FACEBOOK_REGISTRATION_TEMPLATE = 'userena/signup_form.html'
+
+
+
