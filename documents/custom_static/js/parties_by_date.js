@@ -9,6 +9,7 @@ var init_day = "0";
 var marker_array = [];
 var marker_animate_index=0;
 var num_markers;
+var loaded = false;
 
 function marker_animate(){
     if (marker_animate_index<num_markers){
@@ -20,7 +21,43 @@ function marker_animate(){
     }
 }
 
+function select_result_item(letter){
+    $("#result_list_container .selected").removeClass("selected");
+    $("#result_list_container #resultitem_"+letter).addClass("selected");
+}
+
+function open_detail_box(callback){
+    $("#detail_box").removeClass("closed").animate({width:300, height: 200},'fast',function(callback){
+        return function(){
+            $("#detail_box").addClass("open");
+            if (callback) callback();
+        }
+    }(callback));
+}
+function close_detail_box(callback){
+    $("#detail_box").removeClass("open").animate({width:16, height: 16},'fast',function(callback){
+        return function(){
+            $("#detail_box").addClass("closed");
+            if (callback) callback();
+        }
+    }(callback));
+}
+function toggle_detail_box(){
+    if ($("#detail_box").hasClass("closed")) open_detail_box();
+    else if ($("#detail_box").hasClass("open")) close_detail_box();
+}
+function switch_detail_box_contents(letter){
+}
+function on_marker_click(letter){
+    return function(event){
+        select_result_item(letter);
+        open_detail_box();
+        map.panTo(event.latLng);
+    }
+}
+
 function prepare_item_list(options){
+    loaded=true;
     day = options['day'] || "0";
     nopushstate = options.nopushstate || false;
     //it just looks better when the button switches over immediately
@@ -47,7 +84,7 @@ function prepare_item_list(options){
                          num_markers=0;
                          for (i in l){
                              item = l[i];
-                             moo = $("#templates .result_item").clone(withDataAndEvents=true).appendTo("#result_list_container");
+                             moo = $("#templates .result_item").clone().appendTo("#result_list_container").click(on_marker_click(item.letter));
                              moo.find(".title").html(item.title);
                              moo.find(".details").attr("href", item.detail_url);
                              moo.find(".location").html(item.location);
@@ -55,15 +92,16 @@ function prepare_item_list(options){
                              moo.find("img").attr("src",icon);
                              moo.find(".class").html(item.class_nums.join(", "));
                              moo.find(".time").html(item.start_time + " - " + item.end_time);
-                             console.log(item.lat + " " + item.lng);
+                             moo.attr("id","resultitem_"+item.letter);
                              loc = new google.maps.LatLng(item.lat, item.lng);
                              m = new google.maps.Marker({
                                  map: map,
-                                 icon: icon,
-                                 position: loc,
-                                 title: item.title,
-                                 visible: false,
+                               icon: icon,
+                               position: loc,
+                               title: item.title,
+                               visible: false,
                              });
+                             google.maps.event.addListener(m, 'click', on_marker_click(item.letter));
                              marker_array.push(m);
                              num_markers+=1;
                          }
@@ -109,10 +147,6 @@ function drag_end(e){
     query_whereis(e.latLng);
 }
 
-function focus_on_letter(l){
-    console.log(l + " " + letter_map[l]);
-}
-
 function result_item_clicked(e){
     $(this).addClass("active");
     focus_on_letter($(this).attr('id').split('_')[1]);
@@ -120,7 +154,6 @@ function result_item_clicked(e){
 
 $(document).ready(function(){
     //The clicking of the buttons in the result_list
-    $("#templates .result_item").mousedown(result_item_clicked);
     $(document).mouseup(function(){$("#result_list .result_item").removeClass("active");});
     $(".result_item .details").mousedown(function(event){event.stopPropagation();});
     //Scroll bar buttons
@@ -137,10 +170,13 @@ $(document).ready(function(){
     //back button functionality
     window.onpopstate = function(e){
         if (e.state!=null){
-            day = e.state.d;
+            day = e.state.day;
         }else{
             day = init_day;
         }
-        if(loaded) prepare_item_list({day:day});
+        if(loaded){
+            prepare_item_list({day:day, nopushstate:true});
+        }
     };
+    $("#detail_box_button").click(toggle_detail_box);
 });

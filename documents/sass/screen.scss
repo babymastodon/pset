@@ -632,10 +632,37 @@ $bc : $hue1-mid-dark;
     }
 }
 
-#mapdiv{
-    width: 940px;
-    height: 380px;
+#map_container{
+    overflow: hidden;
+    position: relative;
     margin-bottom: 10px;
+    #mapdiv{
+        width: 940px;
+        height: 380px;
+    }
+    #detail_box{
+        background-color: $white;
+        position:absolute;
+        width:16px;
+        height: 16px;
+        right: 0px;
+        bottom: 0px;
+        border: 1px solid $gray-mid;
+        #detail_box_button{
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            @include background(image-url("icons/open_close_16.png"));
+            &:hover{
+            }
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        &.open #detail_box_button{
+            background-position: -16px;
+        }
+    } 
 }
 
 @mixin gray_button($bb){
@@ -644,7 +671,7 @@ $bc : $hue1-mid-dark;
     @include unselectable;
     @include border-radius(3px);
     text-align: center;
-            display: block;
+    display: block;
     &.selected, &:hover, &.active{
         @include box-shadow($white 3px 3px 4px -2px inset);
         @include background(linear-gradient(top, $gray-light + $dg , $gray-mid + $dg));
@@ -722,18 +749,17 @@ $bc : $hue1-mid-dark;
             padding: $dp;
             margin-bottom: 10px;
             @include box-shadow($gray-mid 1px 1px 2px 0px);
-            &.active{
+            &.active, &.selected{
                 position: relative;
                 left: 1px;
                 top: 1px;
                 @include box-shadow(none);
-                &:hover{background-color: $hue1-light;}
             }
             &:hover{
                 background-color: $hue1-light + 2 * $d;
             }
             &.selected{
-                background-color: $hue1-light + 2*$d;
+                background-color: $hue1-mid-light;
             }
             img{ float: left; width: 20px; height: 34px; padding: 10px 20px 10px 10px;}
             .text{ float: left; width: 370px }
