@@ -195,11 +195,11 @@ HAYSTACK_CONNECTIONS = {
 
 # 'guardian.backends.ObjectPermissionsBackend',
 
-AUTHENTICATION_BACKENDS = {
+AUTHENTICATION_BACKENDS = (
     'userena.backends.UserenaAuthenticationBackend',
     'django_facebook.auth_backends.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
-}
+)
 
 EMAIL_HOST='localhost'
 EMAIL_PORT=25
