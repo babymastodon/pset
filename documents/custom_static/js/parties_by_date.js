@@ -50,7 +50,7 @@ function set_detail_box_contents(letter){
     box.find(".description").html(item.description);
     box.find(".start_time").html(item.start_time);
     box.find(".end_time").html(item.end_time);
-    box.find("location").html(item.location);
+    box.find(".location").html(item.location);
     box.find(".bldg_number").html(item.bldg_num);
     box.find(".class_numbers").html(item.class_nums.join(", "));
     box.find(".class_title").html(item.class_title);
@@ -65,12 +65,15 @@ function on_marker_click(letter){
         //selects the item in the list amd scrolls to it
         $("#result_list_container .selected").removeClass("selected");
         $("#result_list_container #resultitem_"+letter).addClass("selected");
-        new_row = Math.floor((letter.charCodeAt() - 'A'.charCodeAt())/2);
+        index = letter.charCodeAt() - 'A'.charCodeAt();
+        new_row = Math.floor((index)/2);
         if (new_row < current_row_index || new_row>current_row_index+2){
             scroll_to(Math.min(new_row, num_rows-3));
         }
         open_detail_box();
-        map.panTo(item.coords);
+        map.panTo(item_dict[letter].coords);
+        marker_array[index].setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(m){return function(){m.setAnimation(null);}}(marker_array[index]), 2200);
         $("#detail_box_contents").fadeOut('fast',function(l){
             return function(){
                 set_detail_box_contents(l);

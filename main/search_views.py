@@ -125,7 +125,7 @@ def get_parties_by_date(day):
         r['color'] = todays_color
         r['pk'] = 0
         r['attending'] = False
-        r['friends'] = []
+        r['friends'] = 10
         result_list.append(r)
     return {'status':'success', 'result_list':result_list}
 
