@@ -51,8 +51,12 @@ function switch_detail_box_contents(letter){
 function on_marker_click(letter){
     return function(event){
         select_result_item(letter);
+        new_row = Math.floor((letter.charCodeAt() - 'A'.charCodeAt())/2);
+        if (new_row < current_row_index || new_row>current_row_index+2){
+            scroll_to(Math.min(new_row, num_rows-3));
+        }
         open_detail_box();
-        map.panTo(event.latLng);
+        map.panTo(item_dict[letter].coords);
     }
 }
 
@@ -77,6 +81,7 @@ function prepare_item_list(options){
                      marker_array=[];
                      marker_animate_index=0;
                      if (data.status=='success'){
+                         item_dict={};
                          $("#result_list_container div").remove();
                          l = data.result_list;
                          num_rows = Math.floor((l.length+1)/2);
@@ -84,7 +89,7 @@ function prepare_item_list(options){
                          num_markers=0;
                          for (i in l){
                              item = l[i];
-                             moo = $("#templates .result_item").clone().appendTo("#result_list_container").click(on_marker_click(item.letter));
+                             moo = $("#templates .result_item").clone(withDataAndEvents=true).appendTo("#result_list_container").click(on_marker_click(item.letter));
                              moo.find(".title").html(item.title);
                              moo.find(".details").attr("href", item.detail_url);
                              moo.find(".location").html(item.location);
@@ -104,6 +109,8 @@ function prepare_item_list(options){
                              google.maps.event.addListener(m, 'click', on_marker_click(item.letter));
                              marker_array.push(m);
                              num_markers+=1;
+                             item['coords'] = new google.maps.LatLng(item.lat, item.lng);
+                             item_dict[item.letter]=item;
                          }
                          setTimeout(marker_animate,0);
 
@@ -154,6 +161,7 @@ function result_item_clicked(e){
 
 $(document).ready(function(){
     //The clicking of the buttons in the result_list
+    $("#templates .result_item").mousedown(function(){$(this).addClass('active');});
     $(document).mouseup(function(){$("#result_list .result_item").removeClass("active");});
     $(".result_item .details").mousedown(function(event){event.stopPropagation();});
     //Scroll bar buttons
