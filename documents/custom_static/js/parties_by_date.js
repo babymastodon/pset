@@ -21,13 +21,8 @@ function marker_animate(){
     }
 }
 
-function select_result_item(letter){
-    $("#result_list_container .selected").removeClass("selected");
-    $("#result_list_container #resultitem_"+letter).addClass("selected");
-}
-
 function open_detail_box(callback){
-    $("#detail_box").removeClass("closed").animate({width:300, height: 200},'fast',function(callback){
+    $("#detail_box").removeClass("closed").animate({width:320, height: 180},'fast',function(callback){
         return function(){
             $("#detail_box").addClass("open");
             if (callback) callback();
@@ -46,18 +41,59 @@ function toggle_detail_box(){
     if ($("#detail_box").hasClass("closed")) open_detail_box();
     else if ($("#detail_box").hasClass("open")) close_detail_box();
 }
-function switch_detail_box_contents(letter){
+function set_detail_box_contents(letter){
+    item=item_dict[letter];
+    box = $("#detail_box_contents");
+    box.find("#building_img").attr('src',item.building_img);
+    box.find(".title").html(item.title);
+    box.find("#marker_img").attr('src',item.icon);
+    box.find(".description").html(item.description);
+    box.find(".start_time").html(item.start_time);
+    box.find(".end_time").html(item.end_time);
+    box.find("location").html(item.location);
+    box.find(".bldg_number").html(item.bldg_num);
+    box.find(".class_numbers").html(item.class_nums.join(", "));
+    box.find(".class_title").html(item.class_title);
+    if (item.attending){
+        box.find(".attend_button").show().click(ajax_attending(item.pk));
+    }else {
+        box.find(".attending").show();
+    }
 }
 function on_marker_click(letter){
     return function(event){
-        select_result_item(letter);
+        //selects the item in the list amd scrolls to it
+        $("#result_list_container .selected").removeClass("selected");
+        $("#result_list_container #resultitem_"+letter).addClass("selected");
         new_row = Math.floor((letter.charCodeAt() - 'A'.charCodeAt())/2);
         if (new_row < current_row_index || new_row>current_row_index+2){
             scroll_to(Math.min(new_row, num_rows-3));
         }
         open_detail_box();
-        map.panTo(item_dict[letter].coords);
+        map.panTo(item.coords);
+        $("#detail_box_contents").fadeOut('fast',function(l){
+            return function(){
+                set_detail_box_contents(l);
+                $("#detail_box_contents").fadeIn('fast');
+            };
+        }(letter));
     }
+}
+function ajax_attending(pk){
+    $.ajax({
+        type: "POST",
+    url:$("#ajax_url").html(),
+    data:{
+        verb: "register",
+    pk: pk,
+    },
+    success:function(data){
+                if (data.status=='success'){
+                    $("#detail_box_contents .attend_button").hide().unbind('click');
+                    $("#detail_box_contentd .attending").show();
+                }
+            },
+    });
 }
 
 function prepare_item_list(options){
@@ -94,6 +130,7 @@ function prepare_item_list(options){
                              moo.find(".details").attr("href", item.detail_url);
                              moo.find(".location").html(item.location);
                              icon =  marker_url(item.color + "_Marker" + item.letter);
+                             item['icon'] = icon;
                              moo.find("img").attr("src",icon);
                              moo.find(".class").html(item.class_nums.join(", "));
                              moo.find(".time").html(item.start_time + " - " + item.end_time);
@@ -109,7 +146,7 @@ function prepare_item_list(options){
                              google.maps.event.addListener(m, 'click', on_marker_click(item.letter));
                              marker_array.push(m);
                              num_markers+=1;
-                             item['coords'] = new google.maps.LatLng(item.lat, item.lng);
+                             item['coords'] = loc;
                              item_dict[item.letter]=item;
                          }
                          setTimeout(marker_animate,0);

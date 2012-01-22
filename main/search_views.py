@@ -123,6 +123,9 @@ def get_parties_by_date(day):
         r['class_nums'] = ['5.111','5.112']
         r['class_title'] = "Principles of Chemistry"
         r['color'] = todays_color
+        r['pk'] = 0
+        r['attending'] = False
+        r['friends'] = []
         result_list.append(r)
     return {'status':'success', 'result_list':result_list}
 
