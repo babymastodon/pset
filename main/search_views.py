@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.conf import settings
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django import forms
 from haystack.query import SearchQuerySet
-import logging, simplejson, string, re, urllib
+import logging, simplejson, string, re, urllib, random
 from django.core import serializers
 
 #import models and forms here
@@ -27,6 +27,15 @@ def parties_by_class(request, pk):
 
 def parties_by_date(request):
     rc={}
+    day_list=[]
+    today = date.today()
+    day_list.append('Today')
+    day_list.append('Tomorrow')
+    for i in range(2,6):
+        delta = timedelta(days=i)
+        day_list.append((today+delta).strftime("%A").capitalize())
+    rc['day_list']=day_list
+    rc['selected_day']=int(request.GET.get('day','0'))
     return render_to_response("main/search/parties_by_date.html", rc, context_instance=RequestContext(request))
 
 trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
@@ -89,7 +98,33 @@ def exec_search(query, category=None, page=1):
     rmax = rmin+pageresults-1
     if totalresults==0:
         rmin=rmax=0
-    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax}
+    return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax, 'status':'success'}
+
+def get_parties_by_date(day):
+    result_list=[]
+    #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
+    colorlist = ['red','orange','yellow','green','blue','purple']
+    todays_color = colorlist[int(day)]
+    for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
+        r = {}
+        r['title'] = "Blah"
+        r['letter'] = i
+        r['day'] = "0"
+        r['start_time'] = "9:00"
+        r['end_time'] = "9:00"
+        r['description'] = "Description"
+        r['location'] = "Location"
+        r['bldg_num'] = "W11"
+        r['detail_url'] = "detail link"
+        r['bldg_img'] = 'bldg_img'
+        r['lat'] = lat
+        r['lng'] = lng
+        r['class_nums'] = ['5.111','5.112']
+        r['class_title'] = "Principles of Chemistry"
+        r['color'] = todays_color
+        result_list.append(r)
+    return {'status':'success', 'result_list':result_list}
 
 def search_page(request):
     rc={}
@@ -110,12 +145,14 @@ def ajax_s(request):
     try:
         if request.method=="GET":
             verb = request.GET.get('verb',None)
-            query = request.GET.get('q',None)
-            category = request.GET.get('c',None)
-            page = int(request.GET.get('page',"0"))
             if verb=='search_page':
-                result['results'] = exec_search(query=query, category=category, page=page)
-                result['status'] = "success"
+                query = request.GET['q']
+                category = request.GET.get('c',None)
+                page = int(request.GET.get('page',"0"))
+                result = exec_search(query=query, category=category, page=page)
+            elif verb=='parties_by_date':
+                day = request.GET['day']
+                result = get_parties_by_date(day)
             else:
                 result['status']="verb didn't match"
     except Exception as e:

@@ -113,7 +113,7 @@ function exec_search(options){
             //empty out the search results page
             $("#result_col div").remove();
             //push the new page into the history
-            result = data['results']
+            result = data
             mkstate(query, result['category'],result['page']);
             loaded=true;
             //add teh new search results to the page

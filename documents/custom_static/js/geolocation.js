@@ -155,7 +155,7 @@ function marker_url(name){
 $(document).ready(function(){
     navigator.geolocation.getCurrentPosition(showCoords,showError);
     init_map();
-    google.maps.event.addListener(map, 'click', function(ob){
+    /*google.maps.event.addListener(map, 'click', function(ob){
         query_whereis(ob.latLng);
-    });
+    });*/
 });
