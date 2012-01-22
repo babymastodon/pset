@@ -114,12 +114,14 @@ function prepare_item_list(options){
         'day':day,
         },
         success: function(data){
-                     for (a in marker_array){
-                         marker_array[a].setMap(null);
-                     }
-                     marker_array=[];
-                     marker_animate_index=0;
                      if (data.status=='success'){
+                         for (a in marker_array){
+                             marker_array[a].setMap(null);
+                         }
+                         marker_array=[];
+                         marker_animate_index=0;
+                         map.panTo(mit_coord);
+                         close_detail_box();
                          item_dict={};
                          $("#result_list_container div").remove();
                          l = data.result_list;
@@ -144,6 +146,7 @@ function prepare_item_list(options){
                                icon: icon,
                                position: loc,
                                title: item.title,
+                               shadow: marker_url("default_shadow"),
                                visible: false,
                              });
                              google.maps.event.addListener(m, 'click', on_marker_click(item.letter));
@@ -189,10 +192,6 @@ var on_get_valid_loc = function(){
            shadow: marker_url('default_shadow'),
     });
 };
-
-function drag_end(e){
-    query_whereis(e.latLng);
-}
 
 function result_item_clicked(e){
     $(this).addClass("active");
