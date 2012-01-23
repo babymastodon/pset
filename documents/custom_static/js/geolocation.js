@@ -122,8 +122,30 @@ function get_current_position(callback){
     navigator.geolocation.getCurrentPosition(showCoords(callback),showError);
 }
 
+function open_detail_box(callback){
+    d = $("#detail_box_container");
+    $("#detail_box").removeClass("closed").animate({width:d.width(), height: d.height()},'fast',function(callback){
+        return function(){
+            $("#detail_box").addClass("open");
+            if (callback) callback();
+        }
+    }(callback));
+}
+function close_detail_box(callback){
+    $("#detail_box").removeClass("open").animate({width:16, height: 16},'fast',function(callback){
+        return function(){
+            $("#detail_box").addClass("closed");
+            if (callback) callback();
+        }
+    }(callback));
+}
+function toggle_detail_box(){
+    if ($("#detail_box").hasClass("closed")) open_detail_box();
+    else if ($("#detail_box").hasClass("open")) close_detail_box();
+}
 $(document).ready(function(){
     init_map();
+    $("#detail_box_button").click(toggle_detail_box);
     /*google.maps.event.addListener(map, 'click', function(ob){
       query_whereis(ob.latLng);
       });*/

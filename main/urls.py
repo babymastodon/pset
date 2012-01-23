@@ -29,20 +29,20 @@ urlpatterns += patterns('main.search_views',
     url(r'^parties/class/(?P<pk>\d+)/$', 'parties_by_class'),#list the upcoming parties for this class
     url(r'^parties/date/$', 'parties_by_date'),#list parties by day for the next week
     url(r'^search/$', 'search_page'),#search page for classes and people
-    url(r'^ajax/br/$', 'ajax_s'),#ajax handler for search
 )
 
 #class views
 urlpatterns += patterns('main.class_views',
     url(r'^class/(?P<pk>)/$', 'class_details'),#class page- list of students, party schedule, "subscribe button", resources
     url(r'^class/upload/$', 'class_file_upload'),#iframe for receiving file uploads
-    url(r'^ajax/s/$', 'ajax_s'),#ajax handler for various tasks
 )
 
 #party views
 urlpatterns += patterns('main.party_views',
     url(r'^party/(?P<pk>)/$', 'party_details'),#detailed lsit of party details, party admins can update vales via ajax
     url(r'^party/create/$', 'party_create'),#form for creating a new party
-    url(r'^ajax/p/$', 'ajax_p'),#ajax handler for delete and update events
 )
 
+urlpatterns += patterns('main.ajax_views',
+        url(r'ajax', 'ajax'),
+)

@@ -648,20 +648,29 @@ $bc : $hue1-mid-dark;
         right: 0px;
         bottom: 0px;
         border: 1px solid $gray-mid;
-        display: hidden;
-        #detail_box_button{
-            cursor: pointer;
-            width: 16px;
-            height: 16px;
-            @include background(image-url("icons/open_close_16.png"));
-            &:hover{
-            }
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-        &.open #detail_box_button{
+        &.open #detail_box_container #detail_box_button{
             background-position: -16px;
+        }
+        #detail_box_container{
+            #detail_box_button{
+                cursor: pointer;
+                width: 16px;
+                height: 16px;
+                @include background(image-url("icons/open_close_16.png"));
+                &:hover{
+                }
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+            &.party_details{
+                width: 320px;
+                height: 180px;
+            }
+            &.location_details{
+                width: 250px;
+                height: 200px;
+            }
         }
     } 
 }
@@ -810,6 +819,6 @@ $bc : $hue1-mid-dark;
     }
 }
 
-#templates{
+.templates{
     display: none;
 }

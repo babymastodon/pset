@@ -5,6 +5,7 @@
 {{ block.super}}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="{% static 'js/geolocation.js'%}" type="text/javascript"></script>
+<script src="{% static 'js/party_results.js'%}" type="text/javascript"></script>
 <script src="{% static 'js/parties_by_date.js'%}" type="text/javascript"></script>
 {% endblock %}
 
@@ -14,48 +15,5 @@
     <div id="date_{{ forloop.counter0 }}" class="grid_2{% if forloop.counter0 = 0 %} alpha{% endif %}{% if forloop.counter0 = 5 %} omega{% endif %}"><a {% if forloop.counter0 = selected_day %}class="selected"{% endif %}>{{ i }}</a></div>
     {% endfor %}
 </div>
-<div id="map_container" class="grid_12">
-    <div id="mapdiv"></div>
-    <div id="detail_box" class="closed">
-        <div id="detail_box_button"></div>
-        <div id="detail_box_contents">
-            <img id="building_img"/>
-            <span class="title"></span>
-            <img id="marker_img"/>
-            <span class="description"></span>
-            <span class="start_time"></span>
-            <span class="end_time"></span>
-            <span class="location"></span>
-            <span class="bldg_number"></span>
-            <span class="class_numbers"></span>
-            <span class="class_title"></span>
-            <span class="friends_attending"></span>
-            <span class="attend_button">Sign me up!</span>
-            <span class="attending">You are attending</span>
-        </div>
-    </div>
-</div>
-<div id="templates">
-    <div class="result_item clearfix grid_6" id="resultitem_A">
-        <img/>
-        <div class="text">
-            <span class="title"></span>
-            <a class="details">Details</a>
-            <span class="location"></span>
-            <span class="class"></span>
-            <span class="time"></span>
-        </div>
-    </div>
-    <div id="ajax_url">{% url 'main.search_views.ajax_s' %}</div>
-</div>
-<div class="grid_12">
-    <div id="scroll_up_button" class="wide_button"><img src="{{STATIC_URL}}images/css/icons/arrow_up.png"/></div>
-    <div id="result_list" class="clearfix" >
-        <div id="result_list_shadow_top"></div>
-        <div id="result_list_shadow_left"></div>
-        <div id="result_list_container" class="clearfix">
-        </div>
-    </div>
-    <div id="scroll_down_button" class="wide_button"><img src="{{STATIC_URL}}images/css/icons/arrow_dn.png"/></div>
-</div>
+{% include 'main/search/party_result_list.html' %}
 {% endblock %}

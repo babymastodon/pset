@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block head %}
+{{ block.super}}
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'jquery.timepicker.css' %}" />
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="{% static 'js/geolocation.js'%}" type="text/javascript"></script>
+<script src="{% static 'js/party_create.js'%}" type="text/javascript"></script>
+{% endblock %}
+
+{% block main_content %}
+<div id="date_nav_bar" class="grid_12">
+    {% for i in day_list %}
+    <div id="date_{{ forloop.counter0 }}" class="grid_2{% if forloop.counter0 = 0 %} alpha{% endif %}{% if forloop.counter0 = 5 %} omega{% endif %}"><a {% if forloop.counter0 = selected_day %}class="selected"{% endif %}>{{ i }}</a></div>
+    {% endfor %}
+</div>
+<div id="map_container" class="grid_12">
+    <div id="mapdiv"></div>
+    <div id="detail_box" class="closed">
+        <div id="detail_box_container"  class="location_details">
+            <div id="detail_box_button"></div>
+            <div id="detail_box_contents">
+                <img id="building_img"/>
+                <span class="title"></span>
+                <img id="marker_img"/>
+                <span class="description"></span>
+                <span class="start_time"></span>
+                <span class="end_time"></span>
+                <span class="location"></span>
+                <span class="bldg_number"></span>
+                <span class="class_numbers"></span>
+                <span class="class_title"></span>
+                <span class="friends_attending"></span>
+                <span class="attend_button">Sign me up!</span>
+                <span class="attending">You are attending</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="templates">
+    <div id="ajax_url">{% url 'main.search_views.ajax_p' %}</div>
+</div>
+{% endblock %}

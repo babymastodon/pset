@@ -143,7 +143,7 @@ def search_page(request):
     rc['url_no_page']=request.path+"?"+urllib.urlencode({'q':query, 'c':category})+"&page="
     return render_to_response("main/search/search_page.html", rc, context_instance=RequestContext(request))
 
-def ajax_s(request):
+def ajax(request):
     result={'status':"none"}
     try:
         if request.method=="GET":

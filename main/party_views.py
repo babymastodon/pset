@@ -24,6 +24,6 @@ def party_create(request):
     return render_to_response("main/party/party_create.html", rc, context_instance=RequestContext(request))
 
 #ajax handler for handling party update information and party delete
-def ajax_p(request):
+def ajax(request):
     pass
 

@@ -14,14 +14,18 @@ from django import forms
 from main.models import *
 from main.forms import *
 from main.views_common import *
-
-def class_details(request):
-    rc={}
-    return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
-
-def class_file_upload(request):
-    rc={}
-    return render_to_response("main/class/file_upload.html", rc, context_instance=RequestContext(request))
+import main.search_views as search_views
+import main.party_views as party_views
+import  main.class_views as class_views
 
 def ajax(request):
-    pass
+    module = request.REQUEST.get("module","")
+    if module=="search":
+        return search_views.ajax(request)
+    elif module=="party":
+        return party_views.ajax(request)
+    elif module=="class":
+        return class_views.ajax(request)
+    else:
+        return HttpResponse('{"status":"module not found"}', mimetype="application/json");
+

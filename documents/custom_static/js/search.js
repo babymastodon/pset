@@ -96,6 +96,7 @@ function exec_search(options){
                 'q':query,
                 'c':category,
                 'page': page,
+                'module': 'search',
                 },
                 success: function(data){
                              if (data['status']=='success'){
