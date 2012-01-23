@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponseRedirect
 
-
 #generic views
 urlpatterns = patterns('main.home_views',
     url(r'^$', 'front_page'),#the first page
@@ -22,6 +21,7 @@ urlpatterns += patterns('main.account_views',
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
     url(r'^facebook/', include('django_facebook.urls')),
+    url(r'^accounts/', include('userena.urls')),
 )
 
 #search views
@@ -33,13 +33,14 @@ urlpatterns += patterns('main.search_views',
 
 #class views
 urlpatterns += patterns('main.class_views',
-    url(r'^class/(?P<pk>)/$', 'class_details'),#class page- list of students, party schedule, "subscribe button", resources
+    url(r'^class/(?P<pk>\d+)/$', 'class_details'),#class page- list of students, party schedule, "subscribe button", resources
     url(r'^class/upload/$', 'class_file_upload'),#iframe for receiving file uploads
 )
 
 #party views
 urlpatterns += patterns('main.party_views',
-    url(r'^party/(?P<pk>)/$', 'party_details'),#detailed lsit of party details, party admins can update vales via ajax
+    url(r'^party/(?P<pk>\d+)/$', 'party_details'),#detailed lsit of party details, party admins can update vales via ajax
+    url(r'^party/registered/(?P<pk>\d+)/$', 'party_registered'),#view after a successful party registration
     url(r'^party/create/$', 'party_create'),#form for creating a new party
 )
 

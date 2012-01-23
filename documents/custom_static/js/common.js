@@ -1,3 +1,6 @@
+$.facebox.settings.closeImage = static_url + 'images/css/closelabel.png'
+$.facebox.settings.loadingImage = static_url + 'images/css/loading.gif'
+
 function init_blank_text_box(ob){    
     if (ob.val()=="" || ob.val()==ob.attr("title")){
         ob.addClass("blank");

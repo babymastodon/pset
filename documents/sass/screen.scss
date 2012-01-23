@@ -26,6 +26,10 @@ $hue1-lighter: #FFF5E3;
 $tan-light: #D4CEBF;
 $tan-mid: #C7C0AC;
 
+$blue-mid: #3A5897;
+$blue-mid-dark: #23487E;
+$blue-dark: #0E385F;
+
 $white: white;
 $gray-light: #EEEEEE;
 $gray-mid: #CCCCCC;
@@ -54,7 +58,6 @@ h2{font-size: 20px;}
 h3{font-size: 15px;}
 
 #page{
-    $op : .75;
     @include background(image-url("header.png"));
     background-color: $hue1-light;
     background-repeat: repeat-x;
@@ -181,7 +184,14 @@ h3{font-size: 15px;}
     margin-top: 120px;
     margin-bottom: 60px;
 }
-
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: none;
+    padding: 0;
+}
 .button{
     @include border-radius(5px);
     @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
@@ -675,30 +685,49 @@ $bc : $hue1-mid-dark;
     } 
 }
 
-@mixin gray_button($bb){
-    border: $bb solid transparent;
+.inset_gray_button{
+    border: 1px solid transparent;
     @include box-shadow($gray-mid 1px 1px 2px 0px inset);
     @include unselectable;
     @include border-radius(3px);
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0px 10px;
     text-align: center;
     display: block;
+    float: left;
+    &[type="button"], &[type="submit"]{
+        box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        vertical-align: middle;
+        line-height: 16px;
+        height: 16px;
+        padding: 6px 10px;
+    }
+    font-family: "angie-sans";
     &.selected, &:hover, &.active{
         @include box-shadow($white 3px 3px 4px -2px inset);
         @include background(linear-gradient(top, $gray-light + $dg , $gray-mid + $dg));
-        border: $bb solid $gray-mid;
+        border: 1px solid $gray-mid;
     }
     &:active{
         @include background(linear-gradient(top, $gray-mid + $dg , $gray-light + $dg));
     }
 }
 
+.gray_button{
+    @extend .inset_gray_button;
+    @include box-shadow($white 3px 3px 4px -2px inset);
+    @include background(linear-gradient(top, $gray-light , $gray-mid));
+    border: 1px solid $gray-mid;
+}
+
+
 #date_nav_bar{
     div{
         a{
-            $bb: 1px;
-            @include gray_button($bb);
-            line-height: 30px - 2*$bb;
             margin-bottom: 10px;
+            float: none;
         }
     }
 }
@@ -790,8 +819,6 @@ $bc : $hue1-mid-dark;
             .details{
                 float: right;
                 line-height: 24px;
-                @include gray_button(1px);
-                padding: 0px 10px;
             }
             .location{
                 clear: both;
@@ -801,6 +828,7 @@ $bc : $hue1-mid-dark;
                 width: 120px;
             }
             .class{
+                clear: both;
                 float: left;
                 width: 120;
             }
@@ -828,6 +856,115 @@ $bc : $hue1-mid-dark;
         display: none;
     }
     .attend_button{
-        @include gray_button(1px);
     }
+}
+
+.facebook_button{
+    @include unselectable;
+    img{
+        display: block;
+        float: left;
+        border: 1px solid $blue-dark;
+        @include background(linear-gradient(top, $blue-mid , $blue-mid-dark));
+        //@include box-shadow($white 2px 2px 3px -3px inset);
+        padding: 0px 10px 0px 10px;
+        @include border-radius(2px);
+        &:hover, &.active{
+            cursor: pointer;
+        }
+        &:active{
+            @include background(linear-gradient(top, $blue-mid-dark , $blue-mid));
+        }
+    }
+    span{
+        display: block;
+        float: left;
+        font-size: 16px;
+        margin: 8px 5px 4px 0px;
+    }
+}
+
+#facebox{
+    .content{
+        width: 400px;
+        position: relative;
+        @include background(image-url("header_30.png"));
+        background-color: $hue1-light;
+        background-repeat: repeat-x;
+        padding: 0px;
+        .title{
+            display: block;
+            color: $hue1-mid-light;
+            @include text-shadow(1px 1px 1px $hue1-dark);
+            font-size: 20px;
+            line-height: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .content_box{
+            padding: 20px;
+            .message{
+                display: block;
+                margin-bottom: 20px;
+            }
+            .event{
+                font-weight: bold;
+                display: table;
+                margin: 0px auto 0px auto;
+            }
+        }
+        .facebook{
+            display: block;
+            float: right;
+            margin-right: 5px;
+        }
+        .facebook_button{
+            float: right;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        .details{
+            float: left;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .row{
+            display: block;
+            clear: both;
+            margin-bottom: 10px;
+            label, input{
+                display: block;
+                width: 100px;
+                float: left;
+            }
+        }
+        input[type="submit"]{
+            margin-top: 20px;
+            clear: both;
+            float: right;
+        }
+        form{
+            display: block;
+            margin: 20px 20px 0px 20px;
+        }
+    }
+    .close{
+        background-color: transparent;
+    }
+}
+
+#class_title{
+    font-size: 24px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
+
+.nofloat{
+    float: none;
+}
+
+.hidden{
+    display: none;
 }
