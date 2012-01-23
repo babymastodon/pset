@@ -952,3 +952,19 @@ $bc : $hue1-mid-dark;
         background-color: transparent;
     }
 }
+
+#class_title{
+    font-size: 24px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
+
+.nofloat{
+    float: none;
+}
+
+.hidden{
+    display: none;
+}

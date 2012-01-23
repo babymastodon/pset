@@ -33,7 +33,7 @@ urlpatterns += patterns('main.search_views',
 
 #class views
 urlpatterns += patterns('main.class_views',
-    url(r'^class/(?P<pk>)/$', 'class_details'),#class page- list of students, party schedule, "subscribe button", resources
+    url(r'^class/(?P<pk>\d+)/$', 'class_details'),#class page- list of students, party schedule, "subscribe button", resources
     url(r'^class/upload/$', 'class_file_upload'),#iframe for receiving file uploads
 )
 

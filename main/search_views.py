@@ -23,6 +23,9 @@ logger = logging.getLogger(__name__)
 
 def parties_by_class(request, pk):
     rc={}
+    rc['pk']=pk
+    c = get_object_or_404(Class, pk=pk)
+    rc['class_name'] = c.title
     return render_to_response("main/search/parties_by_class.html", rc, context_instance=RequestContext(request))
 
 def userinfo_by_username(request, pk):
@@ -145,6 +148,15 @@ def create_party_dict(pk, letter, request, color="red", day="0"):
     r['friends'] = 10
     return r
 
+def get_parties_by_class(request, class_pk):
+    result_list=[]
+    #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
+    colorlist = ['red','orange','yellow','green','blue','purple']
+    for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        r = create_party_dict("0", i, request)
+        result_list.append(r)
+    return {'status':'success', 'result_list':result_list}
+
 def get_parties_by_date(request, day):
     result_list=[]
     #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
@@ -179,6 +191,9 @@ def ajax(request):
                 category = request.GET.get('c',None)
                 page = int(request.GET.get('page',"0"))
                 result = exec_search(query=query, category=category, page=page)
+            elif verb=='parties_by_class':
+                class_pk = request.GET['class']
+                result = get_parties_by_class(request, class_pk)
             elif verb=='parties_by_date':
                 day = request.GET['day']
                 result = get_parties_by_date(request, day)

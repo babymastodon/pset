@@ -31,8 +31,19 @@ def party_registered(request, pk):
     rc['event_time']="Monday, December 25 at 11:30pm"
     rc['title']="Let the games begin!"
     rc['pk']=pk
+    return render_to_response("main/party/party_registered.html", rc, context_instance=RequestContext(request))
+
+def party_must_login(request, pk):
+    rc={}
+    rc['pk']=pk
     return render_to_response("main/party/party_login.html", rc, context_instance=RequestContext(request))
-    
+
+def party_register_ajax(request):
+    r = {}
+    r["status"]="success"
+    r['registered']=True
+    r['link'] reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
+    return r
 
 #ajax handler for handling party update information and party delete
 def ajax(request):
@@ -45,7 +56,7 @@ def ajax(request):
         elif verb=='get_attend_button':
             return render_to_response('main/party/attend_button.html',{'pk':party_pk})
         elif verb=='register':
-            result={"status": "success", 'registered':True,'link':reverse('main.party_views.party_registered',kwargs={'pk':party_pk})} 
+            result=party_register_ajax(request)
         else:
             result['status']="verb didn't match"
     except Exception as e:
