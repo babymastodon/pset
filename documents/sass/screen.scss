@@ -26,6 +26,10 @@ $hue1-lighter: #FFF5E3;
 $tan-light: #D4CEBF;
 $tan-mid: #C7C0AC;
 
+$blue-mid: #3A5897;
+$blue-mid-dark: #23487E;
+$blue-dark: #0E385F;
+
 $white: white;
 $gray-light: #EEEEEE;
 $gray-mid: #CCCCCC;
@@ -691,6 +695,20 @@ $bc : $hue1-mid-dark;
     }
 }
 
+.inset_gray_button{
+    @include gray_button(1px);
+    padding: 0px 10px;
+}
+
+.gray_button{
+    @include gray_button(1px);
+    @include box-shadow($white 3px 3px 4px -2px inset);
+    @include background(linear-gradient(top, $gray-light , $gray-mid));
+    border: 1px solid $gray-mid;
+    padding: 0px 10px;
+}
+
+
 #date_nav_bar{
     div{
         a{
@@ -831,38 +849,78 @@ $bc : $hue1-mid-dark;
     }
 }
 
-#facebox .content{
-    width: 400px;
-    height: 200px;
-    position: relative;
-    @include background(image-url("header.png"));
-    background-color: $hue1-light;
-    background-repeat: repeat-x;
-    .title{
+.facebook_button{
+    @include unselectable;
+    img{
         display: block;
-        color: $hue1-mid-light;
-        @include text-shadow(1px 1px 1px $hue1-dark);
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        text-align: center;
+        float: left;
+        border: 1px solid $blue-dark;
+        @include background(linear-gradient(top, $blue-mid , $blue-mid-dark));
+        //@include box-shadow($white 2px 2px 3px -3px inset);
+        padding: 0px 10px 0px 10px;
+        @include border-radius(2px);
+        &:hover, &.active{
+            cursor: pointer;
+        }
+        &:active{
+            @include background(linear-gradient(top, $blue-mid-dark , $blue-mid));
+        }
     }
-    .content_box{
-        padding: 20px;
-        .message{
+    span{
+        display: block;
+        float: left;
+        font-size: 16px;
+        margin: 8px 5px 4px 0px;
+    }
+}
+
+#facebox{
+    .content{
+        width: 400px;
+        position: relative;
+        @include background(image-url("header_30.png"));
+        background-color: $hue1-light;
+        background-repeat: repeat-x;
+        padding: 0px;
+        .title{
             display: block;
+            color: $hue1-mid-light;
+            @include text-shadow(1px 1px 1px $hue1-dark);
+            font-size: 20px;
+            line-height: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .content_box{
+            padding: 20px;
+            .message{
+                display: block;
+                margin-bottom: 20px;
+            }
+            .event{
+                font-weight: bold;
+                display: table;
+                margin: 0px auto 0px auto;
+            }
+        }
+        .facebook{
+            display: block;
+            float: right;
+            margin-right: 5px;
+        }
+        .facebook_button{
+            float: right;
+            margin-right: 20px;
             margin-bottom: 20px;
         }
-        .event{
-            font-weight: bold;
-            display: table;
-            margin: 0px auto 20px auto;
+        .gray_button{
+            float: left;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            line-height: 28px;
         }
     }
-    .facebook_button{
-        position: absolute;
-        line-height: 20px;
-        right: 20px;
-        bottom: 20px;
+    .close{
+        background-color: transparent;
     }
 }

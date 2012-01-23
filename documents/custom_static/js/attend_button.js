@@ -2,7 +2,7 @@
 function register_success(ob){
     return function(data){
         if (data.status=="success"){
-            if (data.registered=='true') show_attend_button_already_attending(ob);
+            if (data.registered) show_attend_button_already_attending(ob);
             $.facebox({ ajax: data.link }, 'my_style')
         }
     };

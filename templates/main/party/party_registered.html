@@ -9,4 +9,5 @@
     <li>When: {{event_time}}</li>
 </ul>
 </div>
-<span class="facebook_button">Post this on Facebook</span>
+<a href="{% url 'main.party_views.party_details' pk=pk %}" class="gray_button">Party Details</a>
+<span class="facebook_button"><span>Share with:</span><img src="{% static 'images/css/facebook_name.png' %}" /></span>
