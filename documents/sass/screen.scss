@@ -184,7 +184,14 @@ h3{font-size: 15px;}
     margin-top: 120px;
     margin-bottom: 60px;
 }
-
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: none;
+    padding: 0;
+}
 .button{
     @include border-radius(5px);
     @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
@@ -678,44 +685,49 @@ $bc : $hue1-mid-dark;
     } 
 }
 
-@mixin gray_button($bb){
-    border: $bb solid transparent;
+.inset_gray_button{
+    border: 1px solid transparent;
     @include box-shadow($gray-mid 1px 1px 2px 0px inset);
     @include unselectable;
     @include border-radius(3px);
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0px 10px;
     text-align: center;
     display: block;
+    float: left;
+    &[type="button"], &[type="submit"]{
+        box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        vertical-align: middle;
+        line-height: 16px;
+        height: 16px;
+        padding: 6px 10px;
+    }
+    font-family: "angie-sans";
     &.selected, &:hover, &.active{
         @include box-shadow($white 3px 3px 4px -2px inset);
         @include background(linear-gradient(top, $gray-light + $dg , $gray-mid + $dg));
-        border: $bb solid $gray-mid;
+        border: 1px solid $gray-mid;
     }
     &:active{
         @include background(linear-gradient(top, $gray-mid + $dg , $gray-light + $dg));
     }
 }
 
-.inset_gray_button{
-    @include gray_button(1px);
-    padding: 0px 10px;
-}
-
 .gray_button{
-    @include gray_button(1px);
+    @extend .inset_gray_button;
     @include box-shadow($white 3px 3px 4px -2px inset);
     @include background(linear-gradient(top, $gray-light , $gray-mid));
     border: 1px solid $gray-mid;
-    padding: 0px 10px;
 }
 
 
 #date_nav_bar{
     div{
         a{
-            $bb: 1px;
-            @include gray_button($bb);
-            line-height: 30px - 2*$bb;
             margin-bottom: 10px;
+            float: none;
         }
     }
 }
@@ -807,8 +819,6 @@ $bc : $hue1-mid-dark;
             .details{
                 float: right;
                 line-height: 24px;
-                @include gray_button(1px);
-                padding: 0px 10px;
             }
             .location{
                 clear: both;
@@ -818,6 +828,7 @@ $bc : $hue1-mid-dark;
                 width: 120px;
             }
             .class{
+                clear: both;
                 float: left;
                 width: 120;
             }
@@ -845,7 +856,6 @@ $bc : $hue1-mid-dark;
         display: none;
     }
     .attend_button{
-        @include gray_button(1px);
     }
 }
 
@@ -913,11 +923,29 @@ $bc : $hue1-mid-dark;
             margin-right: 20px;
             margin-bottom: 20px;
         }
-        .gray_button{
+        .details{
             float: left;
             margin-left: 20px;
             margin-bottom: 20px;
-            line-height: 28px;
+        }
+        .row{
+            display: block;
+            clear: both;
+            margin-bottom: 10px;
+            label, input{
+                display: block;
+                width: 100px;
+                float: left;
+            }
+        }
+        input[type="submit"]{
+            margin-top: 20px;
+            clear: both;
+            float: right;
+        }
+        form{
+            display: block;
+            margin: 20px 20px 0px 20px;
         }
     }
     .close{

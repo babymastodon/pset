@@ -88,12 +88,11 @@ function load_json_parties(data){
             moo = $(".templates .result_item").clone(withDataAndEvents=true).appendTo("#result_list_container").click(on_marker_click(item.letter));
             moo.find(".title").html(item.title);
             moo.find(".details").attr("href", item.detail_url);
-            moo.find(".location").html(item.location);
             icon =  marker_url(item.color + "_Marker" + item.letter);
             item['icon'] = icon;
             moo.find("img").attr("src",icon);
             moo.find(".class").html(item.class_nums.join(", "));
-            moo.find(".time").html(item.start_time + " - " + item.end_time);
+            moo.find(".time").html(item.day_name + " " + item.start_time + " - " + item.end_time);
             moo.attr("id","resultitem_"+item.letter);
             loc = new google.maps.LatLng(item.lat, item.lng);
             m = new google.maps.Marker({

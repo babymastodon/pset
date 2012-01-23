@@ -31,7 +31,7 @@ def party_registered(request, pk):
     rc['event_time']="Monday, December 25 at 11:30pm"
     rc['title']="Let the games begin!"
     rc['pk']=pk
-    return render_to_response("main/party/party_registered.html", rc, context_instance=RequestContext(request))
+    return render_to_response("main/party/party_login.html", rc, context_instance=RequestContext(request))
     
 
 #ajax handler for handling party update information and party delete

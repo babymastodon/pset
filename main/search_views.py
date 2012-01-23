@@ -120,32 +120,38 @@ def exec_search(query, category=None, page=1):
         rmin=rmax=0
     return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax, 'status':'success'}
 
-def get_parties_by_date(day):
+def create_party_dict(pk, letter, request, color="red", day="0"):
+    (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
+    r = {}
+    r['title'] = "Blah"
+    r['letter'] = letter
+    r['day'] = "0"
+    r['day_name'] = "Toosday"
+    r['date_number'] = "1/1/1"
+    r['start_time'] = "9:00"
+    r['end_time'] = "9:00"
+    r['description'] = "Description"
+    r['location'] = "Location"
+    r['bldg_num'] = "W11"
+    r['detail_url'] = "detail link"
+    r['bldg_img'] = 'bldg_img'
+    r['lat'] = lat
+    r['lng'] = lng
+    r['class_nums'] = ['5.111','5.112']
+    r['class_title'] = "Principles of Chemistry"
+    r['color'] = color
+    r['pk'] = 0
+    r['attending'] = False
+    r['friends'] = 10
+    return r
+
+def get_parties_by_date(request, day):
     result_list=[]
     #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
     colorlist = ['red','orange','yellow','green','blue','purple']
     todays_color = colorlist[int(day)]
     for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-        (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
-        r = {}
-        r['title'] = "Blah"
-        r['letter'] = i
-        r['day'] = "0"
-        r['start_time'] = "9:00"
-        r['end_time'] = "9:00"
-        r['description'] = "Description"
-        r['location'] = "Location"
-        r['bldg_num'] = "W11"
-        r['detail_url'] = "detail link"
-        r['bldg_img'] = 'bldg_img'
-        r['lat'] = lat
-        r['lng'] = lng
-        r['class_nums'] = ['5.111','5.112']
-        r['class_title'] = "Principles of Chemistry"
-        r['color'] = todays_color
-        r['pk'] = 0
-        r['attending'] = False
-        r['friends'] = 10
+        r = create_party_dict("0", i, request, day=day, color=todays_color)
         result_list.append(r)
     return {'status':'success', 'result_list':result_list}
 
@@ -175,7 +181,7 @@ def ajax(request):
                 result = exec_search(query=query, category=category, page=page)
             elif verb=='parties_by_date':
                 day = request.GET['day']
-                result = get_parties_by_date(day)
+                result = get_parties_by_date(request, day)
             else:
                 result['status']="verb didn't match"
     except Exception as e:

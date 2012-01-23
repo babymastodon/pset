@@ -8,7 +8,7 @@
 {% block main_content %}
 <div id="date_nav_bar" class="grid_12">
     {% for i in day_list %}
-    <div id="date_{{ forloop.counter0 }}" class="grid_2{% if forloop.counter0 = 0 %} alpha{% endif %}{% if forloop.counter0 = 5 %} omega{% endif %}"><a {% if forloop.counter0 = selected_day %}class="selected"{% endif %}>{{ i }}</a></div>
+    <div id="date_{{ forloop.counter0 }}" class="grid_2{% if forloop.counter0 = 0 %} alpha{% endif %}{% if forloop.counter0 = 5 %} omega{% endif %}"><a class="inset_gray_button{% if forloop.counter0 = selected_day %} selected{% endif %}">{{ i }}</a></div>
     {% endfor %}
 </div>
 {% include 'main/search/party_result_list.html' %}

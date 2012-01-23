@@ -3,10 +3,11 @@
 <span class="title">{{title}}</span>
 <div class="content_box">
     <span class="message">Please log in to use this service:</span>
-    <form action="{% url 'main.account_views.login_page' %}" method="POST">
-        <label>Username:</label><input type="text" name="username" />
-        <label>Password:</label><input type="password" name="password" />
-        <input type="hidden" name="next" value="{% url 'main.party_views.party_detail' pk=pk %}?attending=1" />
+    <form action="{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
+        {% csrf_token %}
+        <span class="row clearfix"><label>Username:</label><input type="text" name="username" /></span>
+        <span class="row clearfix"><label>Password:</label><input type="password" name="password" /></span>
+        <input type="hidden" name="next" value="{% url 'main.party_views.party_details' pk=pk %}?attending=1" />
+        <input type="submit" class="gray_button" value="Log In" />
     </form>
 </div>
-<span class="facebook_button"><span>Share with:</span><img src="{% static 'images/css/facebook_name.png' %}" /></span>
