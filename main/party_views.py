@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
 from django import forms
+import simplejson, string
 
 #import models and forms here
 from main.models import *
@@ -25,5 +26,18 @@ def party_create(request):
 
 #ajax handler for handling party update information and party delete
 def ajax(request):
-    pass
+    result={'status':"none"}
+    try:
+        verb = request.REQUEST.get('verb',None)
+        party_pk = request.REQUEST.get('pk',None)
+        if verb=='isregistered':
+            result = {"status": "success", "attending":True}
+        elif verb=='get_attend_button':
+            return render_to_response('main/party/attend_button.html',{'pk':party_pk})
+        else:
+            result['status']="verb didn't match"
+    except Exception as e:
+        result['status']="error: "+ str(e)
+    json=simplejson.dumps(result)
+    return HttpResponse(json, mimetype="application/json")
 

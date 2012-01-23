@@ -90,7 +90,7 @@ function exec_search(options){
         if (page!=prev_page || query!=prev_query || category!=prev_category){
             $.ajax({
                 type:'GET',
-                url:$("#ajax_url").html(),
+                url:ajax_url,
                 data: {
                     'verb': 'search_page',
                 'q':query,

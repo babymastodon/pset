@@ -32,6 +32,19 @@ function set_detail_box_contents(letter){
     box.find(".bldg_number").html(item.bldg_num);
     box.find(".class_numbers").html(item.class_nums.join(", "));
     box.find(".class_title").html(item.class_title);
+    $.ajax({
+        type: "GET",
+        url: ajax_url,
+        data:{
+            pk:item.pk,
+        module:"party",
+        verb:"get_attend_button",
+        },
+        dataType:"html",
+        success:function(data){
+            $(".attend_button_container_container").html(data);
+        },
+    });
 }
 function on_marker_click(letter){
     return function(event){

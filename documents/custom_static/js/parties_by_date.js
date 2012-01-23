@@ -11,7 +11,7 @@ function prepare_item_list(options){
     $("#date_"+day+" a").addClass("selected");
     $.ajax({
         type: "GET",
-        url:$("#ajax_url").html(),
+        url:ajax_url,
         data: {
             'verb':'parties_by_date',
         'day':day,

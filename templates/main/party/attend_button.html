@@ -1,8 +1,21 @@
 {% load url from future %}{% load staticfiles %}
-<script src="{% static 'js/attend_button.js' %}" type="text/javascript"></script>
 <div class="attend_button_container not_initialized">
-    <span class="pk">{{attend_pk}}</span>
+    <span class="pk">{{pk}}</span>
     <span class="attend_button">Sign me up!</span>
-    <span class="already_attending">You are already attending</span>
+    <span class="already_attending">You are attending this event</span>
     <span class="attend_error">Error in contacting server</span>
 </div>
+<script type="text/javascript">
+    if (!window.attend_button_loaded){
+        $.ajax({
+url:"{% static 'js/attend_button.js' %}",
+dataType:"script",
+success: function(data){
+$(document).ready(init_attend_buttons);
+window.attend_button_loaded=true;
+},
+});
+}else{
+    $(document).ready(init_attend_buttons);
+}
+</script>
