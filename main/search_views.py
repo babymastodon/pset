@@ -25,6 +25,9 @@ def parties_by_class(request, pk):
     rc={}
     return render_to_response("main/search/parties_by_class.html", rc, context_instance=RequestContext(request))
 
+def userinfo_by_username(request, pk):
+    rc = {}
+
 def parties_by_date(request):
     rc={}
     day_list=[]
@@ -73,7 +76,9 @@ def exec_search(query, category=None, page=1):
                     sqs=sqs2
         if category=="Classes":
             if not sqs:
-                if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): #if they are searching for a class number, matches prefixes for course numbers that start in letters
+                if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) \
+                    or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): 
+                    #if they are searching for a class number, matches prefixes for course numbers that start in letters
                     q = wildcard_tokens + ' django_ct:(main.classnumber)'
                 else:
                     q = wildcard_tokens + ' django_ct:(main.class)'
@@ -87,6 +92,21 @@ def exec_search(query, category=None, page=1):
                 item['description'] = trunc(a.get_description(),250)
                 item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
                 item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
+                result_items.append(item)
+            pageresults=len(result_items)
+        if category=="People":
+            if not sqs:
+                q = wildcard_tokens + ' django_ct:(main.userinfo)'
+                sqs = SearchQuerySet().raw_search(q)
+            totalresults = len(sqs)
+            numpages = totalresults/RESULTS_PER_PAGE+1
+            tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
+            for a in tmp:
+                item = {}
+                item['title'] = trunc(a.get_title(),45)
+                item['description'] = trunc(a.get_description(), 250)
+                item['metadata'] = 'Metadata:'+string.join([x.number for x in a.get_meta()],', ')
+                item['link'] = reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
             pageresults=len(result_items)
     prwidth = 3

@@ -17,12 +17,14 @@ from main.views_common import *
 
 def front_page(request):
     rc={}
-    rc['registrationForm'] = SignupForm()
+    rc['registrationForm'] = EmailRegisterForm() 
     return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def home_page(request):
     rc={}
+    rc['user'] = request.user
+    # passing stuff to the home page
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):

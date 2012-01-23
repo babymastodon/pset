@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import urllib2, cStringIO, itertools, datetime
 from django.core.files.base import ContentFile
-from userena.models import UserenaBaseProfile
+from django_facebook.models import FacebookProfileModel
 
 def resize_dimensions(width, height, longest_side):
     if width>height and width>longest_side:
@@ -106,13 +106,25 @@ class ClassNumber(models.Model):
     def __unicode__(self):
         return unicode(self.number)
 
-class UserInfo(UserenaBaseProfile):
+"""
+    about_me = models.TextField(blank=True)
+    facebook_id = models.BigIntegerField(blank=True, unique=True, null=True)
+    access_token = models.TextField(
+        blank=True, help_text='Facebook token for offline access')
+    facebook_name = models.CharField(max_length=255, blank=True)
+    facebook_profile_url = models.TextField(blank=True)
+    website_url = models.TextField(blank=True)
+    blog_url = models.TextField(blank=True)
+    image = models.ImageField(blank=True, null=True,
+        upload_to='profile_images', max_length=255)
+    date_of_birth = models.DateField(blank=True, null=True)
+    raw_data = models.TextField(blank=True)
+"""
+class UserInfo(FacebookProfileModel):
     user = models.OneToOneField(User, related_name="user_info")
-    profile_picture = models.OneToOneField(Picture, related_name="user_info", blank=True)
     description = models.TextField() #user description
-    facebook_id = models.CharField(blank=True, max_length=100) #facebook id etc
     courses = models.ManyToManyField(Course)
-    graduation_year = models.IntegerField()
+    graduation_year = models.IntegerField(blank=True, null=True)
     current_classes = models.ManyToManyField(Class, through="UserClassData")
     friends = models.ManyToManyField("self")
 
