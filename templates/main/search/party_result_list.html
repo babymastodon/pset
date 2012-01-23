@@ -1,27 +1,5 @@
 {% load url from future %}{% load staticfiles %}
-<div id="map_container" class="grid_12">
-    <div id="mapdiv"></div>
-    <div id="detail_box" class="closed">
-        <div id="detail_box_container"  class="party_details">
-            <div id="detail_box_button"></div>
-            <div id="detail_box_contents">
-                <img id="building_img"/>
-                <span class="title"></span>
-                <img id="marker_img"/>
-                <span class="description"></span>
-                <span class="start_time"></span>
-                <span class="end_time"></span>
-                <span class="location"></span>
-                <span class="bldg_number"></span>
-                <span class="class_numbers"></span>
-                <span class="class_title"></span>
-                <span class="friends_attending"></span>
-                <span class="attend_button">Sign me up!</span>
-                <span class="attending">You are attending</span>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'main/map/party_list_map.html' %}
 <div class="templates">
     <div class="result_item clearfix grid_6" id="resultitem_A">
         <img/>

@@ -43,6 +43,7 @@ urlpatterns += patterns('main.party_views',
     url(r'^party/create/$', 'party_create'),#form for creating a new party
 )
 
+#the ajax handler
 urlpatterns += patterns('main.ajax_views',
         url(r'ajax', 'ajax'),
 )

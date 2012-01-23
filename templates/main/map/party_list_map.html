@@ -1,0 +1,19 @@
+{% extends 'main/map/wide_map.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block container_class %}party_details{% endblock %}
+{% block container_contents %}
+<img id="building_img"/>
+<span class="title"></span>
+<img id="marker_img"/>
+<span class="description"></span>
+<span class="start_time"></span>
+<span class="end_time"></span>
+<span class="location"></span>
+<span class="bldg_number"></span>
+<span class="class_numbers"></span>
+<span class="class_title"></span>
+<span class="friends_attending"></span>
+<span class="attend_button">Sign me up!</span>
+<span class="attending">You are attending</span>
+{% endblock %}
