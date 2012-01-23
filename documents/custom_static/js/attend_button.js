@@ -3,7 +3,7 @@ function register_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.registered=='true') show_attend_button_already_attending(ob);
-            tb_show(null,data.link,false);
+            $.facebox({ ajax: data.link }, 'my_style')
         }
     };
 }
@@ -22,12 +22,7 @@ function ajax_attending(ob){
         pk: pk,
         module: 'party',
         },
-        success:function(data){
-                    if (data.status=='success'){
-                        $("#detail_box_contents .attend_button").hide().unbind('click');
-                        $("#detail_box_contentd .attending").show();
-                    }
-                },
+        success:register_success(ob),
         error: register_error,
         });
     }

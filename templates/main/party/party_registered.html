@@ -1,0 +1,12 @@
+{% load url from future %}{% load staticfiles %}
+
+<span class="title">{{title}}</span>
+<div class="content_box">
+<span class="message">You are signed up for:</span>
+<ul class="event">
+    <li>{{event_name}}</li>
+    <li>Where: {{event_location}}</li>
+    <li>When: {{event_time}}</li>
+</ul>
+</div>
+<span class="facebook_button">Post this on Facebook</span>

@@ -54,7 +54,6 @@ h2{font-size: 20px;}
 h3{font-size: 15px;}
 
 #page{
-    $op : .75;
     @include background(image-url("header.png"));
     background-color: $hue1-light;
     background-repeat: repeat-x;
@@ -829,5 +828,41 @@ $bc : $hue1-mid-dark;
     }
     .attend_button{
         @include gray_button(1px);
+    }
+}
+
+#facebox .content{
+    width: 400px;
+    height: 200px;
+    position: relative;
+    @include background(image-url("header.png"));
+    background-color: $hue1-light;
+    background-repeat: repeat-x;
+    .title{
+        display: block;
+        color: $hue1-mid-light;
+        @include text-shadow(1px 1px 1px $hue1-dark);
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .content_box{
+        padding: 20px;
+        .message{
+            display: block;
+            margin-bottom: 20px;
+        }
+        .event{
+            font-weight: bold;
+            display: table;
+            margin: 0px auto 20px auto;
+        }
+    }
+    .facebook_button{
+        position: absolute;
+        line-height: 20px;
+        right: 20px;
+        bottom: 20px;
     }
 }
