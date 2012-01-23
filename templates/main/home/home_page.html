@@ -2,5 +2,22 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-Front page
+
+The current user is: 
+<pre>
+User: {{user.username}}
+First name: {{user.first_name}}
+Last name: {{user.last_name}}
+Email: {{user.email}}
+Password: {{user.password}}
+Is staff: {{user.is_staff}}
+Is active: {{user.is_active}}
+Is superuser: {{user.is_superuser}}
+Last login: {{user.last_login}}
+Date joined: {{user.date_joined}}
+
+Userinfo: {{user.user_info.facebook_id}} 
+Description: {{user.user_info.description}}
+</pre>
+
 {% endblock %}

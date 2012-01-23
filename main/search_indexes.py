@@ -57,12 +57,12 @@ class UserInfoIndex(indexes.SearchIndex, indexes.Indexable):
     suggestions = indexes.FacetCharField()
 
     def prepare(self, obj):
-        prepared_data = super(UserIndex, self).prepare(obj)
+        prepared_data = super(UserInfoIndex, self).prepare(obj)
         prepared_data['suggestions'] = prepared_data['text']
         return prepared_data
 
     def prepare_courses(self, obj):
-        return [str(s) for s in obj.user_info.courses.all()]
+        return [str(s) for s in obj.courses.all()]
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponseRedirect
 
+
 #generic views
 urlpatterns = patterns('main.home_views',
     url(r'^$', 'front_page'),#the first page
@@ -21,7 +22,6 @@ urlpatterns += patterns('main.account_views',
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
     url(r'^facebook/', include('django_facebook.urls')),
-    url(r'^accounts/', include('userena.urls')),
 )
 
 #search views

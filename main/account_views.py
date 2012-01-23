@@ -13,11 +13,29 @@ from django.template import loader, Context
 from django import forms
 import random
 import urllib
+import re
 
 #import models and forms here
 from main.models import *
 from main.forms import *
 from main.views_common import *
+from BeautifulSoup import BeautifulSoup
+
+def fetch_fullname(username):
+    # Returns tuple: [firstName, lastName]
+    params = urllib.urlencode({'query':username})
+    htmldoc = urllib.urlopen("http://web.mit.edu/bin/cgicso?options=general&" + params)
+    soup = BeautifulSoup(htmldoc.read())
+    data = soup.find('pre') or [1] # put in array with one element in case connection failed
+    #data='   name: Drach, Zachary email: <a href="mailto:zdrach@MIT.EDU">zdrach@MIT.EDU</a> address: MacGregor House # F413 year: 1 '
+    if len(data) <= 1:
+        return ("","")
+    else:
+        m = re.search("(?<=name: )(\w+), (\w+)", data.contents[0])
+        if m == None:
+            return ("","") 
+        name = (str(m.group(2)), str(m.group(1)))  # [firstName, lastName]
+        return name
 
 #Helper functions
 #function for creating and saving account
@@ -25,9 +43,15 @@ def createAccount(email="", username="", first_name="", last_name="",
                   password="", is_active=True):
     user = User.objects.create_user(username, email=email, password=password)
     user.is_active = is_active
+    if not first_name and not last_name:
+        (first_name, last_name) = fetch_fullname(username)
     user.first_name = first_name
     user.last_name = last_name
     user.save()
+    userdata = UserInfo()
+    userdata.user = user
+    userdata.save()
+    
     return user
 
 #views start here

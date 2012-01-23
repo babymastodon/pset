@@ -41,10 +41,3 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-class PartyCreateForm(forms.Form):
-    class_number = forms.CharField(max_length=100)
-    event_description = forms.CharField(max_length=100)
-    room = forms.CharField(max_length=100)
-    location_data = forms.CharField()#the json from the whereis request
-
-
