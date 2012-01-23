@@ -131,6 +131,9 @@ class UserInfo(FacebookProfileModel):
     def __unicode__(self):
         return str(self.user) + " info"
 
+    def get_meta(self):
+        return {}
+
 class UserClassData(models.Model):
     #things like confidence
     userinfo = models.ForeignKey(UserInfo)

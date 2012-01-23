@@ -107,7 +107,7 @@
 	<div id="footer">
 		<div>
 		{% if request.user.is_authenticated %}
-			Hello {{ request.user }}, <a href="{% url django.contrib.auth.views.logout %}?next={{ request.path|urlencode }}">logout</a>
+			Hello {{ request.user }}, <a href="{% url main.account_views.logout_view %}?next={{ request.path|urlencode }}">logout</a>
 		{% else %}
 			You are not logged in, Please login by clicking one of the buttons above
 		{% endif %}
