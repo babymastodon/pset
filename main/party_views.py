@@ -42,7 +42,7 @@ def party_register_ajax(request):
     r = {}
     r["status"]="success"
     r['registered']=True
-    r['link'] reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
+    r['link'] = reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
     return r
 
 #ajax handler for handling party update information and party delete

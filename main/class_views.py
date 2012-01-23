@@ -15,7 +15,7 @@ from main.models import *
 from main.forms import *
 from main.views_common import *
 
-def class_details(request):
+def class_details(request, pk):
     rc={}
     return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
 
