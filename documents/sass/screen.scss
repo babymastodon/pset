@@ -822,3 +822,12 @@ $bc : $hue1-mid-dark;
 .templates{
     display: none;
 }
+
+#attend_button_container{
+    span{
+        display: none;
+    }
+    .attend_button{
+        @include gray_button(1px);
+    }
+}

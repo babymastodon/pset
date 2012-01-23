@@ -1,3 +1,8 @@
 {% load url from future %}{% load staticfiles %}
-
-<div class="attend_button"></div>
+<script src="{% static 'js/attend_button.js' %}" type="text/javascript"></script>
+<div class="attend_button_container not_initialized">
+    <span class="pk">{{attend_pk}}</span>
+    <span class="attend_button">Sign me up!</span>
+    <span class="already_attending">You are already attending</span>
+    <span class="attend_error">Error in contacting server</span>
+</div>

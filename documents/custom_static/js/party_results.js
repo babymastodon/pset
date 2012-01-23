@@ -32,11 +32,6 @@ function set_detail_box_contents(letter){
     box.find(".bldg_number").html(item.bldg_num);
     box.find(".class_numbers").html(item.class_nums.join(", "));
     box.find(".class_title").html(item.class_title);
-    if (!item.attending){
-        box.find(".attend_button").show().click(ajax_attending(item.pk));
-    }else {
-        box.find(".attending").show();
-    }
 }
 function on_marker_click(letter){
     return function(event){
@@ -60,26 +55,6 @@ function on_marker_click(letter){
         }(letter));
     }
 }
-function ajax_attending(pk){
-    return function(event){
-        $.ajax({
-            type: "POST",
-        url:$("#ajax_url").html(),
-        data:{
-            verb: "register",
-        pk: pk,
-        module: 'party',
-        },
-        success:function(data){
-                    if (data.status=='success'){
-                        $("#detail_box_contents .attend_button").hide().unbind('click');
-                        $("#detail_box_contentd .attending").show();
-                    }
-                },
-        });
-    }
-}
-
 function load_json_parties(data){
     if (data.status=='success'){
         for (a in marker_array){
