@@ -1,0 +1,10 @@
+{% extends 'main/map/wide_map.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block container_class %}create_party{% endblock %}
+{% block container_contents %}
+<img id="building_img"/>
+<span class="title"></span>
+<span class="location"></span>
+<span class="bldg_number"></span>
+{% endblock %}
