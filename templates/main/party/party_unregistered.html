@@ -2,7 +2,7 @@
 
 <span class="title">{{title}}</span>
 <div class="content_box">
-<span class="message">You are signed up for:</span>
+<span class="message">You are no longer signed up for this event:</span>
 <ul class="event">
     <li>{{event_name}}</li>
     <li>Where: {{event_location}}</li>
@@ -10,4 +10,3 @@
 </ul>
 </div>
 <a href="{% url 'main.party_views.party_details' pk=pk %}" class="gray_button details">Party Page</a>
-<span class="facebook_button"><span>Share with:</span><img src="{% static 'images/css/facebook_name.png' %}" /></span>

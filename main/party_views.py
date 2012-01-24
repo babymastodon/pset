@@ -33,16 +33,32 @@ def party_registered(request, pk):
     rc['pk']=pk
     return render_to_response("main/party/party_registered.html", rc, context_instance=RequestContext(request))
 
+def party_unregistered(request, pk):
+    rc={}
+    rc['event_name']='MOOMOMOO'
+    rc['event_location']="Building 35"
+    rc['event_time']="Monday, December 25 at 11:30pm"
+    rc['title']="Party Pooper :("
+    rc['pk']=pk
+    return render_to_response("main/party/party_unregistered.html", rc, context_instance=RequestContext(request))
+
 def party_must_login(request, pk):
     rc={}
     rc['pk']=pk
     return render_to_response("main/party/party_login.html", rc, context_instance=RequestContext(request))
 
-def party_register_ajax(request):
+def party_register_ajax(request, party_pk):
     r = {}
     r["status"]="success"
     r['registered']=True
     r['link'] = reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
+    return r
+
+def party_unregister_ajax(request, party_pk):
+    r = {}
+    r["status"]="success"
+    r['registered']=True
+    r['link'] = reverse('main.party_views.party_unregistered',kwargs={'pk':party_pk})
     return r
 
 #ajax handler for handling party update information and party delete
@@ -56,7 +72,9 @@ def ajax(request):
         elif verb=='get_attend_button':
             return render_to_response('main/party/attend_button.html',{'pk':party_pk})
         elif verb=='register':
-            result=party_register_ajax(request)
+            result=party_register_ajax(request, party_pk)
+        elif verb=='unregister':
+            result=party_unregister_ajax(request, party_pk)
         else:
             result['status']="verb didn't match"
     except Exception as e:

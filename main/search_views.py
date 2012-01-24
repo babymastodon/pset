@@ -126,7 +126,7 @@ def exec_search(query, category=None, page=1):
 def create_party_dict(pk, letter, request, color="red", day="0"):
     (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
     r = {}
-    r['title'] = "Blah"
+    r['title'] = "Blah BLah PARTY TIME blah moo?"
     r['letter'] = letter
     r['day'] = "0"
     r['day_name'] = "Toosday"
@@ -137,14 +137,14 @@ def create_party_dict(pk, letter, request, color="red", day="0"):
     r['location'] = "Location"
     r['bldg_num'] = "W11"
     r['detail_url'] = "detail link"
-    r['bldg_img'] = 'bldg_img'
+    r['bldg_img'] = 'http://web.mit.edu/campus-map/objimgs/object-W35.thumb.jpg'
     r['lat'] = lat
     r['lng'] = lng
     r['class_nums'] = ['5.111','5.112']
     r['class_title'] = "Principles of Chemistry"
     r['color'] = color
     r['pk'] = 0
-    r['attending'] = False
+    r['friends_attending'] = 3
     r['friends'] = 10
     return r
 
