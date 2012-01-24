@@ -6,6 +6,7 @@
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script> 
 <script type="text/javascript" src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datepair.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'jquery.timepicker.css' %}" />
 {% endblock %}
 
@@ -13,23 +14,43 @@
 <div id="new_party_form" class="grid_12">
     <div class="title">Schedule a Pset Party</div>
     <form class="clearfix">
-        <div class="grid_2 alpha">
+        <div class="grid_3 alpha">
             <label>Title</label>
         </div>
         <div class="grid_3">
-            <input type="text" class="label_if_blank limit_text" title="quick description" ref="15"></label>
+            <input type="text" name="title" class="label_if_blank limit_text" title="quick description" ref="30" />
         </div>
         <div class="grid_2">
             <label>Class Number</label>
         </div>
-        <div class="grid_3 omega suffix_2">
-            <input type="text" class="label_if_blank" title="eg. 18.701"></label>
+        <div class="grid_3 omega suffix_1 clearfix">
+            <input type="text" name="class" class="label_if_blank" title="eg. 18.701" />
         </div>
-        <div class="grid_4 alpha">
+        <div class="grid_3 alpha">
+            <label>Building</label>
         </div>
-        <div class="grid_4">
+        <div class="grid_3">
+            <input name="building" type="text" class="label_if_blank limit_text" val="20" title="type or use the map" />
         </div>
-        <div class="grid_4 omega">
+        <div class="grid_2">
+            <label>Room</label>
+        </div>
+        <div class="grid_3 omega suffix_1">
+            <input type="text" name="room" class="label_if_blank limit_text" title="eg. Reading room" ref="20" />
+        </div>
+        <div class="grid_2">
+            <label>Agenda</label>
+        </div>
+        <div class="grid_3 omega suffix_1">
+            <input type="text" name="agenda" class="label_if_blank limit_text" val="20" title="eg. Pset 9" />
+        </div>
+        <div class="grid_3 alpha">
+            <h3>Time and Day</h3>
+        </div>
+        <div class="datepair grid_10 prefix_1 suffix_1 alpha omega">
+        <input type="text" class="date start grid_2 alpha label_if_blank" title="Day" />
+        <input type="text" class="time start grid_2" /> to
+        <input type="text" class="time end grid_2" />
         </div>
     </form>
 </div>
