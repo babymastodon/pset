@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime, date, timedelta
 from django import forms
 from haystack.query import SearchQuerySet
+from haystack.inputs import Raw
 import logging, simplejson, string, re, urllib, random
 from django.core import serializers
 
@@ -63,30 +64,23 @@ def exec_search(query, category=None, page=1):
             there are none, but matches are present in another category, switch to that one 
             instead. 
         """
-        wildcard_tokens = string.join([a.lower()+'* ' for a in query.split()])
-        q1 = wildcard_tokens + ' django_ct:(main.class)'
-        q2 = wildcard_tokens + ' django_ct:(main.userinfo)'
-        class_search = SearchQuerySet().raw_search(q1)
-        user_search = SearchQuerySet().raw_search(q2)
-        if category == None:
+        wildcard_tokens = string.join([a + "* OR " + a for a in query.split()], " OR ")
+        user_search = SearchQuerySet().filter(content = Raw(wildcard_tokens)).models(UserInfo)
+        class_search = SearchQuerySet().filter(content=Raw(wildcard_tokens)).models(Class)
+        if not category:
             category = "Classes"
         if (category == "People" and len(user_search) == 0) or (category == "Classes" and len(class_search) == 0):
             # if no results in category, attempt to switch categories. search by class is preferred
             if len(class_search) < len(user_search):
                 category="People"
-                sqs = user_search
-            else:
+            elif len(class_search) > len(user_search):
                 category="Classes"
-                sqs = class_search
         if category=="Classes":
-            if not sqs:
-                if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) \
-                    or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): 
-                    #if they are searching for a class number, matches prefixes for course numbers that start in letters
-                    q = wildcard_tokens + ' django_ct:(main.classnumber)'
-                else:
-                    q = wildcard_tokens + ' django_ct:(main.class)'
-                sqs = SearchQuerySet().raw_search(q)
+            if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): 
+                #if they are searching for a class number, matches prefixes for course numbers that start in letters
+                sqs = SearchQuerySet().raw_search(wildcard_tokens).models(ClassNumber)
+            else:
+                sqs=class_search
             totalresults = len(sqs)
             numpages = totalresults/RESULTS_PER_PAGE+1
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
@@ -99,9 +93,7 @@ def exec_search(query, category=None, page=1):
                 result_items.append(item)
             pageresults=len(result_items)
         if category=="People":
-            if not sqs:
-                q = wildcard_tokens + ' django_ct:(main.userinfo)'
-                sqs = SearchQuerySet().raw_search(q)
+            sqs = user_search
             totalresults = len(sqs)
             numpages = totalresults/RESULTS_PER_PAGE+1
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]

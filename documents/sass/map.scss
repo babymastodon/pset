@@ -28,12 +28,13 @@
                 &:hover{
                 }
                 position: absolute;
+                z-index: 5;
                 top: 0px;
                 left: 0px;
             }
             #detail_box_contents{
                 padding: 10px;
-                position: relative;
+                position: absolute;
             }
             &.party_details{
                 $ww: 460px;

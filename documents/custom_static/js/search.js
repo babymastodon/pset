@@ -146,7 +146,7 @@ function check_for_pause_then_search(){
     d =  new Date().getTime();
     delta = d - last_pressed;
     if (delta>search_delay_constant - 30){
-        exec_search({page:'1'});
+        exec_search({page:'1', nopushstate:true});
         last_pressed=d;
     }
 }
