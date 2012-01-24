@@ -3,16 +3,24 @@
 
 {% block container_class %}party_details{% endblock %}
 {% block container_contents %}
-<img id="building_img"/>
-<span class="title"></span>
-<img id="marker_img"/>
-<span class="description"></span>
-<span class="start_time"></span>
-<span class="end_time"></span>
-<span class="location"></span>
-<span class="bldg_number"></span>
-<span class="class_numbers"></span>
-<span class="class_title"></span>
-<span class="friends_attending"></span>
-<span class="attend_button_container_container"><span>
-{% endblock %}
+<img class="building_img"/>
+<div class="blah">
+    <span class="title"></span>
+    <a class="details inset_gray_button">Details</a>
+    <span class="location_row">
+        Building
+        <span class="bldg_number"></span>,
+        <span class="location"></span>
+    </span>
+    <span class="class_numbers"></span>
+    <span class="class_title"></span>
+    <span class="description"></span>
+    <span class="time_row">
+        <span class="day_name"></span>,
+        <span class="start_time"></span> -
+        <span class="end_time"></span>
+    </span>
+    <span class="attending_block"><span class="friends_attending"></span> friends attending</span>
+    <span class="attend_button_container_container clearfix"><span>
+        </div>
+        {% endblock %}

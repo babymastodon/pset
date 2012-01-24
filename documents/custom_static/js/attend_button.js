@@ -3,13 +3,21 @@ function register_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.registered) show_attend_button_already_attending(ob);
-            $.facebox({ ajax: data.link }, 'my_style')
+            $.facebox({ ajax: data.link })
+        }
+    };
+}
+function unregister_success(ob){
+    return function(data){
+        if (data.status=="success"){
+            if (data.registered) show_attend_button(ob);
+            $.facebox({ ajax: data.link })
         }
     };
 }
 
 function register_error(o){
-    alert("Sorry, your registration was unsuccessful. Please try again. If this problem continues, please don't attempt to contact the site administrator. He would rather not waste his time dealing with you.");
+    alert("Sorry, the request was unsuccessful. Please try again. If this problem continues, please don't attempt to contact the site administrator. He would rather not waste his time dealing with you.");
 }
 
 function ajax_attending(ob){
@@ -28,9 +36,24 @@ function ajax_attending(ob){
     }
 }
 
+function ajax_unregister(ob){
+    return function(event){
+        $.ajax({
+            type: "POST",
+        url:ajax_url,
+        data:{
+            verb: "unregister",
+        pk: pk,
+        module: 'party',
+        },
+        success:unregister_success(ob),
+        error: register_error,
+        });
+    }
+}
 function show_attend_button(ob){
     ob.children().hide();
-    ob.children(".attend_button").show().click(ajax_attending(ob));
+    ob.children(".attend_button").show().unbind('click').click(ajax_attending(ob));
 }
 
 function show_attend_button_error(ob){
@@ -40,7 +63,7 @@ function show_attend_button_error(ob){
 
 function show_attend_button_already_attending(ob){
     ob.children().hide();
-    ob.children(".already_attending").show();
+    ob.children(".already_attending").show().children(".undo_button").unbind('click').click(ajax_unregister(ob));
 }
 
 function make_attend_button_error_callback(ob){

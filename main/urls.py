@@ -41,6 +41,7 @@ urlpatterns += patterns('main.class_views',
 urlpatterns += patterns('main.party_views',
     url(r'^party/(?P<pk>\d+)/$', 'party_details'),#detailed lsit of party details, party admins can update vales via ajax
     url(r'^party/registered/(?P<pk>\d+)/$', 'party_registered'),#view after a successful party registration
+    url(r'^party/unregistered/(?P<pk>\d+)/$', 'party_unregistered'),#view after a successful party unregistration
     url(r'^party/create/$', 'party_create'),#form for creating a new party
 )
 
