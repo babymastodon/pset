@@ -1,0 +1,43 @@
+@import "base";
+
+#login_div{
+    form{
+        margin: 0px;
+        width: 200px;
+        padding: 10px;
+        label{
+            font-weight:lighter;
+            font-size:13px;
+            line-height:28px;
+            display: block;
+            float: left;
+        }
+        input[type='text'], input[type='password']{
+            @include background(image-url("background.png"));
+            @include box-shadow($black 1px 1px 2px 0px inset);
+            padding: 3px 5px;
+            text-shadow: none;
+            margin-bottom: 10px;
+            width: 120px;
+            font-size:16px;
+            border:1px solid;
+            float:right;
+            display: block;
+        }
+        .button{
+            float: right;
+        }
+        a{
+            float: left;
+            font-size:13px;
+        }
+    }
+}
+
+#account_dropdown, #actions_dropdown{
+    a{
+        padding-left: 20px;
+        text-align: left;
+    }
+    width: 160px;
+}

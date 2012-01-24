@@ -1,0 +1,74 @@
+@import "base";
+
+.page_text{
+    line-height: 20px;
+    h1, h2, h3{
+        color: $hue1-mid-dark;
+    }
+    h1{
+        font-size: 30;
+        margin: 30px 0px 25px 0px;
+        &.underlined{
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            border-top: none;
+            border-bottom: 2px solid $hue1-mid-dark;
+        }
+    }
+    h2{
+        font-size: 24px;
+        margin: 20px 0px 10px 0px;
+    }
+    h3{
+        display: inline;
+        font-size: 20px;
+    }
+    .hline{
+        margin: 20px 0px;
+        border-top: 2px solid $hue1-mid-dark;
+    }
+    .right{
+        text-align: right;
+    }
+    .registration{
+        background-color:$hue1-mid-light;
+        width:280px;
+        padding: 10px;
+        @include border-radius(5px);
+        h2{
+            padding:20px 20px 10px 20px;
+            margin: 0px;
+        }
+        h4{
+            text-align: center;
+        }
+        form{
+            display: block;
+            height: 300px;
+            padding: 10px 30px;
+            label{
+                //font-weight:lighter;
+                font-size:16px;
+                line-height:30px;
+                display: block;
+                float: left;
+                clear: both;
+                width:140px;
+            }
+            input[type='text'], input[type='password']{
+                clear: both;
+                float: right;
+                padding: 3px 3px;
+                text-shadow: none;
+                margin-bottom: 4px;
+                width: 160px;
+                font-size:16px;
+                border:1px solid;
+                display: block;
+            }
+            input[type='submit']{
+                margin-top:15px;
+            }        
+        }
+    }
+}

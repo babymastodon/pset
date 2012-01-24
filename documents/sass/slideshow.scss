@@ -1,0 +1,119 @@
+@import "base";
+
+
+$b : 2px;
+$h : 250px - 2 * $b;
+$w : 620px - 2 * $b;
+$bc : $hue1-mid-dark;
+
+#slideshow{
+    width: $w;
+    border: $b solid $bc;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+}
+
+#slide_container{
+    width: 5 * $w;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide_contents{
+    width: $w;
+    height: $h;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    a{
+        display: block;
+    }
+}
+
+#doppleganger{
+    @include opacity(.7);
+    position: absolute;
+    left: $w / 2 - 60px;
+    top: $h - 30;
+}
+
+.dopple{
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+    float: left;
+    @include border-radius(8px);
+    &:last-child{
+        margin-right:0px;
+    }
+    background-color: $gray-mid-dark;
+    &.selected{
+        background-color: $gray-mid;
+    }
+}
+
+.slide_img{
+    display: block;
+    width: $w;
+    height: $h;
+}
+
+.slide_text{
+    background-color: $hue1-mid-dark;
+    @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
+    color: $hue1-mid-light;
+    @include text-shadow(2px 2px 2px $hue1-dark);
+    font-size: 16px;
+    padding: 10px 15px;
+    &:hover{
+        background-color: $hue1-mid;
+        @include background(linear-gradient(top,$hue1-mid + $d,$hue1-mid-dark + $d));
+    }
+    b{
+        font-size: 20px;
+    }
+    position: absolute;
+}
+
+.s_0{
+    width: 300px - 30px - $b;
+    bottom: 0px;
+    left: 0px;
+    border-top: $b solid $bc;
+    border-right: $b solid $bc;
+}
+
+.s_1{
+    padding: 0px 15px 0px 15px;
+    width: $w - 30px;
+    line-height: 30px - $b;
+    top: 0px;
+    border-bottom: $b solid $bc;
+}
+
+.s_2{
+    width: 250px - 30px - $b;
+    top: 30px;
+    left: 0px;
+    border-top: $b solid $bc;
+    border-bottom: $b solid $bc;
+    border-right: $b solid $bc;
+}
+
+.s_3{
+    width: 250px - 30px - $b;
+    bottom: 30px;
+    right: 0px;
+    border-top: $b solid $bc;
+    border-bottom: $b solid $bc;
+    border-left: $b solid $bc;
+}
+
+.s_4{
+    width: 300px - 30px - $b;
+    top: 0px;
+    right: 0px;
+    border-bottom: $b solid $bc;
+    border-left: $b solid $bc;
+}

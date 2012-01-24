@@ -1,0 +1,98 @@
+@import "base";
+
+#map_container{
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+    #mapdiv{
+        width: 940px;
+        height: 380px;
+    }
+    #detail_box{
+        background-color: $white;
+        position:absolute;
+        width:16px;
+        height: 16px;
+        right: 0px;
+        bottom: 0px;
+        border: 1px solid $gray-mid;
+        &.open #detail_box_container #detail_box_button{
+            background-position: -16px;
+        }
+        #detail_box_container{
+            #detail_box_button{
+                cursor: pointer;
+                width: 16px;
+                height: 16px;
+                @include background(image-url("icons/open_close_16.png"));
+                &:hover{
+                }
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+            #detail_box_contents{
+                padding: 10px;
+                position: relative;
+            }
+            &.party_details{
+                $ww: 460px;
+                width: $ww;
+                height: 140px;
+                .building_img{
+                    float: left; 
+                    height: 120px;
+                    width: 120px;
+                }
+                .blah{
+                    $www: $ww - 120px - 10px - 20px;
+                    width: $www;
+                    padding-left: 10px;
+                    float:left;
+                    span{
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    .title{
+                        line-height: 20px;
+                        width: $www;
+                        float: left;
+                        display: block;
+                        margin-bottom: 5px;
+                        font-weight: bold;
+                    }
+                    .details{
+                        position: absolute;
+                        right: 10px;
+                        top: 35px;
+                    }
+                    .location_row{
+                        font-style: oblique;
+                    }
+                    .class_numbers, .description{
+                        display: none;
+                    }
+                    .friends_attending{
+                        font-weight: bold;
+                    }
+                    .time_row, .attending_block, .class_title, .location_row{
+                        display: block;
+                        clear: both;
+                        float: left;
+                        margin-left: 20px;
+                        width: $www - 90px;
+                    }
+                    .attend_button_container_container{
+                        position: absolute;
+                        bottom: 10px;
+                        right: 10px;
+                    }
+                }
+            }
+            &.create_party{
+                width: 250px;
+                height: 200px;
+            }
+        }
+    } 
+}
