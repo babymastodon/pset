@@ -94,9 +94,10 @@ def create_account_page(request):
                 ph.save()
                 t = loader.get_template('emails/verify.txt')
                 html = loader.get_template('emails/verify.html')
+                root_email = request.get_host()
                 c = RequestContext(request, {
                     'username':uname,
-                    'web_root':getattr(settings, 'ROOT_EMAIL_URL'),
+                    'web_root': root_email,
                     'h':h,
                 })
                 subject = 'Email Verification'
@@ -117,17 +118,12 @@ def create_account_page(request):
 
 def verify(request, hashcode):
     rc={}
-    try:
-        ph = PendingHash.objects.get(hashcode=hashcode)
-        user=ph.user
-    except PendingHash.DoesNotExist:
-        return render_to_response("main/account/verify_expired.html", 
+    user = authenticate(hashcode=hashcode)
+    if not user:
+        render_to_response("main/account/verify_expired.html", 
                                   rc, context_instance=RequestContext(request))
-    user.is_active=True
-    user.save()
-    ph.delete()
     rc['next']=reverse('main.home_views.home_page')#redirect to home after login
-    request.login(user)
+    login(request,user)
     return render_to_response("main/account/verify.html", rc, 
                               context_instance=RequestContext(request))
 

@@ -198,6 +198,7 @@ HAYSTACK_CONNECTIONS = {
 AUTHENTICATION_BACKENDS = (
     'django_facebook.auth_backends.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'pset.hash_backend.HashBackend',
 )
 
 EMAIL_HOST='localhost'
