@@ -1028,3 +1028,38 @@ $bc : $hue1-mid-dark;
 .hidden{
     display: none;
 }
+
+#new_party_form{
+    .title{
+        line-height: 40px;
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+    form{
+        display: block;
+        div{
+            margin-bottom: 10px;
+        }
+        label{
+            display: block;
+            font-size: 22px;
+            text-align: right;
+            line-height: 35px;
+        }
+        input[type="text"]{
+            border: 2px solid $gray-mid-dark;
+            font-size: 20px;
+            @include border-radius(4px);
+            padding: 3px 5px;
+            display: block;
+            width: 200px;
+            &:focus{
+                border: 2px solid $gray-mid-dark;
+            }
+            &.blank{
+                color: $gray-mid;
+                border: 2px solid $gray-mid;
+            }
+        }
+    }
+}
