@@ -130,9 +130,18 @@ class UserInfo(FacebookProfileModel):
 
     def __unicode__(self):
         return str(self.user) + " info"
+   
+    def get_title(self):
+        return self.user.username
+
+    def get_description(self):
+        return self.description 
 
     def get_meta(self):
-        return {}
+        meta = self.user.first_name + " " + self.user.last_name
+        if self.graduation_year != None:
+            meta = meta + ", '" + self.graduation_year
+        return meta 
 
 class UserClassData(models.Model):
     #things like confidence

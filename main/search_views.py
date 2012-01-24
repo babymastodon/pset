@@ -106,9 +106,9 @@ def exec_search(query, category=None, page=1):
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
             for a in tmp:
                 item = {}
-                item['title'] = "line1"
-                item['description'] = "line2"
-                item['metadata'] = "line3" 
+                item['title'] = trunc(a.get_title(), 30)
+                item['description'] = trunc(a.get_description(), 250)
+                item['metadata'] = a.get_meta()
                 item['link'] = reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
             pageresults=len(result_items)
