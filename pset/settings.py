@@ -220,4 +220,5 @@ FACEBOOK_REGISTRATION_FORM = 'main.forms.EmailRegisterForm'
 FACEBOOK_REGISTRATION_TEMPLATE = 'main/account/create_account_page.html'
 
 
-
+USE_TZ = True
+TIME_ZONE = 'America/New_York'
