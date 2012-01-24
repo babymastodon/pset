@@ -3,8 +3,13 @@
 
 {% block container_class %}create_party{% endblock %}
 {% block container_contents %}
-<img id="building_img"/>
-<span class="title"></span>
-<span class="location"></span>
-<span class="bldg_number"></span>
+<img src="http://web.mit.edu/campus-map/objimgs/object-7.thumb.jpg" class="building_img"/>
+<div class="blah">
+    <label>Building: </label><input type="text" autocomplete="off"  class="label_if_blank" name="building" title="eg. W20" />
+    <div class="clear"></div>
+    <label>Room: </label><input type="text" autocomplete="off" name="room" class="label_if_blank" title="eg. Reading Room" />
+    <input type="hidden" name="location_data" />
+    <input type="hidden" name="lng" />
+    <input type="hidden" name="lat" />
+</div>
 {% endblock %}

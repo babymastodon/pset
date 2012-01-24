@@ -85,6 +85,7 @@ function exec_search(options){
         category = $("#cat_"+selected_index).html();
     }
     nopushstate = options.nopushstate || false;
+    force_category = options.force_category ? "1" : "0";
     query = val2($("#top_search_text"));
     page = parseInt(options.page || $("#page_nums a.selected").html())
         if (page!=prev_page || query!=prev_query || category!=prev_category){
@@ -96,6 +97,7 @@ function exec_search(options){
                 'q':query,
                 'c':category,
                 'page': page,
+                'force': force_category,
                 'module': 'search',
                 },
                 success: function(data){
@@ -172,7 +174,7 @@ function init_search_slider(){
     selected_index = parseInt($(".selected_fallback").removeClass("selected_fallback").attr("id").split('_')[1]);
     $("#cat_selector").show().css("top",cat_height*selected_index);
     $(".category_button").click(function(){
-        exec_search({category:$(this).attr('name'), page:'1'});
+        exec_search({category:$(this).attr('name'), page:'1', force_category:true});
     }).parent().removeAttr("href");
 }
 

@@ -52,7 +52,7 @@ trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
 #it returns a dict with name, description, (picture), and related classes if a class. If a person,
 #returns dict with name, class, department, (picture)
 #format: {'page':int, 'numpages':int, 'results':[{'title':string,'description':string,'metadata':string}]}
-def exec_search(query, category=None, page=1):
+def exec_search(query, category=None, page=1, force_category=False):
     numpages=1
     result_items=[]
     pageresults=0
@@ -69,7 +69,7 @@ def exec_search(query, category=None, page=1):
         class_search = SearchQuerySet().filter(content=Raw(wildcard_tokens)).models(Class)
         if not category:
             category = "Classes"
-        if (category == "People" and len(user_search) == 0) or (category == "Classes" and len(class_search) == 0):
+        if (not force_category) and ((category == "People" and len(user_search) == 0) or (category == "Classes" and len(class_search) == 0)):
             # if no results in category, attempt to switch categories. search by class is preferred
             if len(class_search) < len(user_search):
                 category="People"
@@ -126,7 +126,7 @@ def create_party_dict(pk, letter, request, color="red", day="0"):
     r['date_number'] = "1/1/1"
     r['start_time'] = "9:00"
     r['end_time'] = "9:00"
-    r['description'] = "Description"
+    r['agenda'] = "Description"
     r['location'] = "Location"
     r['bldg_num'] = "W11"
     r['detail_url'] = "detail link"
@@ -183,13 +183,17 @@ def ajax(request):
                 query = request.GET['q']
                 category = request.GET.get('c',None)
                 page = int(request.GET.get('page',"0"))
-                result = exec_search(query=query, category=category, page=page)
+                force_category = int(request.GET.get('force',"0"))!=0
+                result = exec_search(query=query, category=category, page=page, force_category=force_category)
             elif verb=='parties_by_class':
                 class_pk = request.GET['class']
                 result = get_parties_by_class(request, class_pk)
             elif verb=='parties_by_date':
                 day = request.GET['day']
                 result = get_parties_by_date(request, day)
+            elif verb=='class_suggestions':
+                query = request.GET['q']
+                result = exec_search(query=query, category="Classes", page=1, force_category=True)
             else:
                 result['status']="verb didn't match"
     except Exception as e:

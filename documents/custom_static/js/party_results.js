@@ -25,12 +25,12 @@ function set_detail_box_contents(letter){
     box.find(".building_img").attr('src',item.bldg_img);
     box.find(".details").attr("href",item.detail_url);
     box.find(".title").html(item.title);
-    box.find(".description").html(item.description);
+    box.find(".agenda").html(item.agenda);
     box.find(".day_name").html(item.day_name);
     box.find(".start_time").html(item.start_time);
     box.find(".end_time").html(item.end_time);
     box.find(".location").html(item.location);
-    box.find(".bldg_number").html(item.bldg_num);
+    box.find(".room").html(item.room);
     box.find(".class_numbers").html(item.class_nums.join(", "));
     box.find(".class_title").html(item.class_title);
     box.find(".friends_attending").html(item.friends_attending);

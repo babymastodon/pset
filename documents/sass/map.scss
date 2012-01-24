@@ -91,8 +91,30 @@
                 }
             }
             &.create_party{
-                width: 250px;
-                height: 200px;
+                $ww: 460px;
+                width: $ww;
+                height: 140px;
+                .building_img{
+                    float: left; 
+                    height: 120px;
+                    width: 120px;
+                }
+                .blah{
+                    $www: $ww - 120px - 10px - 20px;
+                    width: $www;
+                    padding-left: 10px;
+                    float:left;
+                    label, input{
+                        margin: 10px 0px 10px 10px;
+                        float: left;
+                    }
+                    label{
+                        width: 80px;
+                    }
+                    input[type="text"]{
+                        width: 170px;
+                    }
+                }
             }
         }
     } 

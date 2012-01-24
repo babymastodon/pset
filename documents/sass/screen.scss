@@ -272,36 +272,47 @@ input[type="text"], input[type="password"]{
 }
 
 #new_party_form{
-    .title{
+    display: block;
+    .title, h2{
         line-height: 40px;
         font-size: 30px;
+        margin-bottom: 20px;
+        display: block;
+    }
+    label, h3{
+        display: block;
+        font-size: 22px;
+        text-align: right;
+        line-height: 35px;
         margin-bottom: 10px;
     }
-    form{
+    h2{
+        text-align: right;
+    }
+    input[type="text"]{
+        border: 2px solid $gray-mid-dark;
+        font-size: 20px;
+        @include border-radius(4px);
+        padding: 3px 5px;
         display: block;
-        div{
-            margin-bottom: 10px;
-        }
-        label, h3{
-            display: block;
-            font-size: 22px;
-            text-align: right;
-            line-height: 35px;
-        }
-        input[type="text"]{
+        width: 206px;
+        &:focus{
             border: 2px solid $gray-mid-dark;
-            font-size: 20px;
-            @include border-radius(4px);
-            padding: 3px 5px;
-            display: block;
-            width: 200px;
-            &:focus{
-                border: 2px solid $gray-mid-dark;
-            }
-            &.blank{
-                color: $gray-mid;
-                border: 2px solid $gray-mid;
-            }
         }
+        &.blank{
+            color: $gray-mid;
+            border: 2px solid $gray-mid;
+        }
+        &.date, &.time{
+            width: 126px;
+        }
+    }
+    .submit_button{
+        margin-top: 20px;
+        width: 278px;
+        margin-left: 330px;
+        line-height: 50px;
+        font-size: 35px;
+        @include border-radius(10px);
     }
 }
