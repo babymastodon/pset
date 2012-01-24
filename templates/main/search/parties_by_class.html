@@ -9,7 +9,7 @@
 <div class="hidden" id="class_pk">{{pk}}</div>
 <div id="class_title" class="grid_10">{{class_name}}</div>
 <div class="grid_2">
-    <a class="gray_button nofloat" href="{% url 'main.class_views.class_details' pk=pk %}">Class Details</a>
+    <a class="gray_button nofloat" href="{% url 'main.class_views.class_details' pk=pk %}">Class Home Page</a>
 </div>
 {% include 'main/search/party_result_list.html' %}
 <script src="{% static 'js/parties_by_class.js'%}" type="text/javascript"></script>

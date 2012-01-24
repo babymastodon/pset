@@ -56,6 +56,34 @@ function preventDropdownClose(event){
     event.stopPropagation();
 }
 
+var meta_pressed=false;
+
+function limit_text(event){
+        num = parseInt($(this).attr("ref"));
+        l = $(this).val().length;
+        if (l>num) $(this).val($(this).val().substring(0,num));
+        if (l==num){
+            keycode = (event.keyCode ? event.keyCode : event.which);
+            if (((keycode >= 46 && keycode <= 90) || (keycode >=107 && keycode <=111) || (keycode>=186 && keycode<=222)) && !meta_pressed){
+                event.preventDefault();
+                console.log('moo');
+            }
+        }
+}
+
+function check_meta(event){
+    keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode >=16 && keycode <=18){
+        meta_pressed=true;
+    } else {
+        meta_pressed=false;
+    }
+}
+
+function undo_meta(event){
+    meta_pressed=false;
+}
+
 $(document).ready(function(){
     $(".label_if_blank").each(addBlankHandlers);
     $("#top_search_button").click(submit_top_search_form);
@@ -66,4 +94,6 @@ $(document).ready(function(){
     $(".dropdown").click(loginPressed);
     $("body").click(closeDropdown);
     $(".dropdown_list").click(preventDropdownClose);
+    $(".limit_text").keydown(limit_text);
+    $("body").keydown(check_meta).keyup(undo_meta);
 });
