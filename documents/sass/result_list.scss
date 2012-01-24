@@ -1,0 +1,97 @@
+@import "base";
+
+#result_list{
+    height: 262px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+    #result_list_shadow_top{
+        @include box-shadow($gray-mid 2px 2px 3px 0px inset);
+        height: 5px;
+        width: 940px;
+        position: absolute;
+        z-index: 1;
+    }
+    #result_list_shadow_left{
+        @include box-shadow($gray-mid 2px 0px 3px 0px inset);
+        height: 257px;
+        width: 5px;
+        top: 5px;
+        position: absolute;
+        z-index: 1;
+    }
+    #result_list_container{
+        z-index: 0;
+        background-color: $white;
+        position: absolute;
+        top: 0px;
+        padding-top: 10px;
+        .result_item{
+            background-color: $hue1-light;
+            @include unselectable;
+            $dw : 460px;
+            $dp : 10px;
+            $dm : 10px;
+            width: $dw - $dp * 2 - $dm;
+            height: 54px;
+            padding: $dp;
+            margin-bottom: 10px;
+            @include box-shadow($gray-mid 1px 1px 2px 0px);
+            &.active, &.selected{
+                position: relative;
+                left: 1px;
+                top: 1px;
+                @include box-shadow(none);
+            }
+            &:hover{
+                background-color: $hue1-light + 2 * $d;
+            }
+            &.selected{
+                background-color: $hue1-mid-light;
+            }
+            img{ float: left; width: 20px; height: 34px; padding: 10px 20px 10px 10px;}
+            .text{ float: left; width: 370px }
+            span{
+                display: block;
+                float: left;
+            }
+            .title, .details, .location, .class{
+                white-space: nowrap;
+                overflow: hidden;
+                margin-bottom: 5px;
+            }
+            .title{
+                font-size: 20px;
+                line-height: 24px;
+                width: 260px;
+            }
+            .details{
+                float: right;
+                line-height: 24px;
+            }
+            .location{
+                clear: both;
+                float: left;
+                font-style: oblique;
+                padding-left: 20px;
+                width: 120px;
+            }
+            .class{
+                clear: both;
+                float: left;
+                width: 120;
+            }
+            .time{
+                float: right;
+                margin-right: 10px;
+            }
+            .description{
+                clear: both;
+                padding-left: 20px;
+                line-height: 20px;
+                height: 40px;
+                overflow: hidden;
+            }
+        }
+    }
+}

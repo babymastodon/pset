@@ -216,7 +216,7 @@ ROOT_EMAIL_URL='http://pset.babymastodon.com'
 ANONYMOUS_USER_ID = -1
 AUTH_PROFILE_MODULE = 'main.UserInfo'
 FACEBOOK_REGISTRATION_FORM = 'main.forms.EmailRegisterForm'
-FACEBOOK_REGISTRATION_TEMPLATE = 'main/home/front_page.html'
+FACEBOOK_REGISTRATION_TEMPLATE = 'main/account/create_account_page.html'
 
 
 

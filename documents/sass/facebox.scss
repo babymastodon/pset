@@ -1,0 +1,71 @@
+@import "base";
+
+#facebox{
+    .content{
+        width: 400px;
+        position: relative;
+        @include background(image-url("header_30.png"));
+        background-color: $hue1-light;
+        background-repeat: repeat-x;
+        padding: 0px;
+        .title{
+            display: block;
+            color: $hue1-mid-light;
+            @include text-shadow(1px 1px 1px $hue1-dark);
+            font-size: 20px;
+            line-height: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .content_box{
+            padding: 20px;
+            .message{
+                display: block;
+                margin-bottom: 20px;
+            }
+            .event{
+                font-weight: bold;
+                display: table;
+                margin: 0px auto 0px auto;
+            }
+        }
+        .facebook{
+            display: block;
+            float: right;
+            margin-right: 5px;
+        }
+        .facebook_button{
+            float: right;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        .details{
+            float: left;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .row{
+            display: block;
+            clear: both;
+            margin-bottom: 10px;
+            label, input{
+                display: block;
+                width: 100px;
+                float: left;
+            }
+        }
+        input[type="submit"]{
+            margin-top: 20px;
+            clear: both;
+            float: right;
+        }
+        form{
+            display: block;
+            margin: 20px 20px 0px 20px;
+        }
+    }
+    .close{
+        background-color: transparent;
+    }
+}
+

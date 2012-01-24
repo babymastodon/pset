@@ -1,0 +1,35 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "compass";
+
+@mixin unselectable{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none; 
+    cursor:default;
+}
+
+$hue1-mid-light : #ffcb9c;
+$hue1-mid-dark : #6b1919;
+$hue1-mid : #880011;
+$hue1-dark : #3a0d0d;
+$hue1-light: #FFF5D9;
+$hue1-lighter: #FFF5E3;
+
+$tan-light: #D4CEBF;
+$tan-mid: #C7C0AC;
+
+$blue-mid: #3A5897;
+$blue-mid-dark: #23487E;
+$blue-dark: #0E385F;
+
+$white: white;
+$gray-light: #EEEEEE;
+$gray-mid: #CCCCCC;
+$gray-mid-dark: #999999;
+$gray-dark: #555555;
+$black: black;
+$d: #110505;
+$dg: #111111;

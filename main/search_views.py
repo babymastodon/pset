@@ -52,31 +52,32 @@ trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."
 #returns dict with name, class, department, (picture)
 #format: {'page':int, 'numpages':int, 'results':[{'title':string,'description':string,'metadata':string}]}
 def exec_search(query, category=None, page=1):
-    if not category:
-        category = "Classes"
     numpages=1
     result_items=[]
     pageresults=0
     totalresults=0
     sqs=None
     if query:
+        """
+            Slight change to algorithm: check if there are any matches in current category. If
+            there are none, but matches are present in another category, switch to that one 
+            instead. 
+        """
         wildcard_tokens = string.join([a.lower()+'* ' for a in query.split()])
-        if not category:#do multiple searches and decide what the user is looking for
-            if re.match(".*\d+.*", query):
-                category="Classes"
+        q1 = wildcard_tokens + ' django_ct:(main.class)'
+        q2 = wildcard_tokens + ' django_ct:(main.userinfo)'
+        class_search = SearchQuerySet().raw_search(q1)
+        user_search = SearchQuerySet().raw_search(q2)
+        if category == None:
+            category = "Classes"
+        if (category == "People" and len(user_search) == 0) or (category == "Classes" and len(class_search) == 0):
+            # if no results in category, attempt to switch categories. search by class is preferred
+            if len(class_search) < len(user_search):
+                category="People"
+                sqs = user_search
             else:
-                q1 = wildcard_tokens + ' django_ct:(main.class)'
-                q2 = wildcard_tokens + ' django_ct:(main.userinfo)'
-                sqs1 = SearchQuerySet().raw_search(q1)
-                sqs2 = SearchQuerySet().raw_search(q2)
-                l1 = len(sqs1)
-                l2 = len(sqs2)
-                if l1>l2:
-                    category="Classes"
-                    sqs = sqs1
-                else:
-                    category="People"
-                    sqs=sqs2
+                category="Classes"
+                sqs = class_search
         if category=="Classes":
             if not sqs:
                 if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) \
@@ -106,9 +107,9 @@ def exec_search(query, category=None, page=1):
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
             for a in tmp:
                 item = {}
-                item['title'] = trunc(a.get_title(),45)
+                item['title'] = trunc(a.get_title(), 30)
                 item['description'] = trunc(a.get_description(), 250)
-                item['metadata'] = 'Metadata:'+string.join([x.number for x in a.get_meta()],', ')
+                item['metadata'] = a.get_meta()
                 item['link'] = reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
                 result_items.append(item)
             pageresults=len(result_items)

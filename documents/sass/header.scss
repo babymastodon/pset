@@ -1,0 +1,116 @@
+@import "base";
+
+#header{
+    height: 50px;
+    margin-bottom: 10px;
+    color: $hue1-light;
+    @include unselectable;
+    input, a, label{
+        color: $hue1-mid-light;
+        @include text-shadow(1px 1px 1px $hue1-dark);
+    }
+    .logo{
+        margin-top: 10px;
+        a{
+            &:hover{
+                text-decoration: none;
+            }
+            font-size: 30px;
+            line-height: 30px;
+            display: block;
+        }
+    }
+    #top_search_box{
+        margin-top: 10px;
+        display: block;
+        width: 296px;
+        @include background(image-url("background.png"));
+        overflow: hidden;
+        border: 1px solid $hue1-mid-light;
+        @include border-radius(3px);
+        input{
+            border: none;
+            margin: 0px;
+            display: block;
+        }
+        input[type='submit']{
+            margin: 2px 5px 0px 0px;
+            padding: 0px;
+        }
+        input[type='text']{
+            padding: 0px 0px 0px 5px;
+            width: 262px;
+            float: left;
+            height: 28px;
+            background-color: $gray-dark;
+            @include background(image-url("background.png"));
+            &.blank{
+                color: $gray-mid;
+            }
+            outline: none;
+        }
+    }
+    #account_menu{
+        padding-top: 10px;
+        line-height: 30px;
+        text-align: right;
+        float: right;
+        @include border-radius(5px);
+        span{
+            display: block;
+            float: right;
+            padding: 0px 5px;
+        }
+        .header_button{
+            display: block;
+            float: right;
+            position: relative;
+            a{
+                display: block;
+                span{float: none;}
+                .dropdown_arrow{
+                    @include background(image-url("icons/down24.png"));
+                    background-position: 0px;
+                    float: right;
+                    width: 24px;
+                    height: 24px;
+                    margin-top: 3px;
+                }
+                &:hover{
+                    text-decoration: none;
+                    color: $hue1-light;
+                    .dropdown_arrow{
+                        background-position: -24px;
+                    }
+                }
+            }
+            &.selected{
+                span{
+                    background-color: $hue1-mid;
+                    text-decoration: none;
+                    @include border-corner-radius(top,left,3px);
+                    @include border-corner-radius(top,right,3px);
+                    @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
+                    position: relative;
+                    z-index: 5;
+                }
+                .dropdown_list{
+                    display: block;
+                }
+            }
+            .dropdown_list{
+                top: 28px;
+                padding: 8px 0px;
+                position: absolute;
+                right: 0px;
+                display:none;
+                z-index: 4;
+                @include border-corner-radius(bottom,left,5px);
+                @include border-corner-radius(bottom,right,5px);
+                @include border-corner-radius(top,left,5px);
+                @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
+                @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
+            }
+        }
+    }
+}
