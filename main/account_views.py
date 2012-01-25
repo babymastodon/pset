@@ -158,6 +158,7 @@ def login_page(request):
     if n:
         rc['next']=n
     rc['form']=form
+    rc['rform']=EmailRegisterForm()
     return render_to_response("main/account/login_page.html", rc, 
                               context_instance=RequestContext(request))
 

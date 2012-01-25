@@ -2,5 +2,15 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-{% include 'main/account/login_form.html' %}
+<div class="grid_4 page_text">
+    <h2>Login with your Athena username</h2>
+    {% include 'main/account/login_form.html' %}
+</div>
+<div class="grid_4">
+    OR
+</div>
+<div class="grid_4 page_text">
+    <h2>Not Registered?</h2>
+    <a href="{% url 'main.account_views.create_account_page' %}" class="large_gray_button">Create Account</a>
+</div>
 {% endblock %}
