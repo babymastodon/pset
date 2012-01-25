@@ -1,35 +1,42 @@
 
+var marker;
 
-function set_detail_box_contents(letter){
-    item=item_dict[letter];
+function set_detail_box_contents(item){
     box = $("#detail_box_contents");
-    box.find("#building_img").attr('src',item.building_img);
-    box.find(".title").html(item.title);
-    box.find("#marker_img").attr('src',item.icon);
-    box.find(".description").html(item.description);
-    box.find(".start_time").html(item.start_time);
-    box.find(".end_time").html(item.end_time);
-    box.find(".location").html(item.location);
-    box.find(".bldg_number").html(item.bldg_num);
-    box.find(".class_numbers").html(item.class_nums.join(", "));
-    box.find(".class_title").html(item.class_title);
-    if (!item.attending){
-        box.find(".attend_button").show().click(ajax_attending(item.pk));
-    }else {
-        box.find(".attending").show();
+    box.find(".building_img").attr('src',item.bldg_img);
+    box.find('[name="building_img"]').val(item.bldg_img);
+    box.find('[name="location"]').val(item.bldg_num + ": " + item.bldg_name);
+    box.find('[name="lat"]').val(item.query_loc.lat());
+    box.find('[name="lng"]').val(item.query_loc.lng());
+}
+
+function location_lookup(loc){
+    query_whereis(loc, set_detail_box_contents);
+}
+
+function on_get_valid_loc(loc, isvalid){
+    if (isvalid){
+        location_lookup(loc);
     }
 }
 
-var on_get_valid_loc = function(){
-    marker = new google.maps.Marker({
-        map: map,
-           position: my_loc,
-           title: "Me",
-           draggable: true,
-           icon: marker_url('pirates'),
-           shadow: marker_url('default_shadow'),
-    });
-};
+function on_marker_drag(event){
+    location_lookup(event.latLng);
+}
 
 $(document).ready(function(){
+    get_current_position(on_get_valid_loc);
+    default_lat = $('#detail_box_contents [name="lat"]').val();
+    default_lng = $('#detail_box_contents [name="lng"]').val();
+    marker = new google.maps.Marker({
+        clickable: false,
+        draggable: true,
+        map: map,
+        position: new google.maps.LatLng(default_lat, default_lng),
+        title: "Party Location",
+    });
+    google.maps.event.addListener(marker, 'dragend', on_marker_drag);
+    box = $("#detail_box_contents");
+    box.find(".building_img").attr('src',box.find('[name="building_img"]').val());
+    open_detail_box();
 });

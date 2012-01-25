@@ -70,9 +70,9 @@ function showCoords(callback){
     return function(position){
         my_loc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         if (in_box(my_loc, top_left, bottom_right)){
-            callback(my_loc, true);
+            if (callback) callback(my_loc, true);
         }else{
-            callback(my_loc, false);
+            if (callback) callback(my_loc, false);
         }
     };
 }
@@ -86,31 +86,29 @@ function in_box(coord, tl, br){
 }
 
 //the callback function will get a dictionary of terms as it's only argument
-function query_whereis(callback){
-    return function(loc){
-        $.ajax({
-            type: 'GET',
-        url:"http://whereis.mit.edu/search",
-        dataType: 'jsonp',
-        data: {
-            type: 'coord',
-        output: 'json',
-        q: loc.lng()+','+loc.lat(),
-        },
-        success: function(loc){
-                     return function(data){
-                         d = data[0];
-                         last_query={}
-                         last_query['bldg_img'] = (d.bldgimg) ? d.bldgimg : null;
-                         last_query['bldg_name'] = d.name;
-                         last_query['bldg_num'] = d.bldgnum;
-                         last_query['bldg_loc'] = new google.maps.LatLng(d.lat_wgs84,d.long_wgs84);
-                         last_query['query_loc'] = tmp_loc;
-                         if (on_loc_query) on_loc_query();
-                     };
-                 }(loc),
-        });
-    };
+function query_whereis(loc, callback){
+    $.ajax({
+        type: 'GET',
+    url:"http://whereis.mit.edu/search",
+    dataType: 'jsonp',
+    data: {
+        type: 'coord',
+    output: 'json',
+    q: loc.lng()+','+loc.lat(),
+    },
+    success: function(loc,callback){
+                 return function(data){
+                     d = data[0];
+                     last_query={}
+                     last_query['bldg_img'] = (d.bldgimg) ? d.bldgimg : "http://web.mit.edu/campus-map/objimgs/object-7.thumb.jpg";
+                     last_query['bldg_name'] = d.name;
+                     last_query['bldg_num'] = d.bldgnum;
+                     last_query['bldg_loc'] = new google.maps.LatLng(d.lat_wgs84,d.long_wgs84);
+                     last_query['query_loc'] = loc;
+                     if (callback) callback(last_query);
+                 };
+             }(loc, callback),
+    });
 }
 //adds the static url and other path info to the front of name
 function marker_url(name){

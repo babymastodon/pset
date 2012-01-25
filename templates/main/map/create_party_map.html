@@ -3,13 +3,14 @@
 
 {% block container_class %}create_party{% endblock %}
 {% block container_contents %}
-<img src="http://web.mit.edu/campus-map/objimgs/object-7.thumb.jpg" class="building_img"/>
+<img src="" class="building_img"/>
 <div class="blah">
-    <label>Building: </label><input type="text" autocomplete="off"  class="label_if_blank" name="building" title="eg. W20" />
+    <label>Building: </label><input type="text"  class="" name="location" value="{{form.location.value}}" />
     <div class="clear"></div>
-    <label>Room: </label><input type="text" autocomplete="off" name="room" class="label_if_blank" title="eg. Reading Room" />
-    <input type="hidden" name="location_data" />
-    <input type="hidden" name="lng" />
-    <input type="hidden" name="lat" />
+    <label>Room: </label><input type="text" name="room" class="label_if_blank" title="eg. Reading Room" />
+    <input type="hidden" name="lng" value="{{form.lng.value}}" />
+    <input type="hidden" name="lat" value="{{form.lat.value}}" />
+    <input type="hidden" name="building_img" value="{{form.building_img.value}}" />
+    <input type="hidden" name="pk" val="" />
 </div>
 {% endblock %}

@@ -53,5 +53,5 @@ class PartyCreateForm(forms.Form):
     room = forms.CharField(max_length=100)
     lat = forms.CharField(max_length=100)
     lng = forms.CharField(max_length=100)
-    location_data = forms.CharField()#the json from the whereis request
+    building_img = forms.CharField()#the json from the whereis request
 

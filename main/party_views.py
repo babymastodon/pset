@@ -30,6 +30,10 @@ def party_create(request):
         return s.lower().lstrip('0')
     defaults['start_time'] = clean_time(now.strftime("%I:%M%p"))
     defaults['end_time'] = clean_time((now+timedelta(hours=1)).strftime("%I:%M%p"))
+    defaults['location'] = "W20: Stratton Student Center"
+    defaults['lng'] = "-71.094774920000006"
+    defaults['lat'] = "42.359042619999997"
+    defaults['building_img'] = "http://web.mit.edu/campus-map/objimgs/object-W20.jpg"
     form = PartyCreateForm(defaults)
     if request.method=="POST":
         form = PartyCreateForm(request.POST)
@@ -44,6 +48,7 @@ def party_create(request):
             party.room = d['room']
             party.lat = d['lat']
             party.lng = d['lng']
+            party.building_img = d['building_img']
             j = simplejson.loads(d['location_data'])
             #party.building_img = 
             party.attendees.add(request.user)
