@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date, timedelta
 from django import forms
+import account_views
 import simplejson, string, re
 
 #import models and forms here
@@ -20,7 +21,6 @@ def party_details(request, pk):
     rc={}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
-@login_required
 def party_create(request):
     rc={'error':None}
     now = datetime.datetime.now()
@@ -51,20 +51,48 @@ def party_create(request):
             party.lat = d['lat']
             party.lng = d['lng']
             party.building_img = d['building_img']
+            klass = re.search("\w+\.\w+", d['klass'])
             try:
-                klass = re.search("\w+\.\w+", d['klass'])
-                if klass:
-                    party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
+                party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
+                status=None
+                if request.user.is_anonymous():
+                    if d['username']:
+                        user = authenticate(username = d['username'], password = d['password'])
+                        if user:
+                            login(request, user)
+                            status="logged_in"
+                        else:
+                            rc['error']="Username and Password are not valid"
+                    elif d['email']:
+                        if d['pw1']==d['pw2'] and d['pw1']:
+                            moo = account_views.create_from_email_pwd(email=d['email'], pwd=d['pw1'], request=request)
+                            rc.update(moo['rc'])
+                            if not rc.get('error'):
+                                status="account_created"
+                        else:
+                            rc['error']="Passwords don't match"
+                else:
+                    status="logged_in"
+                if status=="logged_in":
+                    party.active=True
                     party.save()
                     party.attendees.add(request.user)
                     party.admins.add(request.user)
                     return redirect(reverse('main.party_views.party_details', kwargs={'pk':party.pk}))
+                elif status=="account_created":
+                    party.active=False
+                    party.save()
+                    party.attendees.add(moo['user'])
+                    party.admins.add(moo['user'])
+                    moo['ph'].party=party
+                    moo['ph'].save()
+                    return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
             except Exception as e:
-                rc['errors'] = "Class Number is invalid"
+                rc['error'] = "Class Number is invalid"
                 raise e
         else:
-            rc['errors'] = "There were errors in the form. Please make sure that all the fields are filled out."
-    rc['form'] = form
+            rc['error'] = "There were errors in the form. Please make sure that all the fields are filled out."
+    rc['form'] = rc['rform'] =  form
     return render_to_response("main/party/party_create.html", rc, context_instance=RequestContext(request))
 
 def party_registered(request, pk):

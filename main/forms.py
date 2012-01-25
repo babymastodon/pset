@@ -34,7 +34,7 @@ class FileForm(forms.ModelForm):
 
 class EmailRegisterForm(forms.Form):
     email = forms.EmailField(label="MIT Email")
-    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password:')
+    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password')
     pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
 
 class LoginForm(forms.Form):
@@ -54,4 +54,10 @@ class PartyCreateForm(forms.Form):
     lat = forms.CharField(max_length=100)
     lng = forms.CharField(max_length=100)
     building_img = forms.CharField()#the json from the whereis request
+    #copied from above
+    email = forms.EmailField(label="MIT Email", required=False)
+    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password', required=False)
+    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password', required=False)
+    username = forms.CharField(required=False)
+    password = forms.CharField(widget=forms.PasswordInput, required=False)
 

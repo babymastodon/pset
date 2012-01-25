@@ -148,10 +148,6 @@ class UserClassData(models.Model):
     userinfo = models.ForeignKey(UserInfo)
     _class = models.ForeignKey(Class)
 
-class PendingHash(models.Model):
-    user = models.ForeignKey(User)
-    hashcode = models.CharField(max_length=100)
-
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
     starttime = models.TimeField()
@@ -166,3 +162,10 @@ class Party(models.Model):
     lng = models.CharField(max_length=20)
     admins = models.ManyToManyField(User, related_name="admin_set")
     attendees = models.ManyToManyField(User, related_name="attendee_set")
+    active = models.BooleanField(default=True)
+    
+class PendingHash(models.Model):
+    user = models.ForeignKey(User)
+    party = models.ForeignKey(Party, null=True)
+    hashcode = models.CharField(max_length=100)
+

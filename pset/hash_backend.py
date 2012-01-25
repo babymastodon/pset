@@ -10,6 +10,9 @@ class HashBackend(ModelBackend):
             user=ph.user
             user.is_active=True
             user.save()
+            if ph.party:
+                ph.party.active=True
+                ph.party.save()
             ph.delete()
               
             return user

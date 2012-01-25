@@ -58,8 +58,7 @@ def createAccount(email="", username="", first_name="", last_name="",
 #views start here
 def profile_page(request, pk):
     rc={}
-    return render_to_response("main/account/profile_page.html", rc, 
-                              context_instance=RequestContext(request))
+    return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def my_profile_page(request):
@@ -68,14 +67,44 @@ def my_profile_page(request):
 @login_required
 def profile_edit(request):
     rc={}
-    return render_to_response("main/account/profile_edit.html", rc, 
-                              context_instance=RequestContext(request))
+    return render_to_response("main/account/profile_edit.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def profile_new_user_info(request):
     rc={}
-    return render_to_response("main/account/profile_new_user_info.html", rc, 
-                              context_instance=RequestContext(request))
+    return render_to_response("main/account/profile_new_user_info.html", rc, context_instance=RequestContext(request))
+
+def create_from_email_pwd(email, pwd, request):
+    rc={}
+    user=ph=None
+    uname=email.split("@")[0]
+    if User.objects.filter(username=uname).exists():
+        rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
+    else:
+        account=createAccount(email=email, 
+                              username=uname, 
+                              password=pwd, 
+                              is_active=False)
+        h = "%032x" % random.getrandbits(128)
+        ph = PendingHash(user=account, hashcode=h)
+        ph.save()
+        t = loader.get_template('emails/verify.txt')
+        html = loader.get_template('emails/verify.html')
+        root_email = request.get_host()
+        c = RequestContext(request, {
+            'username':uname,
+            'web_root': root_email,
+            'h':h,
+        })
+        subject = 'Email Verification'
+        from_email, to = 'no-reply@babymastodon.com', email
+        msg = EmailMultiAlternatives(subject, t.render(c), 
+                                     from_email, [to])
+        msg.attach_alternative(html.render(c), "text/html")
+        msg.send()
+        rc['email'] = email
+    return {'rc':rc, 'user':account, 'ph':ph}
+    
 
 def create_account_page(request):
     rc={}
@@ -83,34 +112,11 @@ def create_account_page(request):
     if request.method=="POST":
         form = EmailRegisterForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data['pw1']==form.cleaned_data['pw2']:
+            if form.cleaned_data['pw1']==form.cleaned_data['pw2'] and form.cleaned_data['pw1']:
                 email=form.cleaned_data['email']
-                uname=email.split("@")[0]
-                if User.objects.filter(username=uname).exists():
-                    rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
-                else:
-                    account=createAccount(email=email, 
-                                          username=uname, 
-                                          password=form.cleaned_data['pw1'], 
-                                          is_active=False)
-                    h = "%032x" % random.getrandbits(128)
-                    ph = PendingHash(user=account, hashcode=h)
-                    ph.save()
-                    t = loader.get_template('emails/verify.txt')
-                    html = loader.get_template('emails/verify.html')
-                    root_email = request.get_host()
-                    c = RequestContext(request, {
-                        'username':uname,
-                        'web_root': root_email,
-                        'h':h,
-                    })
-                    subject = 'Email Verification'
-                    from_email, to = 'no-reply@babymastodon.com', email
-                    msg = EmailMultiAlternatives(subject, t.render(c), 
-                                                 from_email, [to])
-                    msg.attach_alternative(html.render(c), "text/html")
-                    msg.send()
-                    rc['email'] = form.cleaned_data['email']
+                boo = create_from_email_pwd(email=email, pwd=form.cleaned_data['pw1'], request=request)
+                rc.update(boo['rc'])
+                if not rc.get('error'):
                     return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
             else:
                 rc['error']="Passwords don't match"
@@ -130,8 +136,7 @@ def verify(request, hashcode):
                                   rc, context_instance=RequestContext(request))
     rc['next']=reverse('main.home_views.home_page')#redirect to home after login
     login(request,user)
-    return render_to_response("main/account/verify.html", rc, 
-                              context_instance=RequestContext(request))
+    return redirect(reverse('main.account_views.my_profile_page'))
 
 def link_to_facebook(request):
     rc={}

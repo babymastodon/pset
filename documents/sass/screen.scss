@@ -379,6 +379,14 @@ $tw: 260px - $tb - 2* $tp;
     display: none;
 }
 
+.right{
+    text-align: right;
+}
+
+.left{
+    text-align: left;
+}
+
 #new_party_form{
     display: block;
     .title, h2{
@@ -387,16 +395,25 @@ $tw: 260px - $tb - 2* $tp;
         display: block;
         margin-bottom: 20px;
     }
+    #map_div{
+        margin-bottom: 30px;
+    }
     label, h3{
         display: block;
         font-size: 22px;
-        text-align: right;
         line-height: 35px;
+    }
+    h3{
         margin-bottom: 10px;
     }
     h2{
-        text-align: right;
         margin-bottom: 0px;
+    }
+    h4{
+        display: block;
+        font-size: 22px;
+        line-height: 35px;
+        margin-top: 20px;
     }
     .subscript{
         display: block;
@@ -414,7 +431,7 @@ $tw: 260px - $tb - 2* $tp;
         @include border-radius(10px);
     }
 }
-.errors{
+.errors, .error{
     display: block;
     color: $hue1-dark;
     padding: 0px 0px 20px 20px;
