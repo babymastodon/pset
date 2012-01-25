@@ -18,6 +18,8 @@ function location_lookup(loc){
 
 function on_get_valid_loc(loc, isvalid){
     if (isvalid){
+        marker.setPosition(loc);
+        map.panTo(loc);
         location_lookup(loc);
     }
 }

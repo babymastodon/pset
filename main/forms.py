@@ -43,14 +43,14 @@ class LoginForm(forms.Form):
 
 valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']
 class PartyCreateForm(forms.Form):
-    klass = forms.CharField(max_length=100)
-    title = forms.CharField(max_length=100)
-    day = forms.DateField()
-    start_time = forms.TimeField(input_formats=valid_time_formats)
-    end_time = forms.TimeField(input_formats=valid_time_formats)
-    agenda = forms.CharField(max_length=100)
-    location = forms.CharField(max_length=100)
-    room = forms.CharField(max_length=100)
+    klass = forms.CharField(max_length=100, required=True)
+    title = forms.CharField(max_length=100, required=True)
+    day = forms.DateField(required=True)
+    start_time = forms.TimeField(input_formats=valid_time_formats, required=True)
+    end_time = forms.TimeField(input_formats=valid_time_formats, required=True)
+    agenda = forms.CharField(max_length=100, required=True)
+    location = forms.CharField(max_length=100, required=True)
+    room = forms.CharField(max_length=100, required=True)
     lat = forms.CharField(max_length=100)
     lng = forms.CharField(max_length=100)
     building_img = forms.CharField()#the json from the whereis request
