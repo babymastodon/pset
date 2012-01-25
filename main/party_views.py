@@ -19,6 +19,7 @@ from main.views_common import *
 
 def party_details(request, pk):
     rc={}
+    rc['party'] = get_object_or_404(Party, pk=pk)
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
