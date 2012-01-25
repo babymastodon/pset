@@ -63,8 +63,9 @@ def exec_search(query, category=None, page=1, force_category=False):
             Slight change to algorithm: check if there are any matches in current category. If
             there are none, but matches are present in another category, switch to that one 
             instead. 
+            Don' know why, but it seems to give better results when the query is lowercase
         """
-        wildcard_tokens = string.join([a + "* OR " + a for a in query.split()], " OR ")
+        wildcard_tokens = string.join([a.lower() + "* OR " + a.lower() for a in query.split()], " OR ")
         user_search = SearchQuerySet().filter(content = Raw(wildcard_tokens)).models(UserInfo)
         class_search = SearchQuerySet().filter(content=Raw(wildcard_tokens)).models(Class)
         if not category:
@@ -123,7 +124,7 @@ def autocomplete_classes(query):
         if len(s)>33:
             return s[:30]+"..."
         return s
-    nums = [shorten(a.text) for a in sqs[0:5]]
+    nums = [shorten(a.text).lower() for a in sqs[0:5]]
     if nums:
         return {"status":"success", 'result': nums}
     else:
