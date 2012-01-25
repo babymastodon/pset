@@ -113,6 +113,24 @@ input[type="text"], input[type="password"]{
     width: 90px;
     padding: 2px 5px;
     font-size: 13px;
+    &.large_gray_text_box{
+        border: 2px solid $gray-mid-dark;
+        font-size: 20px;
+        @include border-radius(4px);
+        padding: 3px 5px;
+        display: block;
+        width: 206px;
+        &:focus{
+            border: 2px solid $gray-mid-dark;
+        }
+        &.blank{
+            color: $gray-mid;
+            border: 2px solid $gray-mid;
+        }
+        &.grid_2{
+            width: 126px;
+        }
+    }
 }
 
 .errorlist{
@@ -296,24 +314,6 @@ input[type="text"], input[type="password"]{
         font-size: 12px;
         line-height: 12px;
         margin-bottom: 20px;
-    }
-    input[type="text"]{
-        border: 2px solid $gray-mid-dark;
-        font-size: 20px;
-        @include border-radius(4px);
-        padding: 3px 5px;
-        display: block;
-        width: 206px;
-        &:focus{
-            border: 2px solid $gray-mid-dark;
-        }
-        &.blank{
-            color: $gray-mid;
-            border: 2px solid $gray-mid;
-        }
-        &.date, &.time{
-            width: 126px;
-        }
     }
     .submit_button{
         margin-top: 20px;

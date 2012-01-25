@@ -16,23 +16,23 @@
     <div class="grid_12">
         <div class="title">Create Pset Party</div>
         <label class="grid_2 alpha">Title</label>
-        <input type="text" name="title" class="label_if_blank limit_text grid_3" title="quick description" ref="30" />
+        <input type="text" name="title" class="label_if_blank limit_text grid_3 large_gray_text_box" title="quick description" ref="30" />
         <label class="grid_2">Class Number</label>
-        <input type="text" name="class" class="label_if_blank grid_3 omega" title="eg. 18.701" />
+        <input type="text" name="class" class="label_if_blank limit_text grid_3 omega large_gray_text_box" ref="100" title="eg. 18.701" />
         <div class="clear"></div>
 
         <span class="datepair">
             <label class="grid_2 alpha">Day</label>
-            <input type="text" name="day" class="date start grid_2" value="{{form.day.value}}" />
+            <input type="text" name="day" class="date start grid_2 large_gray_text_box" value="{{form.day.value}}" />
             <h3 class="grid_1">Start</h3>
-            <input type="text" class="time start grid_2" name="start_time" value="{{form.start_time.value}}" />
+            <input type="text" class="time start grid_2 large_gray_text_box" name="start_time" value="{{form.start_time.value}}" />
             <h3 class="grid_1">End</h3>
-            <input type="text" class="time end grid_2" name="end_time" value="{{form.end_time.value}}"/>
+            <input type="text" class="time end grid_2 large_gray_text_box" name="end_time" value="{{form.end_time.value}}"/>
         </span>
         <div class="clear"></div>
 
         <label class="grid_2 alpha" >Agenda</label>
-        <input type="text" name="agenda" class="label_if_blank limit_text grid_3" val="20" title="eg. Pset 9" />
+        <input type="text" name="agenda" class="label_if_blank limit_text grid_3 large_gray_text_box" val="30" title="eg. Pset 9" />
         <div class="clear"></div>
         <div class="grid_7 alpha omega prefix_4 suffix_1">
             <h2>Where is the party located?</h2>
