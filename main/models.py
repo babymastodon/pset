@@ -154,8 +154,9 @@ class PendingHash(models.Model):
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
-    starttime = models.DateTimeField()
-    endtime = models.DateTimeField()
+    starttime = models.TimeField()
+    endtime = models.TimeField()
+    day = models.DateField()
     title = models.CharField(max_length=30)
     agenda = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
