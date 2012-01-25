@@ -25,7 +25,7 @@ def party_create(request):
     rc={'error':None}
     now = datetime.datetime.now()
     defaults = {}
-    defaults['day'] = now.strftime("%A")
+    defaults['day'] = now.strftime("%m/%d/%y")
     def clean_time(s):
         return s.lower().lstrip('0')
     defaults['start_time'] = clean_time(now.strftime("%I:%M%p"))
@@ -43,6 +43,7 @@ def party_create(request):
             party = Party()
             party.starttime = d['start_time']
             party.endtime = d['end_time']
+            party.day = d['day']
             party.title = d['title']
             party.agenda = d['agenda']
             party.location = d['location']
@@ -50,20 +51,19 @@ def party_create(request):
             party.lat = d['lat']
             party.lng = d['lng']
             party.building_img = d['building_img']
-            j = simplejson.loads(d['location_data'])
-            #party.building_img = 
-            party.attendees.add(request.user)
-            party.admins.add(request.user)
             try:
                 klass = re.search("\w+\.\w+", d['klass'])
                 if klass:
-                    party.class_obj = ClassNumber.objects.get(number=klass.group())
+                    party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
                     party.save()
-                    return redirect('main.party_views.party_details', kwargs={'pk':party.pk})
-            except Exception:
-                rc['error'] = "Class Number is invalid"
+                    party.attendees.add(request.user)
+                    party.admins.add(request.user)
+                    return redirect(reverse('main.party_views.party_details', kwargs={'pk':party.pk}))
+            except Exception as e:
+                rc['errors'] = "Class Number is invalid"
+                raise e
         else:
-            rc['error'] = "There were errors in the form"
+            rc['errors'] = "There were errors in the form. Please make sure that all the fields are filled out."
     rc['form'] = form
     return render_to_response("main/party/party_create.html", rc, context_instance=RequestContext(request))
 

@@ -133,10 +133,6 @@ input[type="text"], input[type="password"]{
     }
 }
 
-.errorlist{
-    display:none;
-}
-
 .grid_4_button{
     @include background(linear-gradient(top,$hue1-mid, $hue1-mid-dark));
     @include box-shadow(3px 3px 5px 0 $gray-dark, 2px 2px 5px -2px $hue1-mid-light inset);
@@ -316,12 +312,18 @@ input[type="text"], input[type="password"]{
         margin-bottom: 20px;
     }
     .submit_button{
-        margin-top: 20px;
+        margin-top: 40px;
         width: 278px;
         margin-left: 330px;
         line-height: 50px;
         font-size: 35px;
         @include border-radius(10px);
+    }
+    .errors{
+        display: block;
+        color: $hue1-dark;
+        padding: 0px 0px 20px 30px;
+        font-size: 16px;
     }
 }
 

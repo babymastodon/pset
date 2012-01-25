@@ -20,5 +20,5 @@ def login_required(f):
     def login_required_func(*args, **kwargs):
         if args[0].user.is_authenticated():
             return f(*args,**kwargs)
-        return HttpResponseRedirect(reverse('main.account_views.login_choices')+"?next="+urllib.quote(args[0].get_full_path()))
+        return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(args[0].get_full_path()))
     return login_required_func

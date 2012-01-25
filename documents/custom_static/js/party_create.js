@@ -18,6 +18,8 @@ function location_lookup(loc){
 
 function on_get_valid_loc(loc, isvalid){
     if (isvalid){
+        marker.setPosition(loc);
+        map.panTo(loc);
         location_lookup(loc);
     }
 }
@@ -54,7 +56,7 @@ function autocomplete_callback(ob, response_callback){
 }
 
 function save_refresh(){
-    $('input[name="class-refresh"]').val($('input[name="class"]').val());
+    $('input[name="class-refresh"]').val($('input[name="klass"]').val());
 }
 
 $(document).ready(function(){
@@ -72,7 +74,7 @@ $(document).ready(function(){
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',box.find('[name="building_img"]').val());
     open_detail_box();
-    class_input = $('input[name="class"]').autocomplete({
+    class_input = $('input[name="klass"]').autocomplete({
         source: autocomplete_callback,
         autoFocus: true,
         delay: 300,

@@ -15,10 +15,11 @@
     {% csrf_token %}
     <div class="grid_12">
         <div class="title">Create Pset Party</div>
+        {% if errors %}<div class="errors">{{errors}}</div>{% endif %}
         <label class="grid_2 alpha">Title</label>
         <input type="text" name="title" class="label_if_blank limit_text grid_3 large_gray_text_box" title="quick description" ref="30" value="{{form.title.value}}" />
         <label class="grid_2">Class Number</label>
-        <input type="text" name="class" class="label_if_blank limit_text grid_3 omega large_gray_text_box" ref="100" title="eg. 18.701" value="{{form.klass.value}}" />
+        <input type="text" name="klass" class="label_if_blank limit_text grid_3 omega large_gray_text_box" ref="100" title="eg. 18.701" value="{{form.klass.value}}" />
         <input type="hidden" name="class-refresh" value="{{form.klass.value}}"/>
         <div class="clear"></div>
 
@@ -42,6 +43,6 @@
     </div>
     {% include 'main/map/create_party_map.html' %}
     <script src="{% static 'js/party_create.js'%}" type="text/javascript"></script>
-    <a href="javascript: document.new_party_form.submit()" class="gray_button submit_button">Submit</a>
+    <a href="javascript: $('#new_party_form').submit()" class="gray_button submit_button">Submit</a>
 </form>
 {% endblock %}
