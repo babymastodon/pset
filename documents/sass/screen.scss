@@ -197,6 +197,18 @@ input[type="text"], input[type="password"]{
     border: 1px solid $gray-mid;
 }
 
+.large_gray_button{
+    @extend .gray_button;
+    font-size: 30px;
+    line-height: 40px;
+    padding: 10px 20px;
+}
+
+.hcenter{
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 #date_nav_bar{
     div{

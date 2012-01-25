@@ -1,9 +1,13 @@
 @import "base";
 
 .page_text{
-    line-height: 20px;
+    line-height: 24px;
+    font-size: 18px;
     h1, h2, h3{
         color: $hue1-mid-dark;
+    }
+    div{
+        margin-bottom: 20px;
     }
     h1{
         font-size: 30;
@@ -21,7 +25,7 @@
     }
     h3{
         display: inline;
-        font-size: 20px;
+        font-size: 24px;
     }
     .hline{
         margin: 20px 0px;

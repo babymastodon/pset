@@ -9,56 +9,41 @@
 {% endblock %}
 
 {% block main_content %}
-<div class="grid_8">
-    <div id="slideshow">
-        <div id="slide_container">
-            {% for i in 12345|make_list %}
-            <div id="slide_{{forloop.counter0}}" class="slide_contents">
-                <img class="slide_img" src="{{STATIC_URL}}slider_test/img{{forloop.counter0}}.jpg"/>
-                <a href="{% url 'main.home_views.front_page' %}">
-                    <div class="slide_text s_{{forloop.counter0}}"><b>Galois Theory with Donuts:</b> 10pm Simmons common room</div>
-                </a>
-            </div>
-            {% endfor %}
+<div id="slideshow" class="grid_12">
+    <div id="slide_container">
+        {% for i in 12345|make_list %}
+        <div id="slide_{{forloop.counter0}}" class="slide_contents">
+            <img class="slide_img" src="{{STATIC_URL}}slider_test/img{{forloop.counter0}}.jpg"/>
+            <a href="{% url 'main.home_views.front_page' %}">
+                <div class="slide_text s_{{forloop.counter0}}"><b>Galois Theory with Donuts:</b> 10pm Simmons common room</div>
+            </a>
         </div>
-        <div id="doppleganger">
-            {% for i in 12345|make_list %}
-            <div id="dopple_{{forloop.counter0}}" class="dopple">
-            </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
-    <div class="page_text">
-        <h1 class="underlined grid_8 alpha omega">To be or not to be</h1>
-        <div class="grid_4 alpha">
-            <h3>Blah Blah</h3> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <div id="doppleganger">
+        {% for i in 12345|make_list %}
+        <div id="dopple_{{forloop.counter0}}" class="dopple">
         </div>
-        <img class="grid_4 omega" src="{{STATIC_URL}}slider_test/img3.jpg" />
-        <h1 class="right grid_8 alpha omega">To moo or not to moo</h1>
-        <img class="grid_4 alpha" src="{{STATIC_URL}}slider_test/img2.jpg" />
-        <div class="grid_4 omega">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </div>
+        {% endfor %}
     </div>
 </div>
-<div class="grid_4">
-    <a class="grid_4_button" href="{% url 'main.search_views.parties_by_date' %}">Join the Party!</a>
-    <div class="page_text">
-      <!-- Registration form goes here -->
-      <div class='registration'>
-        <h2>Sign Up</h2>
-        <h4>It's completely free!</h4> 
-        <form method='post' action='{% url 'main.account_views.create_account_page' %}'>
-          {% csrf_token %}
-          <ul>
-            {{ registrationForm.as_ul }}
-          </ul>
-          <input type='submit' value='Register' class="button"/>
-        </form>
-      </div>
-        <h2>Second moo</h2> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        <div class="hline"></div>
-        <h2>Last moo</h2> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div class="clear"></div>
+<div class="page_text grid_4">
+    <div class="text_block">
+        <h3>InTheLoop</h3> makes it easy for you to find pset parties and connect with your friends. Wanna instantly see the hottest pset parties going on around campus?
     </div>
+    <a href="{% url 'main.search_views.parties_by_date' %}" class="large_gray_button hcenter nofloat">Try it out!</a>
+</div>
+<a class="grid_4_button grid_4" href="{% url 'main.search_views.parties_by_date' %}">Join the Party!</a>
+<div class="page_text registration grid_4">
+    <h2>Sign Up</h2>
+    <h4>It's completely free!</h4> 
+    <form method='post' action='{% url 'main.account_views.create_account_page' %}'>
+        {% csrf_token %}
+        <ul>
+            {{ registrationForm.as_ul }}
+        </ul>
+        <input type='submit' value='Register' class="button"/>
+    </form>
 </div>
 {% endblock %}
