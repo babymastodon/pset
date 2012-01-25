@@ -14,6 +14,7 @@
 <form class="clearfix" id="new_party_form" name="new_party_form" action="." method="POST">
     {% csrf_token %}
     <div class="grid_12">
+        <input type="hidden" name="refresh_token" value=""/>
         <div class="title">Create Pset Party</div>
         {% if errors %}<div class="errors">{{errors}}</div>{% endif %}
         <label class="grid_2 alpha">Title</label>

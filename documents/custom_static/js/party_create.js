@@ -60,7 +60,11 @@ function save_refresh(){
 }
 
 $(document).ready(function(){
-    get_current_position(on_get_valid_loc);
+    r = $('input[name="refresh_token"]');
+    if (r.val()==""){
+      get_current_position(on_get_valid_loc);
+      r.val("visited");
+    }
     default_lat = $('#detail_box_contents [name="lat"]').val();
     default_lng = $('#detail_box_contents [name="lng"]').val();
     marker = new google.maps.Marker({
