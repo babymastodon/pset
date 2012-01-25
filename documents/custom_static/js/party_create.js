@@ -5,7 +5,9 @@ function set_detail_box_contents(item){
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',item.bldg_img);
     box.find('[name="building_img"]').val(item.bldg_img);
-    box.find('[name="location"]').val(item.bldg_num + ": " + item.bldg_name);
+    if (item.bldg_num) l = item.bldg_num + ": " + item.bldg_name;
+    else l = item.bldg_name;
+    box.find('[name="location"]').val(l);
     box.find('[name="lat"]').val(item.query_loc.lat());
     box.find('[name="lng"]').val(item.query_loc.lng());
 }

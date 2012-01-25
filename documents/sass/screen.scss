@@ -276,8 +276,8 @@ input[type="text"], input[type="password"]{
     .title, h2{
         line-height: 40px;
         font-size: 30px;
-        margin-bottom: 20px;
         display: block;
+        margin-bottom: 20px;
     }
     label, h3{
         display: block;
@@ -288,6 +288,14 @@ input[type="text"], input[type="password"]{
     }
     h2{
         text-align: right;
+        margin-bottom: 0px;
+    }
+    .subscript{
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        line-height: 12px;
+        margin-bottom: 20px;
     }
     input[type="text"]{
         border: 2px solid $gray-mid-dark;
