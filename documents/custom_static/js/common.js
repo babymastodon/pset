@@ -5,6 +5,8 @@ function init_blank_text_box(ob){
     if (ob.val()=="" || ob.val()==ob.attr("title")){
         ob.addClass("blank");
         ob.val(ob.attr("title"));
+    } else{
+        ob.removeClass("blank");
     }
 }
 function addBlankHandlers(){
@@ -89,6 +91,7 @@ function undo_meta(event){
     meta_pressed=false;
 }
 
+//this removes the "filler" text from blank fields in the form
 function clean_data(event){
     $('.label_if_blank').each(function(){
         $(this).val(val2($(this)));

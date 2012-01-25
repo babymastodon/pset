@@ -53,6 +53,10 @@ function autocomplete_callback(ob, response_callback){
     });
 }
 
+function save_refresh(){
+    $('input[name="class-refresh"]').val($('input[name="class"]').val());
+}
+
 $(document).ready(function(){
     get_current_position(on_get_valid_loc);
     default_lat = $('#detail_box_contents [name="lat"]').val();
@@ -68,10 +72,12 @@ $(document).ready(function(){
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',box.find('[name="building_img"]').val());
     open_detail_box();
-    $('input[name="class"]').autocomplete({
+    class_input = $('input[name="class"]').autocomplete({
         source: autocomplete_callback,
         autoFocus: true,
         delay: 300,
         minLength: 3,
-    });
+        close: save_refresh,
+    }).bind("textchange",save_refresh).val($('input[name="class-refresh"]').val());
+    init_blank_text_box(class_input);
 });

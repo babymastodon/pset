@@ -34,6 +34,7 @@ def party_create(request):
     defaults['lng'] = "-71.094774920000006"
     defaults['lat'] = "42.359042619999997"
     defaults['building_img'] = "http://web.mit.edu/campus-map/objimgs/object-W20.jpg"
+    defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
     form = PartyCreateForm(defaults)
     if request.method=="POST":
         form = PartyCreateForm(request.POST)

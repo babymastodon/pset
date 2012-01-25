@@ -16,9 +16,10 @@
     <div class="grid_12">
         <div class="title">Create Pset Party</div>
         <label class="grid_2 alpha">Title</label>
-        <input type="text" name="title" class="label_if_blank limit_text grid_3 large_gray_text_box" title="quick description" ref="30" />
+        <input type="text" name="title" class="label_if_blank limit_text grid_3 large_gray_text_box" title="quick description" ref="30" value="{{form.title.value}}" />
         <label class="grid_2">Class Number</label>
-        <input type="text" name="class" class="label_if_blank limit_text grid_3 omega large_gray_text_box" ref="100" title="eg. 18.701" />
+        <input type="text" name="class" class="label_if_blank limit_text grid_3 omega large_gray_text_box" ref="100" title="eg. 18.701" value="{{form.klass.value}}" />
+        <input type="hidden" name="class-refresh" value="{{form.klass.value}}"/>
         <div class="clear"></div>
 
         <span class="datepair">
@@ -32,7 +33,7 @@
         <div class="clear"></div>
 
         <label class="grid_2 alpha" >Agenda</label>
-        <input type="text" name="agenda" class="label_if_blank limit_text grid_3 large_gray_text_box" val="30" title="eg. Pset 9" />
+        <input type="text" name="agenda" class="label_if_blank limit_text grid_3 large_gray_text_box" val="30" title="eg. Pset 9" value="{{form.agenda.value}}" />
         <div class="clear"></div>
         <div class="grid_7 alpha omega prefix_4 suffix_1">
             <h2>Where is the party located?</h2>
