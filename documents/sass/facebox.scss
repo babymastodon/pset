@@ -1,71 +1,80 @@
-@import "base";
-
-#facebox{
-    .content{
-        width: 400px;
-        position: relative;
-        @include background(image-url("header_30.png"));
-        background-color: $hue1-light;
-        background-repeat: repeat-x;
-        padding: 0px;
-        .title{
-            display: block;
-            color: $hue1-mid-light;
-            @include text-shadow(1px 1px 1px $hue1-dark);
-            font-size: 20px;
-            line-height: 30px;
-            font-weight: bold;
-            text-align: center;
-        }
-        .content_box{
-            padding: 20px;
-            .message{
-                display: block;
-                margin-bottom: 20px;
-            }
-            .event{
-                font-weight: bold;
-                display: table;
-                margin: 0px auto 0px auto;
-            }
-        }
-        .facebook{
-            display: block;
-            float: right;
-            margin-right: 5px;
-        }
-        .facebook_button{
-            float: right;
-            margin-right: 20px;
-            margin-bottom: 20px;
-        }
-        .details{
-            float: left;
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
-        .row{
-            display: block;
-            clear: both;
-            margin-bottom: 10px;
-            label, input{
-                display: block;
-                width: 100px;
-                float: left;
-            }
-        }
-        input[type="submit"]{
-            margin-top: 20px;
-            clear: both;
-            float: right;
-        }
-        form{
-            display: block;
-            margin: 20px 20px 0px 20px;
-        }
-    }
-    .close{
-        background-color: transparent;
-    }
+#facebox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  text-align: left;
 }
 
+
+#facebox .popup{
+  position:relative;
+  border:3px solid rgba(0,0,0,0);
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;
+  -webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);
+  -moz-box-shadow:0 0 18px rgba(0,0,0,0.4);
+  box-shadow:0 0 18px rgba(0,0,0,0.4);
+}
+
+#facebox .content {
+  display:table;
+  width: 370px;
+  padding: 10px;
+  background: #fff;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+}
+
+#facebox .content > p:first-child{
+  margin-top:0;
+}
+#facebox .content > p:last-child{
+  margin-bottom:0;
+}
+
+#facebox .close{
+  position:absolute;
+  top:5px;
+  right:5px;
+  padding:2px;
+  background:#fff;
+}
+#facebox .close img{
+  opacity:0.3;
+}
+#facebox .close:hover img{
+  opacity:1.0;
+}
+
+#facebox .loading {
+  text-align: center;
+}
+
+#facebox .image {
+  text-align: center;
+}
+
+#facebox img {
+  border: 0;
+  margin: 0;
+}
+
+#facebox_overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+}
+
+.facebox_hide {
+  z-index:-100;
+}
+
+.facebox_overlayBG {
+  background-color: #000;
+  z-index: 99;
+}

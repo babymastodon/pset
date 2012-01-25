@@ -105,4 +105,5 @@ function init_one_attend_button(){
 
 function init_attend_buttons(){
     $(".attend_button_container.not_initialized").each(init_one_attend_button);
+            jQuery.facebox('some html');
 }
