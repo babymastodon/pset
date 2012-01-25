@@ -413,14 +413,17 @@ $tw: 260px - $tb - 2* $tp;
         font-size: 35px;
         @include border-radius(10px);
     }
-    .errors{
-        display: block;
-        color: $hue1-dark;
-        padding: 0px 0px 20px 30px;
-        font-size: 16px;
-    }
+}
+.errors{
+    display: block;
+    color: $hue1-dark;
+    padding: 0px 0px 20px 20px;
+    font-size: 20px;
 }
 
+.underlined{
+    text-decoration: underline;
+}
 .ui-autocomplete{
     white-space: nowrap;
 }

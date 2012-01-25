@@ -98,6 +98,18 @@ function clean_data(event){
     });
 }
 
+function tick(ob){
+    return function(){
+        console.log("moo");
+        ob.children("li:last-child").hide().prependTo(ob).fadeIn('slow');
+        setTimeout(tick(ob), 5000);
+    };
+}
+
+function init_ticker(){
+    setTimeout(tick($(this)), 5000);
+}
+
 $(document).ready(function(){
     $(".label_if_blank").each(addBlankHandlers);
     $("#top_search_button").click(submit_top_search_form);
@@ -111,4 +123,5 @@ $(document).ready(function(){
     $(".limit_text").each(limit_text);
     $("body").keydown(check_meta).keyup(undo_meta);
     $("form").submit(clean_data);
+    $(".ticker").each(init_ticker);
 });

@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
+from django.db import IntegrityError
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template import loader, Context
 from django import forms
@@ -85,36 +86,41 @@ def create_account_page(request):
             if form.cleaned_data['pw1']==form.cleaned_data['pw2']:
                 email=form.cleaned_data['email']
                 uname=email.split("@")[0]
-                account=createAccount(email=email, 
-                                      username=uname, 
-                                      password=form.cleaned_data['pw1'], 
-                                      is_active=False)
-                h = "%032x" % random.getrandbits(128)
-                ph = PendingHash(user=account, hashcode=h)
-                ph.save()
-                t = loader.get_template('emails/verify.txt')
-                html = loader.get_template('emails/verify.html')
-                root_email = request.get_host()
-                c = RequestContext(request, {
-                    'username':uname,
-                    'web_root': root_email,
-                    'h':h,
-                })
-                subject = 'Email Verification'
-                from_email, to = 'no-reply@babymastodon.com', email
-                msg = EmailMultiAlternatives(subject, t.render(c), 
-                                             from_email, [to])
-                msg.attach_alternative(html.render(c), "text/html")
-                msg.send()
-                rc['email'] = form.cleaned_data['email']
-                return render_to_response(
-                  "main/account/create_from_email_sent.html", 
-                  rc, context_instance=RequestContext(request)
-                )
-            rc['error']="Passwords don't match"
-    rc['registrationForm'] = form
-    return render_to_response("main/account/create_account_page.html", 
-                              rc, context_instance=RequestContext(request))
+                if User.objects.filter(username=uname).exists():
+                    rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
+                else:
+                    account=createAccount(email=email, 
+                                          username=uname, 
+                                          password=form.cleaned_data['pw1'], 
+                                          is_active=False)
+                    h = "%032x" % random.getrandbits(128)
+                    ph = PendingHash(user=account, hashcode=h)
+                    ph.save()
+                    t = loader.get_template('emails/verify.txt')
+                    html = loader.get_template('emails/verify.html')
+                    root_email = request.get_host()
+                    c = RequestContext(request, {
+                        'username':uname,
+                        'web_root': root_email,
+                        'h':h,
+                    })
+                    subject = 'Email Verification'
+                    from_email, to = 'no-reply@babymastodon.com', email
+                    msg = EmailMultiAlternatives(subject, t.render(c), 
+                                                 from_email, [to])
+                    msg.attach_alternative(html.render(c), "text/html")
+                    msg.send()
+                    rc['email'] = form.cleaned_data['email']
+                    return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
+            else:
+                rc['error']="Passwords don't match"
+    rc['rform'] = form
+    return render_to_response("main/account/create_account_page.html", rc, context_instance=RequestContext(request))
+
+def forgot_password(request):
+    rc={}
+    return render_to_response("main/account/forgot_password.html", rc, context_instance=RequestContext(request))
+
 
 def verify(request, hashcode):
     rc={}

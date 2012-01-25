@@ -20,6 +20,7 @@ urlpatterns += patterns('main.account_views',
     url(r'^login/$', 'login_page'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not
     url(r'^logout/$', 'logout_view'),#logs the user out and redirects to front page
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
+    url(r'^forgotpw/$', 'forgot_password'),
     url(r'^facebook/', include('django_facebook.urls')),
     url(r'^accounts/', include('userena.urls')),
 )

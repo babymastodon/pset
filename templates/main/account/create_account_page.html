@@ -2,10 +2,10 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
+{% if error %}
+<div class="errors grid_12">***{{ error|safe }}***</div>
+{% endif %}
 <div class="grid_7 page_text prefix_1">
-    {% if error %}
-    <div class="errors">***{{ error }}</div>
-    {% endif %}
     <h1>Benefits of registration include:</h1>
     <ul class="bullet_list">
         <li>Moo1</li>
