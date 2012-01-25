@@ -3,7 +3,7 @@ function register_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.registered) show_attend_button_already_attending(ob);
-            $.facebox({ ajax: data.link })
+            $.facebox({ ajax: data.link });
         }
     };
 }
@@ -11,7 +11,7 @@ function unregister_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.registered) show_attend_button(ob);
-            $.facebox({ ajax: data.link })
+            $.facebox({ ajax: data.link });
         }
     };
 }
