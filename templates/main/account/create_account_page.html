@@ -2,13 +2,27 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-{% if error %}
-{{ error }}
-{% endif %}
+<div class="grid_7 page_text prefix_1">
+    {% if error %}
+    <div class="errors">***{{ error }}</div>
+    {% endif %}
+    <h1>Benefits of registration include:</h1>
+    <ul class="bullet_list">
+        <li>Moo1</li>
+        <li>Moo2</li>
+        <li>Moo3</li>
+    </ul>
+</div>
+<div class="grid_4 page_text">
+    <h2>Register with MIT email</h2>
+    {% include 'main/account/create_account_form.html' %}
+</div>
+{% comment %}
 <form action="{% url facebook_connect %}?facebook_login=1" method="post">{% csrf_token %}
     <ul>
         {{ form.as_ul}}
     </ul>
     <input type="submit" value="Register" class="button" />
 </form>
+{% endcomment %}
 {% endblock %}

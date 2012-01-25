@@ -132,6 +132,89 @@ input[type="text"], input[type="password"]{
         }
     }
 }
+.center{
+    text-align: center;
+}
+.hline{
+    border-top: 2px solid $hue1-mid-dark;
+    margin: 40px 0px 40px 10px;
+}
+.wide_button{
+    height: 30px;
+    margin-bottom: 10px;
+    @include box-shadow($gray-mid-dark 2px 2px 3px 0px);
+    background-color: $tan-light;
+    text-align: center;
+    &:hover{
+        background-color: $tan-mid;
+    }
+    &:active{
+        @include box-shadow($gray-mid-dark 1px 1px 1px 0px);
+        position: relative;
+        top: 1px;
+        left: 1px;
+    }
+    img{
+        height: 30px;
+    }
+}
+
+$tb: 1px;
+$tp: 10px;
+$tw: 260px - $tb - 2* $tp;
+
+.ticker_header{
+    @extend .wide_button;
+    @include unselectable;
+    color: $black;
+    font-size: 28px;
+    line-height: 40px;
+    height: 40px;
+    width: $tw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bullet_list{
+    padding-left: 50px;
+    list-style-type: circle;
+    li{
+        padding: 10px 0px;
+        font-size: 20px;
+    }
+}
+
+.ticker{
+    @include unselectable;
+    width: $tw;
+    @include box-shadow($gray-mid 2px 2px 3px 0px inset);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid $gray_light;
+    background-color: $white;
+    padding: $tp;
+    li{
+        a{
+            display: block;
+            background-color: $hue1-light;
+            @include box-shadow($gray-mid 1px 1px 2px 0px);
+            margin-bottom: 5px;
+            &:hover{
+                background-color: $hue1-light + 2 * $d;
+            }
+            &:active{
+                position: relative;
+                left: 1px;
+                top: 1px;
+                @include box-shadow(none);
+            }
+        }
+        &:last-child a{
+            margin-bottom: 0px;
+        }
+    }
+}
 
 #signup_form{
     label{
@@ -146,7 +229,7 @@ input[type="text"], input[type="password"]{
         clear: both;
         margin-top: 10px;
         float: right;
-        margin-right: 30px;
+        margin-right: 40px;
     }
 }
 
@@ -234,25 +317,6 @@ input[type="text"], input[type="password"]{
             margin-bottom: 10px;
             float: none;
         }
-    }
-}
-.wide_button{
-    height: 30px;
-    margin-bottom: 10px;
-    @include box-shadow($gray-mid-dark 2px 2px 3px 0px);
-    background-color: $tan-light;
-    text-align: center;
-    &:hover{
-        background-color: $tan-mid;
-    }
-    &:active{
-        @include box-shadow($gray-mid-dark 1px 1px 1px 0px);
-        position: relative;
-        top: 1px;
-        left: 1px;
-    }
-    img{
-        height: 30px;
     }
 }
 

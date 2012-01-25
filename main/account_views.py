@@ -112,7 +112,7 @@ def create_account_page(request):
                   rc, context_instance=RequestContext(request)
                 )
             rc['error']="Passwords don't match"
-    rc['form'] = form
+    rc['registrationForm'] = form
     return render_to_response("main/account/create_account_page.html", 
                               rc, context_instance=RequestContext(request))
 

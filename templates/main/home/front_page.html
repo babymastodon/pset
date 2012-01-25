@@ -37,26 +37,34 @@
 </div>
 <div class="page_text grid_4">
     <div class="text_block">
-        <h3>Has the party started?</h3>Advertize ongoing pset parties or schedule future parties using our dummy-proof map interface.
+        <h3>Has the party started?</h3> Advertize ongoing pset parties or schedule future parties using our time-saving map interface.
     </div>
     <img src="{% static 'images/school.png' %}" class="hcenter"/>
-    <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Post Your Party!</a>
+    <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Create a Party</a>
 </div>
 <div class="page_text grid_4">
     <div class="text_block">
-        <h3>Sign up</h3> to receive automatic notifications and recommendations based on your class schedule. It's completely free!
+        <h3>Sign up</h3> to receive emails and recommendations based on your class schedule. It's completely free!
     </div>
-    <img src="{% static 'images/arrow.png' %}" class="hcenter"/>
-    <form method='post' id="signup_form" action='{% url 'main.account_views.create_account_page' %}'>
-        {% csrf_token %}
-        {% for e in registrationForm %}
-        <label>{{e.label}}</label>
-        <input type="text" class="large_gray_text_box hcenter nofloat" name="email" />
-        {% endfor %}
-        <a href="javascript: $('#signup_form').submit()" class="gray_button right">Register</a>
-    </form>
+    {% include 'main/account/create_account_form.html' %}
 </div>
 <div class="clear"></div>
+<div class="grid_10 prefix_1 suffix_1"><div class="hline"></div></div>
+<div class="clear"></div>
 <div class="page_text grid_4">
+    <h2 class="center">WHaddup?</h2>
 </div>
+<div class="page_text grid_4">
+    <div class="ticker_header">Hottest Parties</div>
+    {% with ticker=hottest_parties %}
+    {% include 'main/party/party_ticker.html' %}
+    {% endwith %}
+</div>
+<div class="page_text grid_4">
+    <div class="ticker_header">Hottest Classes</div>
+    {% with ticker=hottest_classes %}
+    {% include 'main/party/party_ticker.html' %}
+    {% endwith %}
+</div>
+<div class="clear"></div>
 {% endblock %}

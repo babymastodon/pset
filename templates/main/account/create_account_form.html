@@ -1,0 +1,13 @@
+
+{% load url from future %}
+
+<form method='post' id="signup_form" action='{% url 'main.account_views.create_account_page' %}'>
+    {% csrf_token %}
+    <label>{{registrationForm.email.label}}</label>
+    <input type="text" class="large_gray_text_box hcenter nofloat" name="{{registrationForm.email.html_name}}" />
+    <label>{{registrationForm.pw1.label}}</label>
+    <input type="password" class="large_gray_text_box hcenter nofloat" name="{{registrationForm.pw1.html_name}}" />
+    <label>{{registrationForm.pw2.label}}</label>
+    <input type="password" class="large_gray_text_box hcenter nofloat" name="{{registrationForm.pw2.html_name}}" />
+    <a href="javascript: $('#signup_form').submit()" class="gray_button right">Register</a>
+</form>
