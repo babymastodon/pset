@@ -33,9 +33,9 @@ class FileForm(forms.ModelForm):
         return Resource(page=page,file=self.cleaned_data['file'])
 
 class EmailRegisterForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(label="MIT Email")
     pw1 = forms.CharField(widget=forms.PasswordInput, label='Password:')
-    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password:')
+    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
 
 class LoginForm(forms.Form):
     username = forms.CharField()

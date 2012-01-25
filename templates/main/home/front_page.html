@@ -32,18 +32,31 @@
     <div class="text_block">
         <h3>InTheLoop</h3> makes it easy for you to find pset parties and connect with your friends. Wanna instantly see the hottest pset parties going on around campus?
     </div>
-    <a href="{% url 'main.search_views.parties_by_date' %}" class="large_gray_button hcenter nofloat">Try it out!</a>
+    <img src="{% static 'images/interact.png' %}" class="hcenter"/>
+    <a href="{% url 'main.search_views.parties_by_date' %}" class="large_gray_button hcenter nofloat">Find Parties Now</a>
 </div>
-<a class="grid_4_button grid_4" href="{% url 'main.search_views.parties_by_date' %}">Join the Party!</a>
-<div class="page_text registration grid_4">
-    <h2>Sign Up</h2>
-    <h4>It's completely free!</h4> 
-    <form method='post' action='{% url 'main.account_views.create_account_page' %}'>
+<div class="page_text grid_4">
+    <div class="text_block">
+        <h3>Has the party started?</h3>Advertize ongoing pset parties or schedule future parties using our dummy-proof map interface.
+    </div>
+    <img src="{% static 'images/school.png' %}" class="hcenter"/>
+    <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Post Your Party!</a>
+</div>
+<div class="page_text grid_4">
+    <div class="text_block">
+        <h3>Sign up</h3> to receive automatic notifications and recommendations based on your class schedule. It's completely free!
+    </div>
+    <img src="{% static 'images/arrow.png' %}" class="hcenter"/>
+    <form method='post' id="signup_form" action='{% url 'main.account_views.create_account_page' %}'>
         {% csrf_token %}
-        <ul>
-            {{ registrationForm.as_ul }}
-        </ul>
-        <input type='submit' value='Register' class="button"/>
+        {% for e in registrationForm %}
+        <label>{{e.label}}</label>
+        <input type="text" class="large_gray_text_box hcenter nofloat" name="email" />
+        {% endfor %}
+        <a href="javascript: $('#signup_form').submit()" class="gray_button right">Register</a>
     </form>
+</div>
+<div class="clear"></div>
+<div class="page_text grid_4">
 </div>
 {% endblock %}

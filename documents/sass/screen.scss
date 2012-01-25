@@ -133,6 +133,23 @@ input[type="text"], input[type="password"]{
     }
 }
 
+#signup_form{
+    label{
+        float: left;
+        display: block;
+        clear: right;
+    }
+    input{
+        margin-bottom: 5px;
+    }
+    a{
+        clear: both;
+        margin-top: 10px;
+        float: right;
+        margin-right: 30px;
+    }
+}
+
 .grid_4_button{
     @include background(linear-gradient(top,$hue1-mid, $hue1-mid-dark));
     @include box-shadow(3px 3px 5px 0 $gray-dark, 2px 2px 5px -2px $hue1-mid-light inset);
@@ -199,12 +216,13 @@ input[type="text"], input[type="password"]{
 
 .large_gray_button{
     @extend .gray_button;
-    font-size: 30px;
-    line-height: 40px;
-    padding: 10px 20px;
+    font-size: 28px;
+    line-height: 60px;
+    padding: 0px 20px;
 }
 
 .hcenter{
+    clear: both;
     display: table;
     margin-left: auto;
     margin-right: auto;
