@@ -116,6 +116,19 @@ def exec_search(query, category=None, page=1, force_category=False):
         rmin=rmax=0
     return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax, 'status':'success'}
 
+def autocomplete_classes(query):
+    wildcard_tokens = string.join([a + "* OR " + a for a in query.split()], " OR ")
+    sqs = SearchQuerySet().raw_search(wildcard_tokens).models(ClassNumber)
+    def shorten(s):
+        if len(s)>33:
+            return s[:30]+"..."
+        return s
+    nums = [shorten(a.text) for a in sqs[0:5]]
+    if nums:
+        return {"status":"success", 'result': nums}
+    else:
+        return {'status': "no results found"}
+
 def create_party_dict(pk, letter, request, color="red", day="0"):
     (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
     r = {}
@@ -194,6 +207,9 @@ def ajax(request):
             elif verb=='class_suggestions':
                 query = request.GET['q']
                 result = exec_search(query=query, category="Classes", page=1, force_category=True)
+            elif verb=="autocomplete_class":
+                query = request.GET['q']
+                result = autocomplete_classes(query) 
             else:
                 result['status']="verb didn't match"
     except Exception as e:

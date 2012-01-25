@@ -324,3 +324,7 @@ input[type="text"], input[type="password"]{
         @include border-radius(10px);
     }
 }
+
+.ui-autocomplete{
+    white-space: nowrap;
+}

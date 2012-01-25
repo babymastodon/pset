@@ -26,6 +26,33 @@ function on_marker_drag(event){
     location_lookup(event.latLng);
 }
 
+function autocomplete_callback(ob, response_callback){
+    $.ajax({
+        type: "GET",
+        data: {
+            module: "search",
+            q: ob.term,
+            verb: "autocomplete_class",
+        },
+        url: ajax_url,
+        dataType: "json",
+        success: function(response_callback){
+                     return function(data){
+                         if (data.status=="success"){
+                            response_callback(data.result)
+                         } else {
+                             response_callback([]);
+                         }
+                     };
+                 }(response_callback),
+        error: function(response_callback){
+                   return function(){
+                       response_callback([]);
+                   }
+               }(response_callback),
+    });
+}
+
 $(document).ready(function(){
     get_current_position(on_get_valid_loc);
     default_lat = $('#detail_box_contents [name="lat"]').val();
@@ -41,4 +68,10 @@ $(document).ready(function(){
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',box.find('[name="building_img"]').val());
     open_detail_box();
+    $('input[name="class"]').autocomplete({
+        source: autocomplete_callback,
+        autoFocus: true,
+        delay: 300,
+        minLength: 3,
+    });
 });
