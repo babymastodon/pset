@@ -8,7 +8,34 @@
     loc = new google.maps.LatLng({{party.lat}},{{party.lng}});
 </script>
 <script src="{% static 'js/party_details.js'%}" type="text/javascript"></script>
-<div id="map_container" class="grid_4">
-    <div id="mapdiv" style="width: 300px; height: 300px;"></div>
+<div class="grid_7">
+    <div class="fright">
+        {% with pk=party.pk %}
+        {% include 'main/party/attend_button.html' %}
+        {% endwith %}
+    </div>
+    <h2>{{party.title}}</h2>
+    <ul class="party_details">
+        <li>{{party.day}}</li>
+        <li>{{party.starttime}} to {{party.endtime}}</li>
+        <li>Agenda: {{party.agenda}}</li>
+        <li>Location: {{party.location}}</li>
+        <li>Room: {{party.room}}</li>
+    </ul>
+    <div>{{party.class_obj.title}}<a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a></div>
+    <img src="{{party.building_img}}" />
+</div>
+<div id="right_col" class="grid_5">
+    <div id="mapdiv" style="width: 380px; height: 380px;"></div>
+    <div>
+        {% with people_list=admins people_header="Admins" %}
+        {% include 'main/party/people_list.html' %}
+        {% endwith %}
+    </div>
+    <div>
+        {% with people_list=attendees people_header="Attending" %}
+        {% include 'main/party/people_list.html' %}
+        {% endwith %}
+    </div>
 </div>
 {% endblock %}

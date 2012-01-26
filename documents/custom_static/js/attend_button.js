@@ -3,15 +3,10 @@ function register_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.registered) show_attend_button_already_attending(ob);
+            else show_attend_button(ob);
             $.facebox({ ajax: data.link });
-        }
-    };
-}
-function unregister_success(ob){
-    return function(data){
-        if (data.status=="success"){
-            if (data.registered) show_attend_button(ob);
-            $.facebox({ ajax: data.link });
+        }else{
+            register_error(ob);
         }
     };
 }
@@ -46,7 +41,7 @@ function ajax_unregister(ob){
         pk: pk,
         module: 'party',
         },
-        success:unregister_success(ob),
+        success:register_success(ob),
         error: register_error,
         });
     }
@@ -105,5 +100,4 @@ function init_one_attend_button(){
 
 function init_attend_buttons(){
     $(".attend_button_container.not_initialized").each(init_one_attend_button);
-            jQuery.facebox('some html');
 }

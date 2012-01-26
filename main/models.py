@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import urllib2, cStringIO, itertools, datetime
 from django.core.files.base import ContentFile
+from django.conf import settings
 from django_facebook.models import FacebookProfileModel
 
 def resize_dimensions(width, height, longest_side):
@@ -126,6 +127,7 @@ class UserInfo(FacebookProfileModel):
     courses = models.ManyToManyField(Course)
     graduation_year = models.IntegerField(blank=True, null=True)
     current_classes = models.ManyToManyField(Class, through="UserClassData")
+    followees = models.ManyToManyField("self", symmetrical=False, related_name="followers")
     friends = models.ManyToManyField("self")
 
     def __unicode__(self):
@@ -142,6 +144,12 @@ class UserInfo(FacebookProfileModel):
         if self.graduation_year != None:
             meta = meta + ", '" + self.graduation_year
         return meta 
+    
+    def get_prof_pic(self):
+        if self.image:
+            return self.image.url
+        else:
+            return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
 
 class UserClassData(models.Model):
     #things like confidence

@@ -437,7 +437,12 @@ $tw: 260px - $tb - 2* $tp;
     padding: 0px 0px 20px 20px;
     font-size: 20px;
 }
-
+.fright{
+    float: right;
+}
+.fleft{
+    float: left;
+}
 .underlined{
     text-decoration: underline;
 }

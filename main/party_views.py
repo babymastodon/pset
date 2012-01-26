@@ -19,7 +19,11 @@ from main.views_common import *
 
 def party_details(request, pk):
     rc={}
-    rc['party'] = get_object_or_404(Party, pk=pk)
+    party = get_object_or_404(Party, pk=pk)
+    rc['party'] = party
+    rc['admins'] = party.admins.all()
+    rc['attendees'] = party.attendees.all()[:10]
+    #friend rank
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
@@ -124,14 +128,34 @@ def party_register_ajax(request, party_pk):
     r["status"]="success"
     r['registered']=True
     r['link'] = reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
+    party = Party.objects.filter(pk=party_pk)
+    if party and request.user.is_authenticated():
+        party[0].attendees.add(request.user)
+        party[0].save()
+    else:
+        r['status']='party does not exist'
     return r
 
 def party_unregister_ajax(request, party_pk):
     r = {}
     r["status"]="success"
-    r['registered']=True
+    r['registered']=False
     r['link'] = reverse('main.party_views.party_unregistered',kwargs={'pk':party_pk})
+    party = Party.objects.filter(pk=party_pk)
+    if party and request.user.is_authenticated():
+        party[0].attendees.remove(request.user)
+    else:
+        r['status']='party does not exist'
     return r
+
+def is_registered(request, party_pk):
+    party = Party.objects.filter(pk=party_pk)
+    if party:
+        if party[0].attendees.filter(pk=request.user.pk).exists():
+            return {'status':'success', 'attending':True}
+        else:
+            return {'status':'success', 'attending':False}
+    return {'status': 'party does not exist'}
 
 #ajax handler for handling party update information and party delete
 def ajax(request):
@@ -140,7 +164,7 @@ def ajax(request):
         verb = request.REQUEST.get('verb',None)
         party_pk = request.REQUEST.get('pk',None)
         if verb=='isregistered':
-            result = {"status": "success", "attending":False}
+            result = is_registered(request, party_pk)
         elif verb=='get_attend_button':
             return render_to_response('main/party/attend_button.html',{'pk':party_pk})
         elif verb=='register':

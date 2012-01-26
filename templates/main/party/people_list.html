@@ -1,0 +1,9 @@
+
+    <div class="people_header">
+        {{people_header}}
+    </div>
+    <ul class="people_list">
+        {% for p in people_list %}
+        <li><img src="{{p.user_info.get_prof_pic}}" /><span>{{p.username}}</span></li>
+        {% endfor %}
+    </ul>
