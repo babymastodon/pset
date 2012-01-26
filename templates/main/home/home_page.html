@@ -23,15 +23,18 @@
 <div id = "feed">
   <h1>Your Classes</h1>
   {% for klass in classes.all %}
-  {% if klass.party_set %} 
+  {% if klass.party_set.count > 0 %} 
   <h2>{{klass.title}}</h2>
+  <ul>
   {% for party in klass.party_set.all %}
-  <a href="{% url 'main.party_views.party_details' pk=party.id %}">
-    {{party.title}}
-  </a>
+  <li><a href="{% url 'main.party_views.party_details' pk=party.id %}">{{party.title}}</a>
   {% endfor %}
+  </ul>
   {% else %}
-  <p> No parties present for class: {{klass.title}}</p>
+  <h2>{{klass.title}}</h2>
+  <ul>
+    <li> No Parties </li>
+  </ul>
   {% endif %}
   {% endfor %}
 

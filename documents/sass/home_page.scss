@@ -1,24 +1,31 @@
 @import 'base';
 
-div#class_feed{
-  width: 300px;
-  height:300px;
-  clear:both;
-}
-
 div#feed{
 
 width:400px;
 height:300px;
 margin-left:10px;
+margin-top:20px;
 
--moz-box-shadow: 5px 5px 35px #73051f;
--webkit-box-shadow: 5px 5px 35px #73051f;
-box-shadow: 5px 5px 35px #73051f;
+    ul{
+        list-style-type:disc;
 
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
-border-radius: 10px;
-
-background-color: $hue1-mid-light;
+        li{
+          margin-left:30px;
+        }
+        a{
+            display:           block;
+            background-color:  $hue1-light;
+            margin-bottom: 5px;
+            &:active{
+                position: relative;
+                left: 1px;
+                top: 1px;
+                @include box-shadow(none);
+            }
+        }
+        &:last-child a{
+            margin-bottom: 0px;
+        }
+      }
 }
