@@ -1,15 +1,15 @@
-<div class="feed_header">
-    {{feed_header}}
+{% load url from future %}{% load staticfiles %}
+
+<div class="feed_header clearfix">
+    <img src="{% static 'images/css/icons/rss32.png'%}"/>
+    <span class="header_text">{{feed_header}}</span>
 </div>
 <ul class="newsfeed">
     {% for item in feed_list %}
-    <li>
-        <img src="{{item.get_image}}" class="news_image" />
+    <li class="clearfix">
         <img src="{{item.get_icon}}" class="news_icon" />
-        <a href="{{item.get_link}}">Link</a>
         <span class="news_timestamp">{{item.get_time}}</span>
-        <span class="news_user">{{item.get_user}}</span>
-        <span class="news_content">{{item.get_content}}</span>
+        <span class="news_content">{{item.get_content|safe}}</span>
     </li>
     {% endfor %}
 </ul>

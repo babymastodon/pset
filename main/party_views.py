@@ -25,7 +25,8 @@ def party_details(request, pk):
     rc['attendees'] = party.attendees.all()[:10]
     #friend rank
     #newsfeed
-    rc['newsfeed'] = Activity.objects.filter(party=party).order_by('-time_created')
+    page = int(request.GET.get("page","1"))
+    rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
@@ -91,13 +92,13 @@ def party_create(request):
                     creator=request.user
                     moo['ph'].party=party
                     moo['ph'].save()
-                    next_url = reverse('main.account_views.email_sent', kwargs={'pk':party.pk})
+                    next_url = reverse('main.account_views.email_sent')
                 if status:
                     party.attendees.add(creator)
                     party.admins.add(creator)
                     party.save()
-                    a = Activity(actor=creator, activity_type="created", party=party)
-                    a.save()
+                    Activity.create(actor=creator, activity_type="created", target=party)
+                    Activity.create(actor=creator, activity_type="attending", target=party)
                     return redirect(next_url)
             except Exception as e:
                 rc['error'] = "Class Number is invalid"
@@ -139,8 +140,8 @@ def party_register_ajax(request, party_pk):
     if party and request.user.is_authenticated():
         party[0].attendees.add(request.user)
         party[0].save()
-        a = Activity(actor=request.user, activity_type="attending", party=party[0])
-        a.save()
+        if not Activity.objects.filter(target__target_type='Party', actor=request.user, target__target_id=party_pk).exists():
+            Activity.create(actor=request.user, activity_type="attending", target=party[0])
     else:
         r['status']='party does not exist'
     return r

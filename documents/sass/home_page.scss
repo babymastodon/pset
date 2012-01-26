@@ -1,6 +1,7 @@
 @import 'base';
 
-div#feed{
+div{
+.feed{
 
 width:400px;
 height:300px;
@@ -28,4 +29,5 @@ margin-top:20px;
             margin-bottom: 0px;
         }
       }
+  }
 }
