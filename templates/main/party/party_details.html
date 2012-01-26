@@ -24,6 +24,11 @@
     </ul>
     <div>{{party.class_obj.title}}<a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a></div>
     <img src="{{party.building_img}}" />
+    <div>
+        {% with feed_list=newsfeed feed_header="Recent Activity" %}
+        {% include 'main/party/feed_list.html' %}
+        {% endwith %}
+    </div>
 </div>
 <div id="right_col" class="grid_5">
     <div id="mapdiv" style="width: 380px; height: 380px;"></div>

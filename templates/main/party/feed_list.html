@@ -1,0 +1,15 @@
+<div class="feed_header">
+    {{feed_header}}
+</div>
+<ul class="newsfeed">
+    {% for item in feed_list %}
+    <li>
+        <img src="{{item.get_image}}" class="news_image" />
+        <img src="{{item.get_icon}}" class="news_icon" />
+        <a href="{{item.get_link}}">Link</a>
+        <span class="news_timestamp">{{item.get_time}}</span>
+        <span class="news_user">{{item.get_user}}</span>
+        <span class="news_content">{{item.get_content}}</span>
+    </li>
+    {% endfor %}
+</ul>

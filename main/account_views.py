@@ -117,7 +117,7 @@ def create_account_page(request):
                 boo = create_from_email_pwd(email=email, pwd=form.cleaned_data['pw1'], request=request)
                 rc.update(boo['rc'])
                 if not rc.get('error'):
-                    return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
+                    return redirect('main.account_views.email_sent')
             else:
                 rc['error']="Passwords don't match"
     rc['rform'] = form
@@ -127,6 +127,8 @@ def forgot_password(request):
     rc={}
     return render_to_response("main/account/forgot_password.html", rc, context_instance=RequestContext(request))
 
+def email_sent(request):
+    return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
 
 def verify(request, hashcode):
     rc={}

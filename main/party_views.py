@@ -24,6 +24,8 @@ def party_details(request, pk):
     rc['admins'] = party.admins.all()
     rc['attendees'] = party.attendees.all()[:10]
     #friend rank
+    #newsfeed
+    rc['newsfeed'] = Activity.objects.filter(party=party).order_by('-time_created')
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
@@ -81,17 +83,22 @@ def party_create(request):
                 if status=="logged_in":
                     party.active=True
                     party.save()
-                    party.attendees.add(request.user)
-                    party.admins.add(request.user)
-                    return redirect(reverse('main.party_views.party_details', kwargs={'pk':party.pk}))
+                    creator=request.user
+                    next_url = reverse('main.party_views.party_details', kwargs={'pk':party.pk})
                 elif status=="account_created":
                     party.active=False
                     party.save()
-                    party.attendees.add(moo['user'])
-                    party.admins.add(moo['user'])
+                    creator=request.user
                     moo['ph'].party=party
                     moo['ph'].save()
-                    return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
+                    next_url = reverse('main.account_views.email_sent', kwargs={'pk':party.pk})
+                if status:
+                    party.attendees.add(creator)
+                    party.admins.add(creator)
+                    party.save()
+                    a = Activity(actor=creator, activity_type="created", party=party)
+                    a.save()
+                    return redirect(next_url)
             except Exception as e:
                 rc['error'] = "Class Number is invalid"
                 raise e
@@ -132,6 +139,8 @@ def party_register_ajax(request, party_pk):
     if party and request.user.is_authenticated():
         party[0].attendees.add(request.user)
         party[0].save()
+        a = Activity(actor=request.user, activity_type="attending", party=party[0])
+        a.save()
     else:
         r['status']='party does not exist'
     return r

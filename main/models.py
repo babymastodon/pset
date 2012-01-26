@@ -4,6 +4,8 @@ import urllib2, cStringIO, itertools, datetime
 from django.core.files.base import ContentFile
 from django.conf import settings
 from django_facebook.models import FacebookProfileModel
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.utils import timezone
 
 def resize_dimensions(width, height, longest_side):
     if width>height and width>longest_side:
@@ -153,7 +155,7 @@ class UserInfo(FacebookProfileModel):
 
 class UserClassData(models.Model):
     #things like confidence
-    userinfo = models.ForeignKey(UserInfo)
+    user_info = models.ForeignKey(UserInfo)
     _class = models.ForeignKey(Class)
 
 class Party(models.Model):
@@ -177,3 +179,34 @@ class PendingHash(models.Model):
     party = models.ForeignKey(Party, null=True)
     hashcode = models.CharField(max_length=100)
 
+activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]
+class Activity(models.Model):
+    activity_type = models.CharField(max_length=20, choices=activity_types)
+    actor = models.ForeignKey(User)
+    klass = models.ForeignKey(Class, null=True)
+    party = models.ForeignKey(Party, null=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField()
+    def get_image(self):
+        if self.actor.user_info:
+            return self.actor.user_info.get_prof_pic()
+        else:
+            return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+    def get_icon(self):
+        #choose icon based on activity_type
+        return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+    def get_content(self):
+        if self.activity_type=="comment":
+            return self.comment
+        elif self.activity_type=='created':
+            return "created this event"
+        elif self.activity_type=='edited':
+            return "edited this event"
+        elif self.activity_type=='attending':
+            return "is attending this event"
+    def get_link(self):
+        return reverse('main.account_views.profile_page', kwargs={ 'pk':self.actor.pk})
+    def get_time(self):
+        return timezone.localtime(self.time_created).strftime("%a, %b %d, %I:%M%p")
+    def get_user(self):
+        return self.actor.first_name + " " + self.actor.last_name
