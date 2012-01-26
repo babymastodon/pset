@@ -1,13 +1,16 @@
 {% load url from future %}{% load staticfiles %}
 
-<span class="title">{{title}}</span>
+<span class="title">Please Log In</span>
 <div class="content_box">
-    <span class="message">Please log in to use this service:</span>
-    <form action="{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
+    <span class="message">You need to log in to register for parties.</span>
+    <form id="party_login_form" action="{% url 'main.account_views.login_page' %}" method="POST" class="clearfix">
         {% csrf_token %}
-        <span class="row clearfix"><label>Username:</label><input type="text" name="username" /></span>
-        <span class="row clearfix"><label>Password:</label><input type="password" name="password" /></span>
+        <label class="fleft g2 right">Username:</label><input type="text" name="username" class="large_gray_text_box grid_2" />
+        <div class="clear space_10"></div>
+        <label class="fleft g2 right">Password:</label><input type="password" name="password" class="large_gray_text_box grid_2" />
         <input type="hidden" name="next" value="{% url 'main.party_views.party_details' pk=pk %}?attending=1" />
-        <input type="submit" class="gray_button" value="Log In" />
+        <div class="clear space_20"></div>
+        <div class="left">Don't have an account? <a href="{% url 'main.account_views.create_account_page' %}">Register here.</a>
+        <input type="submit" class="gray_button fright" value="Log In" />
     </form>
 </div>

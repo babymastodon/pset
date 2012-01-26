@@ -26,6 +26,9 @@ def party_details(request, pk):
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
+    attending=request.GET.get('attending',None)
+    if attending and request.user.is_authenticated():
+        party_register_helper_func(party, request.user)
     rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
@@ -132,17 +135,25 @@ def party_must_login(request, pk):
     rc['pk']=pk
     return render_to_response("main/party/party_login.html", rc, context_instance=RequestContext(request))
 
+def party_register_helper_func(party, user):
+    party.attendees.add(user)
+    party.save()
+    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk).exists():
+        Activity.create(actor=user, activity_type="attending", target=party)
+
 def party_register_ajax(request, party_pk):
     r = {}
     r["status"]="success"
     r['registered']=True
+    r['authenticated']=True
     r['link'] = reverse('main.party_views.party_registered',kwargs={'pk':party_pk})
+    if request.user.is_anonymous():
+        r['link'] = reverse('main.party_views.party_must_login', kwargs={'pk':party_pk})
+        r['authenticated']=False
+        return r
     party = Party.objects.filter(pk=party_pk)
-    if party and request.user.is_authenticated():
-        party[0].attendees.add(request.user)
-        party[0].save()
-        if not Activity.objects.filter(target__target_type='Party', actor=request.user, target__target_id=party_pk).exists():
-            Activity.create(actor=request.user, activity_type="attending", target=party[0])
+    if party:
+        party_register_helper_func(party[0], request.user)
     else:
         r['status']='party does not exist'
     return r
@@ -151,6 +162,7 @@ def party_unregister_ajax(request, party_pk):
     r = {}
     r["status"]="success"
     r['registered']=False
+    r['authenticated']=True
     r['link'] = reverse('main.party_views.party_unregistered',kwargs={'pk':party_pk})
     party = Party.objects.filter(pk=party_pk)
     if party and request.user.is_authenticated():
@@ -162,10 +174,10 @@ def party_unregister_ajax(request, party_pk):
 def is_registered(request, party_pk):
     party = Party.objects.filter(pk=party_pk)
     if party:
-        if party[0].attendees.filter(pk=request.user.pk).exists():
-            return {'status':'success', 'attending':True}
-        else:
-            return {'status':'success', 'attending':False}
+        if request.user.is_authenticated():
+            if party[0].attendees.filter(pk=request.user.pk).exists():
+                return {'status':'success', 'attending':True}
+        return {'status':'success', 'attending':False}
     return {'status': 'party does not exist'}
 
 #ajax handler for handling party update information and party delete

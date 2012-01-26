@@ -443,6 +443,20 @@ $tw: 260px - $tb - 2* $tp;
         @include border-radius(10px);
     }
 }
+#party_login_form{
+    a{
+        font-weight: bold;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    label, h3{
+        display: block;
+        font-size: 22px;
+        line-height: 35px;
+        width: 140px;
+    }
+}
 .errors, .error{
     display: block;
     color: $hue1-dark;

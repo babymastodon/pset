@@ -208,9 +208,9 @@ class Target(models.Model):
     def get_linked_name(self):
         return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
     def admins(self):
-        if target_type=='Party':
+        if self.target_type=='Party':
             return Party.objects.get(pk=self.target_id).admins.all()
-        elif target_type=='User':
+        elif self.target_type=='User':
             return [User.objects.get(pk=self.target_id)]
         return []
     def __unicode__(self):

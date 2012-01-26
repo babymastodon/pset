@@ -2,8 +2,10 @@
 function register_success(ob){
     return function(data){
         if (data.status=="success"){
-            if (data.registered) show_attend_button_already_attending(ob);
-            else show_attend_button(ob);
+            if (data.authenticated){
+                if (data.registered) show_attend_button_already_attending(ob);
+                else show_attend_button(ob);
+            }
             $.facebox({ ajax: data.link });
         }else{
             register_error(ob);
@@ -90,8 +92,8 @@ function init_one_attend_button(){
         url:ajax_url,
         data:{
             verb: "isregistered",
-            pk: pk,
-            module: 'party',
+        pk: pk,
+        module: 'party',
         },
         success: make_attend_button_callback(ob),
         error: make_attend_button_error_callback(ob),
