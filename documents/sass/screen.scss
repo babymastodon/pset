@@ -547,8 +547,10 @@ $tw: 260px - $tb - 2* $tp;
     .party_details{
         font-size: 20px;
         line-height: 22px;
-        float: left;
+        float: right;
+        width: 350px;
         margin-left: 30px;
+        text-indent: -30px;
         li{
             margin-bottom: 4px;
         }

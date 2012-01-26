@@ -20,18 +20,16 @@ from main.views_common import *
 def render_comments(request, comments):
     t = loader.get_template('main/party/comment_item.html')
     c = RequestContext(request, {
-        'comments':comments,
+        'comments': [{'item':x, 'can_delete':x.can_delete(request.user)} for x in comments]
     })
     return t.render(c)
 
-def load_comments(request, target, pk, page, last_id=None):
+def load_comments(request, target, pk, last_id=None):
     comments = Comment.objects.filter(target__target_type=target, target__target_id=pk).order_by('-time_created')
     if last_id:
-        comments = comments.filter(pk__lte=last_id)
-    else:
-        last_id = comments[0].pk
-    comments = comments[(page-1)*6:page*6]
-    return {'status':'success', 'html':render_comments(request,comments), 'last_id': last_id}
+        comments = comments.filter(pk__lt=last_id)
+    comments = list(comments[:6])
+    return {'status':'success', 'html':render_comments(request,comments), 'last_id': comments[-1].pk if comments else last_id}
 
 
 def post_comment(request, comment, target, pk):
@@ -49,8 +47,17 @@ def post_comment(request, comment, target, pk):
     else:
         return {'status':"user is not authenticated", }
 
-def get_comment_box(request):
-    return render(request,"main/party/post_comment.html")
+def get_box(request, template):
+    return render(request,template)
+
+def delete_comment(request, pk):
+    c = Comment.objects.filter(pk=pk)
+    if c:
+        if c[0].can_delete(request.user):
+            c[0].delete()
+            return {'status':'success'}
+        return {'status':"no permissions to delete"}
+    return {'status':"object does not exist"}
 
 #ajax handler for handling party update information and party delete
 def ajax(request):
@@ -58,22 +65,23 @@ def ajax(request):
     try:
         verb = request.REQUEST.get('verb',None)
         target = request.REQUEST.get('target',None)
-        page = request.REQUEST.get('page',None)
         pk = request.REQUEST.get('pk',None)
         if pk:
             pk=int(pk)
-        if page:
-            page=int(page)
         if verb=='load':
             last_id=request.REQUEST.get('last_id')
             if last_id:
                 last_id=int(last_id)
-            result = load_comments(request, target, pk, page, last_id)
+            result = load_comments(request, target, pk, last_id)
         elif verb=='post':
             comment = request.POST.get('comment', None)
             result = post_comment(request, comment, target, pk)
         elif verb=='get_box':
-            return get_comment_box(request)
+            return get_box(request,"main/party/post_comment.html")
+        elif verb=='ensure_delete':
+            return get_box(request,"main/party/ensure_delete.html")
+        elif verb=='delete':
+            result = delete_comment(request, pk)
         else:
             result['status']="verb didn't match"
     except Exception as e:

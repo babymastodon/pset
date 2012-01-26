@@ -1,5 +1,4 @@
 
-var comments_page = 1;
 var max_len = 300;
 
 function load_comments(){
@@ -11,7 +10,6 @@ function load_comments(){
             module: "comments",
             pk: comments_pk,
             target: comments_target,
-            page: comments_page,
             last_id: window.last_comment_id || "",
         },
         dataType: 'json',
@@ -22,7 +20,6 @@ function load_comments(){
                     $(data.html).hide().appendTo("#comment_feed").fadeIn('slow');
                 }
                 window.last_comment_id = data.last_id;
-                comments_page+=1;
             }
         },
     });
@@ -48,8 +45,54 @@ function comment_lightbox(){
     });
 }
 
+function close_facebox(){
+    $(document).trigger('close.facebox');
+}
+
+function delete_comment(pk){
+    $.facebox(function() {
+        $.ajax({
+            type: "GET",
+            url: ajax_url,
+            data:{
+                module:'comments',
+                verb:'ensure_delete',
+            },
+            dataType: 'html',
+            success: function(pk){
+                return function(data) {
+                    $.facebox(data);
+                    $("#dialog_continue").click(really_delete(pk));
+                    $("#dialog_cancel").click(close_facebox);
+                };
+            }(pk),
+        });
+    });
+}
+
+function really_delete(pk){
+    return function(){
+        $.ajax({
+            type: "POST",
+            url: ajax_url,
+            data:{
+                module:'comments',
+                verb:'delete',
+                pk:pk,
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.status=='success'){
+                    $("#comment_"+pk).fadeOut('slow', function(){$(this).remove();});
+                    close_facebox();
+                }
+            },
+        });
+    };
+}
+
 function post_error(){
-    alert("The server did not accept your comment. Who knows why? Perhaps you should try again.");
+    alert("The server did not respond very well to your request. Who knows why? Perhaps you should try again.");
 }
 
 function post_comment(){
@@ -67,7 +110,7 @@ function post_comment(){
             dataType: 'json',
             success: function(data){
                 if (data.status=='success'){
-                    $(document).trigger('close.facebox');
+                    close_facebox();
                     $(data.html).hide().prependTo("#comment_feed").fadeIn('slow');
                 } else {
                     post_error();

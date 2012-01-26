@@ -1,8 +1,11 @@
-{% load url from future %}{% load staticfiles %}{% for item in comments %}
-    <li class="clearfix">
-    <img src="{{item.get_image}}" class="comment_icon" />
-    <span class="comment_timestamp">{{item.get_time}}</span>
-    <span class="comment_content">{{item.comment}}</span>
-    <span class="comment_user">{{item.get_linked_actor|safe}}</span>
+{% load url from future %}{% load staticfiles %}{% for i in comments %}
+<li id="comment_{{i.item.pk}}" class="clearfix">
+    <img src="{{i.item.get_image}}" class="comment_icon" />
+    <span class="comment_timestamp">{{i.item.get_time}}</span>
+    <span class="comment_content">{{i.item.comment}}</span>
+    <span class="comment_user">{{i.item.get_linked_actor|safe}}</span>
+    {% if i.can_delete %}
+    <div onclick="javascript: delete_comment({{i.item.pk}})" class="gray_button fright">Delete</div>
+    {% endif %}
     </li>
 {% endfor %}

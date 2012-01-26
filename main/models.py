@@ -180,8 +180,8 @@ class Party(models.Model):
     building_img = models.CharField(max_length=200, blank=True)
     lat = models.CharField(max_length=20)
     lng = models.CharField(max_length=20)
-    admins = models.ManyToManyField(User, related_name="admin_set")
-    attendees = models.ManyToManyField(User, related_name="attendee_set")
+    admins = models.ManyToManyField(User, related_name="party_set_admin")
+    attendees = models.ManyToManyField(User, related_name="party_set_attend")
     active = models.BooleanField(default=True)
     def get_link(self):
         return reverse("main.party_views.party_details", kwargs={'pk': self.pk})
@@ -206,6 +206,12 @@ class Target(models.Model):
         return target_dict[self.target_type].objects.get(pk=self.target_id).get_link()
     def get_linked_name(self):
         return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
+    def admins(self):
+        if target_type=='Party':
+            return Party.objects.get(pk=self.target_id).admins.all()
+        elif target_type=='User':
+            return [User.objects.get(pk=self.target_id)]
+        return []
     def __unicode__(self):
         return self.target_type + ": " + self.get_name()
 
@@ -270,4 +276,6 @@ class Comment(models.Model):
         return a
     def __unicode__(self):
         return str(self.actor) + " comment to " + str(self.target)
+    def can_delete(self,user):
+        return (user==self.actor) or (user in self.target.admins()) or user.is_staff
 
