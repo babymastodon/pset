@@ -268,4 +268,6 @@ class Comment(models.Model):
         a = Comment(comment=comment, actor=actor, target=t)
         a.save()
         return a
+    def __unicode__(self):
+        return str(self.actor) + " comment to " + str(self.target)
 

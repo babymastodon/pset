@@ -140,6 +140,9 @@ input[type="text"], input[type="password"]{
     border-top: 2px solid $hue1-mid-dark;
     margin: 40px 0px 40px 10px;
 }
+textarea{
+    resize: none;
+}
 .wide_button{
     height: 30px;
     margin-bottom: 10px;
@@ -297,6 +300,12 @@ $tw: 260px - $tb - 2* $tp;
     @include box-shadow($white 3px 3px 4px -2px inset);
     @include background(linear-gradient(top, $gray-light , $gray-mid));
     border: 1px solid $gray-mid;
+    &.disabled{
+        border: 1px solid transparent;
+        @include box-shadow($gray-mid 1px 1px 2px 0px inset);
+        @include background(none);
+        color: $gray-mid;
+    }
 }
 
 .large_gray_button{

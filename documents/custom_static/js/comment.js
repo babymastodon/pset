@@ -1,5 +1,6 @@
 
-comments_page = 1;
+var comments_page = 1;
+var max_len = 300;
 
 function load_comments(){
     $.ajax({
@@ -29,16 +30,18 @@ function comment_lightbox(){
     $.facebox(function() {
         $.ajax({
             type: "GET",
-        url: ajax_url,
-        data:{
-            module:'comments',
-        verb:'get_box',
-        },
-        dataType: 'html',
-        success: function(data) {
-            $.facebox(data);
-            $("#post_comment_button").click(post_comment);
-        },
+            url: ajax_url,
+            data:{
+                module:'comments',
+            verb:'get_box',
+            },
+            dataType: 'html',
+            success: function(data) {
+                $.facebox(data);
+                $("#post_comment_button").click(post_comment);
+                $("#comment_box").bind('textchange', max_chars);
+                max_chars();
+            },
         });
     });
 }
@@ -48,28 +51,40 @@ function post_error(){
 }
 
 function post_comment(){
-    $.ajax({
-        type: "POST",
-        url: ajax_url,
-        data:{
-            verb: 'post',
-            module: 'comments',
-            target: comments_target,
-            pk: comments_pk,
-            comment: $("#comment_box").html(),
+    if ($("#comment_box").val().length<=max_len){
+        $.ajax({
+            type: "POST",
+            url: ajax_url,
+            data:{
+                verb: 'post',
+                module: 'comments',
+                target: comments_target,
+                pk: comments_pk,
+                comment: $("#comment_box").val(),
             },
-        dataType: 'json',
-        success: function(data){
-            if (data.status=='success'){
-                $(document).trigger('close.facebox');
-                $(data.html).hide().prependTo("#comment_feed").fadeIn('slow');
-            } else {
-                post_error();
-            }
-        },
-        error: post_error,
-    });
+            dataType: 'json',
+            success: function(data){
+                if (data.status=='success'){
+                    $(document).trigger('close.facebox');
+                    $(data.html).hide().prependTo("#comment_feed").fadeIn('slow');
+                } else {
+                    post_error();
+                }
+            },
+            error: post_error,
+        });
+    }
 }
+
+function max_chars(){
+    var len = $("#comment_box").val().length;
+    if (len>max_len){
+        $("#post_comment_button").addClass("disabled");
+    }else{
+        $("#post_comment_button").removeClass('disabled');
+    }
+    $("#post_char_left").html(""+(max_len-len)+"/"+max_len);
+};
 
 function init_comments(){
     load_comments();
