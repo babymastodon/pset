@@ -143,6 +143,7 @@ input[type="text"], input[type="password"]{
 .wide_button{
     height: 30px;
     margin-bottom: 10px;
+    display: block;
     @include box-shadow($gray-mid-dark 2px 2px 3px 0px);
     background-color: $tan-light;
     text-align: center;
@@ -328,7 +329,8 @@ $tw: 260px - $tb - 2* $tp;
 .attend_button_container{
     display: block;
     line-height: 30px;
-    .attend_button{
+    .gray_button{
+        margin-left: 20px;
     }
     .already_attending{
         display: block;
@@ -451,7 +453,7 @@ $tw: 260px - $tb - 2* $tp;
     white-space: nowrap;
 }
 
-.feed_header{
+.feed_header, .class_header, .comment_header, .people_header{
     border-bottom: 2px solid $gray-mid-dark;
     padding-bottom: 5px;
     margin-bottom: 10px;
@@ -467,12 +469,32 @@ $tw: 260px - $tb - 2* $tp;
         float: left;
     }
 }
-.newsfeed{
+.space_10{
+    height: 10px;
+}
+.space_20{
+    height: 20px;
+}
+.class_title{
+    font-size: 20px;
+    margin-left: 30px;
+}
+.newsfeed, .comment_feed, .people_list{
     margin-left: 32px;
     li{
         padding: 5px 0px;
         border-bottom: 1px dotted $gray-mid;
         display:block;
+    }
+    .user_thm{
+        height: 24px;
+        float: left;
+    }
+    .people_text{
+        margin-left: 10px;
+        line-height: 24px;
+        float: left;
+        display: block;
     }
     .news_icon{
         width: 32px;
@@ -491,7 +513,7 @@ $tw: 260px - $tb - 2* $tp;
     }
     .news_content{
         float: left;
-        width: 350px;
+        width: 420px;
         display: block;
         margin-top: 5px;
     }
@@ -499,6 +521,47 @@ $tw: 260px - $tb - 2* $tp;
         display: block;
         float: right;
         margin-bottom: 4px;
+    }
+
+}
+
+.details_panel{
+    h1{
+        font-size: 35px;
+        line-height: 35px;
+        margin-bottom: 15px;
+        width: 460px;
+        white-space: nowrap;
+        overflow: hidden;
+        float: left;
+    }
+    .party_details{
+        font-size: 20px;
+        line-height: 22px;
+        float: left;
+        margin-left: 30px;
+        li{
+            margin-bottom: 4px;
+        }
+    }
+    .location_image{
+        float: left;
+        height: 150px;
+        display: block;
+        margin-left: 20px;
+    }
+}
+
+.party_details_attend{
+    float: right;
+    margin-bottom: 10px;
+    div{
+        font-size: 22px;
+        line-height: 40px;
+    }
+    .gray_button{
+        line-height: 38px;
+        font-size: 24px;
     }
 }
 

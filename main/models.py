@@ -256,9 +256,16 @@ class Comment(models.Model):
     target = models.OneToOneField(Target)
     time_created = models.DateTimeField(auto_now_add=True)
     def get_image(self):
-        if self.activity_type == 'comment':
-            if self.actor.user_info:
-                return self.actor.user_info.get_prof_pic()
-            else:
-                return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+        return self.actor.user_info.get_prof_pic()
+    def get_time(self):
+        return timezone.localtime(self.time_created).strftime("%b %d, %I:%M%p")
+    def get_linked_actor(self):
+        return '<a href="' + self.actor.user_info.get_link() + '" >' + self.actor.user_info.get_name() + '</a>'
+    @staticmethod
+    def create(comment, actor, target):
+        t = Target(target_id=target.pk, target_type=target.__class__.__name__)
+        t.save()
+        a = Comment(comment=comment, actor=actor, target=t)
+        a.save()
+        return a
 

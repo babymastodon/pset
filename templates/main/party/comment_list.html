@@ -1,0 +1,32 @@
+{% load url from future %}{% load staticfiles %}
+
+<div class="comment_header clearfix">
+    <img src="{% static 'images/css/icons/commentblack32.png'%}"/>
+    <span class="header_text">{{comment_header}}</span>
+    {% if user.is_authenticated %}
+    <span id="post_comment" class="gray_button fright">Post Comment</a>
+    {% endif %}
+</div>
+<ul id="comment_feed" class="comment_feed">
+</ul>
+<script type="text/javascript">
+    if (!window.comment_loaded){
+        $.ajax({
+url:"{% static 'js/comment.js' %}",
+dataType:"script",
+success: function(data){
+$(document).ready(function(){
+    init_comments();
+    });
+window.comment_loaded=true;
+},
+});
+}else{
+$(document).ready(function(){
+    init_comments();
+    });
+};
+comments_pk={{comments.pk}};
+comments_target="{{comments.target}}";
+</script>
+<a id="moar_comments" class="wide_button"><img src="{% static 'images/css/icons/arrow_dn.png' %}"/></a>

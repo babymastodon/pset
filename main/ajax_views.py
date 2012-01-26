@@ -17,6 +17,7 @@ from main.views_common import *
 import main.search_views as search_views
 import main.party_views as party_views
 import  main.class_views as class_views
+import main.comment_views as comment_views
 
 def ajax(request):
     module = request.REQUEST.get("module","")
@@ -26,6 +27,8 @@ def ajax(request):
         return party_views.ajax(request)
     elif module=="class":
         return class_views.ajax(request)
+    elif module=="comments":
+        return comment_views.ajax(request)
     else:
         return HttpResponse('{"status":"module not found"}', mimetype="application/json");
 

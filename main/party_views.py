@@ -27,6 +27,7 @@ def party_details(request, pk):
     #newsfeed
     page = int(request.GET.get("page","1"))
     rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
+    rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):

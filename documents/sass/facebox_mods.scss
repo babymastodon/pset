@@ -40,9 +40,9 @@
             margin-bottom: 20px;
         }
         .details{
-            float: left;
             margin-left: 20px;
             margin-bottom: 20px;
+            margin-right: 20px;
         }
         .row{
             display: block;
@@ -62,6 +62,10 @@
         form{
             display: block;
             margin: 20px 20px 0px 20px;
+        }
+        textarea{
+            width: 360px;
+            height: 150px;
         }
     }
     .close{
