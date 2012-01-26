@@ -24,9 +24,14 @@ def render_comments(request, comments):
     })
     return t.render(c)
 
-def load_comments(request, target, pk, page):
-    comments = Comment.objects.filter(target__target_type=target, target__target_id=pk).order_by('-time_created')[(page-1)*6:page*6]
-    return {'status':'success', 'html':render_comments(request,comments)}
+def load_comments(request, target, pk, page, last_id=None):
+    comments = Comment.objects.filter(target__target_type=target, target__target_id=pk).order_by('-time_created')
+    if last_id:
+        comments = comments.filter(pk__lte=last_id)
+    else:
+        last_id = comments[0].pk
+    comments = comments[(page-1)*6:page*6]
+    return {'status':'success', 'html':render_comments(request,comments), 'last_id': last_id}
 
 
 def post_comment(request, comment, target, pk):
@@ -60,7 +65,10 @@ def ajax(request):
         if page:
             page=int(page)
         if verb=='load':
-            result = load_comments(request, target, pk, page)
+            last_id=request.REQUEST.get('last_id')
+            if last_id:
+                last_id=int(last_id)
+            result = load_comments(request, target, pk, page, last_id)
         elif verb=='post':
             comment = request.POST.get('comment', None)
             result = post_comment(request, comment, target, pk)

@@ -12,6 +12,7 @@ function load_comments(){
             pk: comments_pk,
             target: comments_target,
             page: comments_page,
+            last_id: window.last_comment_id || "",
         },
         dataType: 'json',
         success: function(data){
@@ -20,6 +21,7 @@ function load_comments(){
                 if (html.length>0){
                     $(data.html).hide().appendTo("#comment_feed").fadeIn('slow');
                 }
+                window.last_comment_id = data.last_id;
                 comments_page+=1;
             }
         },
