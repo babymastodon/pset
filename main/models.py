@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-import urllib2, cStringIO, itertools, datetime
+import urllib2, cStringIO, itertools
 from django.core.files.base import ContentFile
 from django.conf import settings
 from django_facebook.models import FacebookProfileModel
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils import timezone
+from datetime import datetime, date, timedelta
 
 def resize_dimensions(width, height, longest_side):
     if width>height and width>longest_side:
@@ -215,6 +216,25 @@ class Target(models.Model):
     def __unicode__(self):
         return self.target_type + ": " + self.get_name()
 
+def time_ago(t):
+    delta = timezone.now()-t
+    if delta < timedelta(seconds=20):
+        return "a few seconds ago"
+    if delta < timedelta(seconds=50):
+        return "thirty seconds ago"
+    if delta < timedelta(minutes=1, seconds=30):
+        return "one minute ago"
+    if delta < timedelta(minutes=25):
+        return str(delta.seconds/60) + " minutes ago"
+    if delta < timedelta(minutes=40):
+        return "half an hour ago"
+    if delta < timedelta(minutes=100):
+        return "an hour ago"
+    if delta < timedelta(days=1):
+        return "at " + timezone.localtime(t).strftime("%I:%M%p")
+    else:
+        return "on " + timezone.localtime(t).strftime("%b %d")
+
 activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]
 class Activity(models.Model):
     activity_type = models.CharField(max_length=20, choices=activity_types)
@@ -237,13 +257,13 @@ class Activity(models.Model):
         if self.activity_type=="comment":
             return self.get_linked_actor() + " left a comment at " + self.target.get_linked_name()
         elif self.activity_type=='created':
-            return self.get_linked_actor() + " created the event " + self.target.get_linked_name()
+            return self.get_linked_actor() + " is hosting " + self.target.get_linked_name()
         elif self.activity_type=='edited':
-            return self.get_linked_actor() + " edited the event " + self.target.get_linked_name()
+            return self.get_linked_actor() + " updated " + self.target.get_linked_name()
         elif self.activity_type=='attending':
-            return self.get_linked_actor() + " is attending the event " + self.target.get_linked_name()
+            return self.get_linked_actor() + " is attending " + self.target.get_linked_name()
     def get_time(self):
-        return timezone.localtime(self.time_created).strftime("%b %d, %I:%M%p")
+        return time_ago(self.time_created)
     def get_actor(self):
         return str(self.actor)
     @staticmethod
@@ -264,7 +284,7 @@ class Comment(models.Model):
     def get_image(self):
         return self.actor.user_info.get_prof_pic()
     def get_time(self):
-        return timezone.localtime(self.time_created).strftime("%b %d, %I:%M%p")
+        return time_ago(self.time_created)
     def get_linked_actor(self):
         return '<a href="' + self.actor.user_info.get_link() + '" >' + self.actor.user_info.get_name() + '</a>'
     @staticmethod

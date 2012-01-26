@@ -531,9 +531,34 @@ $tw: 260px - $tb - 2* $tp;
         float: right;
         margin-bottom: 4px;
     }
-
+    .comment_icon{
+        width: 48px;
+        height: 48px;
+    }
+    .comment_body{
+        width: 520px;
+        float: right;
+    }
+    .comment_content{
+        margin-left: 30px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        clear: both;
+        display: block;
+    }
 }
-
+.word_spacer{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.icon_button{
+    display: block;
+    @include opacity(.5);
+    &:hover{
+        cursor: pointer;
+        @include opacity(1);
+    }
+}
 .details_panel{
     h1{
         font-size: 35px;

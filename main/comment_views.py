@@ -37,8 +37,9 @@ def post_comment(request, comment, target, pk):
         t = target_dict.get(target)
         if target:
             tt = t.objects.filter(pk=pk)
-            if tt:
+            if tt:#tt is the target (party, class, or user)
                 comment = Comment.create(comment, request.user, tt[0])
+                Activity.create(actor=request.user, activity_type="comment", target=tt[0])
                 return {'status': 'success', 'html':render_comments(request, [comment])}
             else:
                 return {'status': "pk does not exist found"}
