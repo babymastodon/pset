@@ -92,6 +92,10 @@ class Class(models.Model):
 
     def __unicode__(self):
         return unicode(self.title)
+    def get_link(self):
+        return reverse("main.class_views.class_details", kwargs={'pk': self.pk})
+    def get_name(self):
+        return unicode(self)
 
 class ClassNumber(models.Model):
     number = models.CharField(max_length=20)
@@ -131,10 +135,9 @@ class UserInfo(FacebookProfileModel):
     current_classes = models.ManyToManyField(Class, through="UserClassData")
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers")
     friends = models.ManyToManyField("self")
-
     def __unicode__(self):
-        return str(self.user) + " info"
-   
+        return unicode(self.user) + "info"
+
     def get_title(self):
         return self.user.username
 
@@ -152,6 +155,13 @@ class UserInfo(FacebookProfileModel):
             return self.image.url
         else:
             return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+    def get_link(self):
+        return reverse("main.account_views.profile_page", kwargs={'pk': self.user.pk})
+    def get_name(self):
+        return self.user.first_name + " " + self.user.last_name
+#getname and get_link for the user class
+User.get_name = lambda self: self.user_info.get_name()
+User.get_link = lambda self: self.user_info.get_link()
 
 class UserClassData(models.Model):
     #things like confidence
@@ -173,40 +183,82 @@ class Party(models.Model):
     admins = models.ManyToManyField(User, related_name="admin_set")
     attendees = models.ManyToManyField(User, related_name="attendee_set")
     active = models.BooleanField(default=True)
+    def get_link(self):
+        return reverse("main.party_views.party_details", kwargs={'pk': self.pk})
+    def __unicode__(self):
+        return self.title
+    def get_name(self):
+        return unicode(self)
     
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
     hashcode = models.CharField(max_length=100)
 
+target_types = [(a,a) for a in ['User','Class','Party']]
+target_dict = {'User':User, 'Class':Class, 'Party':Party}
+class Target(models.Model):
+    target_id = models.IntegerField()
+    target_type = models.CharField(max_length=20)
+    def get_name(self):
+        return target_dict[self.target_type].objects.get(pk=self.target_id).get_name()
+    def get_link(self):
+        return target_dict[self.target_type].objects.get(pk=self.target_id).get_link()
+    def get_linked_name(self):
+        return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
+    def __unicode__(self):
+        return self.target_type + ": " + self.get_name()
+
 activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]
 class Activity(models.Model):
     activity_type = models.CharField(max_length=20, choices=activity_types)
     actor = models.ForeignKey(User)
-    klass = models.ForeignKey(Class, null=True)
-    party = models.ForeignKey(Party, null=True)
+    target = models.OneToOneField(Target)
     time_created = models.DateTimeField(auto_now_add=True)
-    comment = models.TextField()
-    def get_image(self):
-        if self.actor.user_info:
-            return self.actor.user_info.get_prof_pic()
-        else:
-            return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+    def get_linked_actor(self):
+        return '<a href="' + self.actor.user_info.get_link() + '" >' + self.actor.user_info.get_name() + '</a>'
     def get_icon(self):
-        #choose icon based on activity_type
-        return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+        static = getattr(settings, "STATIC_URL", "static/")+"images/css/icons/"
+        if self.activity_type=="comment":
+            return static + 'commentblack32.png'
+        elif self.activity_type=='created':
+            return static + 'glitter32.png'
+        elif self.activity_type in ['attending', 'joined']:
+            return static + 'userplus32.png'
+        elif self.activity_type=='edited':
+            return static + 'pencil32.png'
     def get_content(self):
         if self.activity_type=="comment":
-            return self.comment
+            return self.get_linked_actor() + " left a comment at " + self.target.get_linked_name()
         elif self.activity_type=='created':
-            return "created this event"
+            return self.get_linked_actor() + " created the event " + self.target.get_linked_name()
         elif self.activity_type=='edited':
-            return "edited this event"
+            return self.get_linked_actor() + " edited the event " + self.target.get_linked_name()
         elif self.activity_type=='attending':
-            return "is attending this event"
-    def get_link(self):
-        return reverse('main.account_views.profile_page', kwargs={ 'pk':self.actor.pk})
+            return self.get_linked_actor() + " is attending the event " + self.target.get_linked_name()
     def get_time(self):
-        return timezone.localtime(self.time_created).strftime("%a, %b %d, %I:%M%p")
-    def get_user(self):
-        return self.actor.first_name + " " + self.actor.last_name
+        return timezone.localtime(self.time_created).strftime("%b %d, %I:%M%p")
+    def get_actor(self):
+        return str(self.actor)
+    @staticmethod
+    def create(activity_type, actor, target):
+        t = Target(target_id=target.pk, target_type=target.__class__.__name__)
+        t.save()
+        a = Activity(activity_type=activity_type, actor=actor, target=t)
+        a.save()
+        return a
+    def __unicode__(self):
+        return str(self.actor) + " " + self.activity_type + " " + str(self.target)
+
+class Comment(models.Model):
+    comment = models.TextField()
+    actor = models.ForeignKey(User)
+    target = models.OneToOneField(Target)
+    time_created = models.DateTimeField(auto_now_add=True)
+    def get_image(self):
+        if self.activity_type == 'comment':
+            if self.actor.user_info:
+                return self.actor.user_info.get_prof_pic()
+            else:
+                return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+

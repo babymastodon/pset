@@ -10,7 +10,7 @@ urlpatterns = patterns('main.home_views',
 
 #account-related views
 urlpatterns += patterns('main.account_views',
-    url(r'^profile/(?P<pk>d+)/$', 'profile_page'),#page for displaying profile info such as comments, personal info, classes
+    url(r'^profile/(?P<pk>\d+)/$', 'profile_page'),#page for displaying profile info such as comments, personal info, classes
     url(r'^profile/me/$', 'my_profile_page'),#basically a wrapper for the previous rule but using the pk of the logged-in user
     url(r'^profile/edit/$', 'profile_edit'),#page for editing profile info
     url(r'^newaccount/$', 'create_account_page'),#gives a form to create an accoutn from email, or possibly ssl certificate

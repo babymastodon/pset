@@ -449,3 +449,61 @@ $tw: 260px - $tb - 2* $tp;
 .ui-autocomplete{
     white-space: nowrap;
 }
+
+.feed_header{
+    border-bottom: 2px solid $gray-mid-dark;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    img{
+        display: block;
+        float: left;
+    }
+    .header_text{
+        display: block;
+        font-size: 28px;
+        line-height: 32px;
+        margin-left: 20px;
+        float: left;
+    }
+}
+.newsfeed{
+    margin-left: 32px;
+    li{
+        padding: 5px 0px;
+        border-bottom: 1px dotted $gray-mid;
+        display:block;
+    }
+    .news_icon{
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+        display: block;
+        float: left;
+    }
+    .news_image{
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+    }
+    a{
+        font-weight: bold;
+    }
+    .news_content{
+        float: left;
+        width: 350px;
+        display: block;
+        margin-top: 5px;
+    }
+    .news_timestamp{
+        display: block;
+        float: right;
+        margin-bottom: 4px;
+    }
+}
+
+.cleft{
+    clear: left;
+}
+.cright{
+    clear: right;
+}

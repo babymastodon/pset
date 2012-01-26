@@ -82,7 +82,7 @@ $(document).ready(function(){
         source: autocomplete_callback,
         autoFocus: true,
         delay: 300,
-        minLength: 3,
+        minLength: 2,
         close: save_refresh,
     }).bind("textchange",save_refresh).val($('input[name="class-refresh"]').val());
     init_blank_text_box(class_input);
