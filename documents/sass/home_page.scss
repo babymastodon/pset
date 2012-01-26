@@ -1,0 +1,24 @@
+@import 'base';
+
+div#class_feed{
+  width: 300px;
+  height:300px;
+  clear:both;
+}
+
+div#feed{
+
+width:400px;
+height:300px;
+margin-left:10px;
+
+-moz-box-shadow: 5px 5px 35px #73051f;
+-webkit-box-shadow: 5px 5px 35px #73051f;
+box-shadow: 5px 5px 35px #73051f;
+
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px;
+
+background-color: $hue1-mid-light;
+}

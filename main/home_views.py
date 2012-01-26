@@ -23,7 +23,11 @@ def front_page(request):
 @login_required
 def home_page(request):
     rc={}
-    rc['user'] = request.user
+    user = request.user
+    rc['user'] = user
+    rc['userinfo'] = user.user_info
+    rc['classes'] = user.user_info.current_classes
+    rc['friends'] = user.user_info.friends
     # passing stuff to the home page
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 

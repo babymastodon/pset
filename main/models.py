@@ -131,7 +131,7 @@ class UserInfo(FacebookProfileModel):
     current_classes = models.ManyToManyField(Class, through="UserClassData")
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers")
     friends = models.ManyToManyField("self")
-
+    
     def __unicode__(self):
         return str(self.user) + " info"
    
@@ -160,7 +160,6 @@ class UserClassData(models.Model):
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
-    starttime = models.TimeField()
     endtime = models.TimeField()
     day = models.DateField()
     title = models.CharField(max_length=30)
@@ -173,7 +172,7 @@ class Party(models.Model):
     admins = models.ManyToManyField(User, related_name="admin_set")
     attendees = models.ManyToManyField(User, related_name="attendee_set")
     active = models.BooleanField(default=True)
-    
+
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)

@@ -16,4 +16,8 @@ admin.site.register(UserInfo)
 admin.site.register(PendingHash)
 admin.site.register(Class, ClassAdmin)
 admin.site.register(ClassNumber)
+admin.site.register(Party)
+admin.site.register(UserClassData)
+admin.site.register(Course)
 admin.site.register(Activity)
+

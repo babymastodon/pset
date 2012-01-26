@@ -3,21 +3,38 @@
 
 {% block main_content %}
 
-The current user is: 
-<pre>
-User: {{user.username}}
-First name: {{user.first_name}}
-Last name: {{user.last_name}}
-Email: {{user.email}}
-Password: {{user.password}}
-Is staff: {{user.is_staff}}
-Is active: {{user.is_active}}
-Is superuser: {{user.is_superuser}}
-Last login: {{user.last_login}}
-Date joined: {{user.date_joined}}
+<!--The current user is: -->
+<!--<pre>-->
+<!--User: {{user.username}}-->
+<!--First name: {{user.first_name}}-->
+<!--Last name: {{user.last_name}}-->
+<!--Email: {{user.email}}-->
+<!--Password: {{user.password}}-->
+<!--Is staff: {{user.is_staff}}-->
+<!--Is active: {{user.is_active}}-->
+<!--Is superuser: {{user.is_superuser}}-->
+<!--Last login: {{user.last_login}}-->
+<!--Date joined: {{user.date_joined}}-->
+<!---->
+<!--Userinfo: {{user.user_info.facebook_id}} -->
+<!--Description: {{user.user_info.description}}-->
+<!--</pre>-->
 
-Userinfo: {{user.user_info.facebook_id}} 
-Description: {{user.user_info.description}}
-</pre>
+<div id = "feed">
+  <h1>Your Classes</h1>
+  {% for klass in classes.all %}
+  {% if klass.party_set %} 
+  <h2>{{klass.title}}</h2>
+  {% for party in klass.party_set.all %}
+  <a href="{% url 'main.party_views.party_details' pk=party.id %}">
+    {{party.title}}
+  </a>
+  {% endfor %}
+  {% else %}
+  <p> No parties present for class: {{klass.title}}</p>
+  {% endif %}
+  {% endfor %}
+
+</div>
 
 {% endblock %}
