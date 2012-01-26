@@ -224,12 +224,12 @@ def time_ago(t):
         return "thirty seconds ago"
     if delta < timedelta(minutes=1, seconds=30):
         return "one minute ago"
-    if delta < timedelta(minutes=25):
+    if delta < timedelta(minutes=60):
         return str(delta.seconds/60) + " minutes ago"
-    if delta < timedelta(minutes=40):
-        return "half an hour ago"
     if delta < timedelta(minutes=100):
-        return "an hour ago"
+        return "about an hour ago"
+    if delta < timedelta(hours=24):
+        return str(delta.seconds/3600) + " hours ago"
     if delta < timedelta(days=1):
         return "at " + timezone.localtime(t).strftime("%I:%M%p")
     else:
