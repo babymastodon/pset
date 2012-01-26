@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime, date, timedelta
 from django import forms
 import account_views
+from django.utils import timezone
 import simplejson, string, re
 
 #import models and forms here
@@ -35,7 +36,7 @@ def party_details(request, pk):
 
 def party_create(request):
     rc={'error':None}
-    now = datetime.datetime.now()
+    now = timezone.localtime(timezone.now())
     defaults = {}
     defaults['day'] = now.strftime("%m/%d/%y")
     def clean_time(s):
