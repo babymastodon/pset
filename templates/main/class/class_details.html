@@ -6,6 +6,7 @@
 <script src="{% static 'js/geolocation.js'%}" type="text/javascript"></script>
 <script type="text/javascript">
     class_pk = {{class.pk}};
+    party_list = {{party_list|safe}};
 </script>
 <script src="{% static 'js/class_details.js'%}" type="text/javascript"></script>
 <div class="grid_12 details_panel">
@@ -38,7 +39,7 @@
 <div class="grid_4">
     <div id="mapdiv" style="width: 300px; height: 150px;"></div>
     <div class="space_20"></div>
-    <div class="center" style="font-size: 24px;"><b>5</b> parties on the schedule</div>
+    <div class="center" style="font-size: 24px;"><b>{{num_parties}}</b> {% if num_parties = 1 %}party{%else%}parties{%endif%} on the schedule</div>
     <div class="space_20"></div>
     <a href="{{class.map_view}}" class="gray_button hcenter">Switch to Map View</a>
 </div>

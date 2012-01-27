@@ -61,7 +61,8 @@ def party_create(request):
             d = form.cleaned_data
             party = Party()
             party.starttime = datetime.combine(d['day'],d['start_time'])
-            party.endtime = datetime.combine(d['day'],d['end_time'])
+            endday = d['day'] if d['start_time'] < d['end_time'] else d['day'] + timedelta(days=1)
+            party.endtime = datetime.combine(endday, d['end_time'])
             party.title = d['title']
             party.agenda = d['agenda']
             party.location = d['location']
@@ -70,7 +71,7 @@ def party_create(request):
             party.lng = d['lng']
             party.building_img = d['building_img']
             klass = re.search("\w+\.\w+", d['klass'])
-            klass_num = ClassNumber.objects.filter(number=klass.group())
+            klass_num = ClassNumber.objects.filter(number=klass.group().upper())
             if klass_num:
                 klass_obj = klass_num[0].class_obj
                 party.class_obj = klass_obj

@@ -16,6 +16,7 @@ from django.utils import timezone
 from main.models import *
 from main.forms import *
 from main.views_common import *
+from main.search_views import get_parties_by_class
 
 def class_details(request, pk):
     rc={}
@@ -25,6 +26,9 @@ def class_details(request, pk):
     rc['comments']={'pk':pk, 'target':"Class"}
     if request.user.is_authenticated():
         rc['joined'] = request.user.user_info in klass.userinfo_set.all()
+    parties = get_parties_by_class(request, pk).get('result_list',[])
+    rc['num_parties'] = len(parties)
+    rc['party_list'] = simplejson.dumps(parties)
     return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
 
 def class_file_upload(request):

@@ -174,8 +174,8 @@ def get_parties_by_class(request, class_pk):
 
 def get_parties_by_date(request, day):
     counter = day*26
-    today=timezone.now().date()
-    d = today + timedelta(days=day)
+    today=timezone.now()
+    d = today.date() + timedelta(days=day)
     if day==0: ##then we don't want to get teh completed ones
         d=timezone.now()
     delta = timedelta(days=1)
