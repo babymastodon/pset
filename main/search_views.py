@@ -200,30 +200,29 @@ def search_page(request):
 def ajax(request):
     result={'status':"none"}
     try:
-        if request.method=="GET":
-            verb = request.GET.get('verb',None)
-            if verb=='search_page':
-                query = request.GET['q']
-                category = request.GET.get('c',None)
-                page = int(request.GET.get('page',"0"))
-                force_category = int(request.GET.get('force',"0"))!=0
-                result = exec_search(query=query, category=category, page=page, force_category=force_category)
-            elif verb=='parties_by_class':
-                class_pk = request.GET['class']
-                result = get_parties_by_class(request, class_pk)
-            elif verb=='parties_by_date':
-                day = request.GET['day']
-                if day:
-                    day=int(day)
-                result = get_parties_by_date(request, day)
-            elif verb=='class_suggestions':
-                query = request.GET['q']
-                result = exec_search(query=query, category="Classes", page=1, force_category=True)
-            elif verb=="autocomplete_class":
-                query = request.GET['q']
-                result = autocomplete_classes(query) 
-            else:
-                result['status']="verb didn't match"
+        verb = request.REQUEST.get('verb',None)
+        if verb=='search_page':
+            query = request.REQUEST['q']
+            category = request.REQUEST.get('c',None)
+            page = int(request.REQUEST.get('page',"0"))
+            force_category = int(request.REQUEST.get('force',"0"))!=0
+            result = exec_search(query=query, category=category, page=page, force_category=force_category)
+        elif verb=='parties_by_class':
+            class_pk = request.REQUEST['class']
+            result = get_parties_by_class(request, class_pk)
+        elif verb=='parties_by_date':
+            day = request.REQUEST['day']
+            if day:
+                day=int(day)
+            result = get_parties_by_date(request, day)
+        elif verb=='class_suggestions':
+            query = request.REQUEST['q']
+            result = exec_search(query=query, category="Classes", page=1, force_category=True)
+        elif verb=="autocomplete_class":
+            query = request.REQUEST['q']
+            result = autocomplete_classes(query) 
+        else:
+            result['status']="verb didn't match"
     except Exception as e:
         result['status']="error: "+ str(e)
     json=simplejson.dumps(result)

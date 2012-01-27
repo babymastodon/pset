@@ -174,7 +174,7 @@ class UserInfo(FacebookProfileModel):
     description = models.TextField(blank=True) #user description
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
-    current_classes = models.ManyToManyField(Class, through="UserClassData", blank=True)
+    klasses = models.ManyToManyField(Class, blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     def __unicode__(self):
@@ -211,11 +211,6 @@ User.get_link = lambda self: self.user_info.get_link()
 User.get_prof_pic = lambda self: self.user_info.get_prof_pic()
 User.get_image = lambda self: self.user_info.get_image()
 User.get_linked_name = lambda self: self.user_info.get_linked_name()
-
-class UserClassData(models.Model):
-    #things like confidence
-    user_info = models.ForeignKey(UserInfo)
-    _class = models.ForeignKey(Class)
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
@@ -313,6 +308,8 @@ class Activity(models.Model):
             return self.get_linked_actor() + " updated " + self.target.get_linked_name()
         elif self.activity_type=='attending':
             return self.get_linked_actor() + " is attending " + self.target.get_linked_name()
+        elif self.activity_type=='joined':
+            return self.get_linked_actor() + " joined " + self.target.get_linked_name()
     def get_time(self):
         return time_ago(self.time_created)
     def get_actor(self):

@@ -147,7 +147,7 @@ def party_must_login(request, pk):
 def party_register_helper_func(party, user):
     party.attendees.add(user)
     party.save()
-    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk).exists():
+    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk, activity_type='attending').exists():
         Activity.create(actor=user, activity_type="attending", target=party)
 
 def party_register_ajax(request, party_pk):
