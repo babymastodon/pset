@@ -2,14 +2,12 @@
 
 <span class="title">{{title}}</span>
 <div class="content_box">
-<span class="message">You are signed up for:</span>
+    <span class="message">You are signed up for:</span>
+    <h3>{{event_name}}</h3>
 <ul class="event">
-    <li>{{event_name}}</li>
-    <li>Where: {{event_location}}</li>
-    <li>When: {{event_time}}</li>
+    <li><b>Where:</b> {{event_location}}</li>
+    <li><b>When:</b> {{event_time}}</li>
 </ul>
-<div class="space_40"></div>
-<span class="message">Go to the party to see what people are talking about, or share this on facebook so that your friends will come</span>
 </div>
 <a href="{% url 'main.party_views.party_details' pk=pk %}" class="gray_button fleft details">Go to Party Page</a>
 <span class="facebook_button"><span>Share with:</span><img src="{% static 'images/css/facebook_name.png' %}" /></span>

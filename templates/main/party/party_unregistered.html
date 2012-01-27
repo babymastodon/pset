@@ -3,9 +3,10 @@
 <span class="title">{{title}}</span>
 <div class="content_box">
 <span class="message">We are sad that you couldn't come:</span>
+    <h3>{{event_name}}</h3>
 <ul class="event">
-    <li>{{event_name}}</li>
-    <li>Where: {{event_location}}</li>
-    <li>When: {{event_time}}</li>
+    <li><b>Where:</b> {{event_location}}</li>
+    <li><b>When:</b> {{event_time}}</li>
 </ul>
 </div>
+<a onclick="javascript: $(document).trigger('close.facebox');" class="gray_button fright details">Close</a>
