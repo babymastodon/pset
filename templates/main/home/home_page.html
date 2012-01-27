@@ -47,14 +47,15 @@
       {% endfor %}
     </div>
     <div id="add_class_div">
-      <form id="add_class_form" name='add_class_form' action="." method="POST">
+        {% if error %}<div class="errors">{{error}}</div>{% endif %}
+        <form id="add_class_form" name='add_class_form' action="." method="POST">
         {% csrf_token %}
 
-        <input type="hidden" name="user" ref="20" value="{{form.user.value}}" />
+        <input type="hidden" name="user_info" ref="20" value="{{form.user.value}}" />
 
-        <input type='text' name='klass' ref="100" 
+        <input type='text' name='class_obj' ref="100" 
               class="label_if_blank limit_text grid_3 large_gray_text_box"
-              title="e.g. 18.02" value="{{form.klass.value}}"/>
+              title="e.g. 18.02" value="{{form.class_obj.value}}"/>
 
         <input type='text' name='instructor' ref="30"
               class="label_if_blank limit_text grid_3 large_gray_text_box"
@@ -69,7 +70,7 @@
               title="Level of comfort (in subject)" value="{{form.experience.value}}"/>
               
         <a href="javascript: $('#add_class_form').submit()" class="gray_button submit_button">Add Class</a>
-        <input type='hidden' name="class-refresh" value="{{form.klass.value}}">
+        <input type='hidden' name="class-refresh" value="{{form.class_obj.value}}">
       </form>
     </div>
 </div>

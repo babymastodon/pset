@@ -31,8 +31,8 @@ def home_page(request):
     rc['classes'] = user.user_info.current_classes
     rc['friends'] = user.user_info.friends
     defaults = {}
-    defaults['user_info']=request.user
-    defaults['klass']="" 
+    defaults['user']=request.user.user_info
+    defaults['class_obj']="" 
     defaults['instructor']=defaults['recitation_leader']=defaults['experience']=""
     form = AddClassForm(defaults)
     if request.method=="POST":
@@ -40,19 +40,27 @@ def home_page(request):
         if form.is_valid():
             d = form.cleaned_data
             newclass = UserClassData()
-            newclass.user_info = request.user.user_info
+            newclass.user_info = user.user_info
             newclass.instructor = d['instructor']
             newclass.recitation_leader = d['recitation_leader']
             newclass.experience = d['experience']
-            klass = re.search("\w+\.\w+", d['klass'])
+            klass = re.search("\w+\.\w+", d['class_obj'])
             klass_num = ClassNumber.objects.filter(number=klass.group())
             if klass_num:
-                klass_obj = klass_num[0].class_obj
-                newclass.class_obj = klass_obj
-                newclass.save()
-                Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+                userinfo = user_info.objects.filter(user=request.user)
+                if userinfo:
+                    user_info_obj = userinfo[0]
+                    newclass.user_info = user_info_obj
+                    klass_obj = klass_num[0].class_obj
+                    newclass.class_obj = klass_obj
+                    newclass.save()
+                    Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+                else:
+                    rc['error'] = "No userinfo found"
             else:
                 rc['error'] = "Class Number is invalid"
+        else:
+            rc['error'] = "Form not valid"
     # passing stuff to the home page
     rc['form'] = form
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))

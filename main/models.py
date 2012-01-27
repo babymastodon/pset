@@ -216,7 +216,7 @@ User.get_linked_name = lambda self: self.user_info.get_linked_name()
 class UserClassData(models.Model):
     #things like confidence
     user_info = models.ForeignKey(UserInfo)
-    klass = models.ForeignKey(Class)
+    class_obj = models.ForeignKey(Class)
     experience = models.CharField(max_length=100)
     instructor = models.CharField(max_length=100)
     recitation_leader = models.CharField(max_length=100) 
