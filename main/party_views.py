@@ -60,9 +60,8 @@ def party_create(request):
         if form.is_valid():
             d = form.cleaned_data
             party = Party()
-            party.starttime = d['start_time']
-            party.endtime = d['end_time']
-            party.day = d['day']
+            party.starttime = datetime.combine(d['day'],d['start_time'])
+            party.endtime = datetime.combine(d['day'],d['end_time'])
             party.title = d['title']
             party.agenda = d['agenda']
             party.location = d['location']

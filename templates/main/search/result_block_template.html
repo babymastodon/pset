@@ -1,7 +1,7 @@
 {% load url from future %}{% load staticfiles %}
 <div class="result_block clearfix">
     <a href="{{r.link}}" class="clearfix">
-        <div class="result_thm grid_2 alpha"><img src="{% static 'images/default.jpg' %}"/></div>
+        <div class="result_thm grid_2 alpha"><img src="{{r.image}}"/></div>
         <div class="result_text grid_6 omega">
             <div class="result_title">{{r.title}}</div>
             <div class="result_description">{{r.description}}</div>

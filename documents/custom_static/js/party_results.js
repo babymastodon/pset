@@ -33,7 +33,6 @@ function set_detail_box_contents(letter){
     box.find(".room").html(item.room);
     box.find(".class_numbers").html(item.class_nums.join(", "));
     box.find(".class_title").html(item.class_title);
-    box.find(".friends_attending").html(item.friends_attending);
     $.ajax({
         type: "GET",
         url: ajax_url,

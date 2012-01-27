@@ -128,6 +128,7 @@ def forgot_password(request):
     return render_to_response("main/account/forgot_password.html", rc, context_instance=RequestContext(request))
 
 def email_sent(request):
+    rc={}
     return render_to_response("main/account/create_from_email_sent.html", rc, context_instance=RequestContext(request))
 
 def verify(request, hashcode):

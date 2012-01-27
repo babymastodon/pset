@@ -12,4 +12,10 @@
     <span class="comment_content">{{i.item.comment}}</span>
 </div>
 </li>
+{% empty %}
+<li class="clearfix">
+<div class="comment_body">
+    <span>No comments to show</span>
+</div>
+</li>
 {% endfor %}

@@ -1,5 +1,5 @@
 
-var max_len = 300;
+var max_len = 800;
 
 function load_comments(){
     $.ajax({

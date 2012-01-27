@@ -2,5 +2,53 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-link to facebook page
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="{% static 'js/geolocation.js'%}" type="text/javascript"></script>
+<script type="text/javascript">
+    loc = new google.maps.LatLng({{party.lat}},{{party.lng}});
+</script>
+<script src="{% static 'js/party_details.js'%}" type="text/javascript"></script>
+<div class="grid_8 details_panel">
+    <h1 class="wrap">{{class.get_name}}</h1>
+    <img src="{{class.get_image}}" class="details_image" />
+    <ul class="page_details">
+        <li>Location: {{party.location}}</li>
+        <li>Room: {{party.room}}</li>
+        <li>{{party.get_day}}</li>
+        <li>{{party.get_start_time}} to {{party.get_end_time}}</li>
+        <li>Agenda: {{party.agenda}}</li>
+    </ul>
+    <div class="clear space_20"></div>
+    <div class="clear space_20"></div>
+    <div>
+        {% with comment_header="Comments" %}
+        {% include 'main/modules/comment_list.html' %}
+        {% endwith %}
+    </div>
+    <div class="clear space_20"></div>
+    <div>
+        {% with feed_list=newsfeed feed_header="Recent Activity" %}
+        {% include 'main/modules/feed_list.html' %}
+        {% endwith %}
+    </div>
+</div>
+<div id="right_col" class="grid_4">
+    <div class="party_details_attend">
+        <div id="add_this_class" class="gray_button fright">Add This Class</div>
+        <div id="drop_this_class" style="display:none;" class="gray_button fright">Drop This Class</div>
+    </div>
+    <div id="mapdiv" style="width: 300px; height: 300px;"></div>
+    <div class="clear space_10"></div>
+    <div>
+        {% with people=admins %}
+        {% include 'main/modules/people_list.html' %}
+        {% endwith %}
+    </div>
+    <div class="clear space_10"></div>
+    <div>
+        {% with people=all_attendees %}
+        {% include 'main/modules/people_list.html' %}
+        {% endwith %}
+    </div>
+</div>
 {% endblock %}

@@ -556,6 +556,7 @@ $tw: 260px - $tb - 2* $tp;
     .comment_body{
         width: 520px;
         float: right;
+        overflow-x: auto;
     }
     .comment_content{
         margin-left: 20px;
@@ -586,8 +587,15 @@ $tw: 260px - $tb - 2* $tp;
         white-space: nowrap;
         overflow: hidden;
         float: left;
+        &.wrap{
+            width: 600px;
+            text-indent: -20px;
+            margin-left: 20px;
+            white-space: normal;
+            overflow: visible;
+        }
     }
-    .party_details{
+    .page_details{
         font-size: 20px;
         line-height: 22px;
         float: right;
@@ -598,9 +606,9 @@ $tw: 260px - $tb - 2* $tp;
             margin-bottom: 4px;
         }
     }
-    .location_image{
+    .details_image{
         float: left;
-        height: 150px;
+        width: 200px;
         display: block;
         margin-left: 20px;
     }

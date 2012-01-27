@@ -8,6 +8,33 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils import timezone
 from datetime import datetime, date, timedelta
 
+#datetime to string
+def time_string(t):
+    return timezone.localtime(t).strftime("%I:%M%p").lstrip("0")
+
+def day_string(t):
+    return timezone.localtime(t).strftime("%b %d")
+
+def time_ago(t):
+    delta = timezone.now()-t
+    if delta < timedelta(seconds=20):
+        return "a few seconds ago"
+    if delta < timedelta(seconds=50):
+        return "thirty seconds ago"
+    if delta < timedelta(minutes=1, seconds=30):
+        return "one minute ago"
+    if delta < timedelta(minutes=60):
+        return str(delta.seconds/60) + " minutes ago"
+    if delta < timedelta(minutes=100):
+        return "about an hour ago"
+    if delta < timedelta(hours=24):
+        return str(delta.seconds/3600) + " hours ago"
+    if delta < timedelta(days=1):
+        return "at " + time_string(t)
+    else:
+        return "on " + day_string(t)
+
+
 def resize_dimensions(width, height, longest_side):
     if width>height and width>longest_side:
         width,height = (longest_side, height*longest_side//width)
@@ -97,6 +124,10 @@ class Class(models.Model):
         return reverse("main.class_views.class_details", kwargs={'pk': self.pk})
     def get_name(self):
         return unicode(self)
+    def get_image(self):
+        return getattr(settings, "STATIC_URL", "static/")+"images/school.png"
+    def get_linked_name(self):
+        return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
 
 class ClassNumber(models.Model):
     number = models.CharField(max_length=20)
@@ -113,6 +144,14 @@ class ClassNumber(models.Model):
 
     def __unicode__(self):
         return unicode(self.number)
+    def get_image(self):
+        return self.class_obj.get_image()
+    def get_name(self):
+        return self.get_title()
+    def get_link(self):
+        return reverse("main.class_views.class_details", kwargs={'pk': self.class_obj.pk})
+    def get_linked_name(self):
+        return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
 
 """
     about_me = models.TextField(blank=True)
@@ -156,14 +195,20 @@ class UserInfo(FacebookProfileModel):
             return self.image.url
         else:
             return getattr(settings, "STATIC_URL", "static/")+"images/people.png"
+    def get_image(self):
+        return self.get_prof_pic()
     def get_link(self):
         return reverse("main.account_views.profile_page", kwargs={'pk': self.user.pk})
     def get_name(self):
         return self.user.first_name + " " + self.user.last_name
+    def get_linked_name(self):
+        return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
 #getname and get_link for the user class
 User.get_name = lambda self: self.user_info.get_name()
 User.get_link = lambda self: self.user_info.get_link()
 User.get_prof_pic = lambda self: self.user_info.get_prof_pic()
+User.get_image = lambda self: self.user_info.get_image()
+User.get_linked_name = lambda self: self.user_info.get_linked_name()
 
 class UserClassData(models.Model):
     #things like confidence
@@ -172,9 +217,8 @@ class UserClassData(models.Model):
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
-    starttime = models.TimeField()
-    endtime = models.TimeField()
-    day = models.DateField()
+    starttime = models.DateTimeField()
+    endtime = models.DateTimeField()
     title = models.CharField(max_length=30)
     agenda = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
@@ -191,7 +235,28 @@ class Party(models.Model):
         return self.title
     def get_name(self):
         return unicode(self)
-    
+    def get_image(self):
+        return self.building_img
+    def get_linked_name(self):
+        return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
+    def get_start_time(self):
+        return time_string(self.starttime)
+    def get_end_time(self):
+        return time_string(self.endtime)
+    def get_day(self):
+        day = day_string(self.starttime)
+        if day == timezone.now().date():
+            return "Today"
+    def get_day_name(self):
+        day = self.starttime.date()
+        today = timezone.now().date()
+        if day == today:
+            return "Today"
+        if today - day == timedelta(days=1):
+            return "Tomorrow"
+        else:
+            return day.strftime("%A")
+
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
@@ -216,25 +281,6 @@ class Target(models.Model):
         return []
     def __unicode__(self):
         return self.target_type + ": " + self.get_name()
-
-def time_ago(t):
-    delta = timezone.now()-t
-    if delta < timedelta(seconds=20):
-        return "a few seconds ago"
-    if delta < timedelta(seconds=50):
-        return "thirty seconds ago"
-    if delta < timedelta(minutes=1, seconds=30):
-        return "one minute ago"
-    if delta < timedelta(minutes=60):
-        return str(delta.seconds/60) + " minutes ago"
-    if delta < timedelta(minutes=100):
-        return "about an hour ago"
-    if delta < timedelta(hours=24):
-        return str(delta.seconds/3600) + " hours ago"
-    if delta < timedelta(days=1):
-        return "at " + timezone.localtime(t).strftime("%I:%M%p")
-    else:
-        return "on " + timezone.localtime(t).strftime("%b %d")
 
 activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]
 class Activity(models.Model):

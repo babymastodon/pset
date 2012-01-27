@@ -9,7 +9,7 @@
 </script>
 <script src="{% static 'js/party_details.js'%}" type="text/javascript"></script>
 <div class="grid_12 details_panel">
-    <h1>{{party.title}}</h1>
+    <h1>{{party.get_name}}</h1>
     <div class="party_details_attend">
         {% with pk=party.pk %}
         {% include 'main/party/attend_button.html' %}
@@ -17,18 +17,18 @@
     </div>
 </div>
 <div class="grid_8 details_panel">
-    <img src="{{party.building_img}}" class="location_image" />
-    <ul class="party_details">
+    <img src="{{party.get_image}}" class="details_image" />
+    <ul class="page_details">
         <li>Location: {{party.location}}</li>
         <li>Room: {{party.room}}</li>
-        <li>{{party.day}}</li>
-        <li>{{party.starttime}} to {{party.endtime}}</li>
+        <li>{{party.get_day}}</li>
+        <li>{{party.get_start_time}} to {{party.get_end_time}}</li>
         <li>Agenda: {{party.agenda}}</li>
     </ul>
     <div class="clear space_20"></div>
     <div class="class_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
-        <span class="header_text">{{party.class_obj.title}}</span>
+        <span class="header_text" style="width: 420px;">{{party.class_obj.title}}</span>
         <a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a>
     </div>
     <div>
@@ -42,14 +42,14 @@
     </div>
     <div class="clear space_20"></div>
     <div>
-        {% with comment_list=comments comment_header="Comments" %}
-        {% include 'main/party/comment_list.html' %}
+        {% with comment_header="Comments" %}
+        {% include 'main/modules/comment_list.html' %}
         {% endwith %}
     </div>
     <div class="clear space_20"></div>
     <div>
         {% with feed_list=newsfeed feed_header="Recent Activity" %}
-        {% include 'main/party/feed_list.html' %}
+        {% include 'main/modules/feed_list.html' %}
         {% endwith %}
     </div>
 </div>

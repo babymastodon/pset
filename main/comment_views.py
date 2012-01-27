@@ -18,7 +18,7 @@ from main.forms import *
 from main.views_common import *
 
 def render_comments(request, comments):
-    t = loader.get_template('main/party/comment_item.html')
+    t = loader.get_template('main/modules/comment_item.html')
     c = RequestContext(request, {
         'comments': [{'item':x, 'can_delete':x.can_delete(request.user)} for x in comments]
     })
@@ -78,9 +78,9 @@ def ajax(request):
             comment = request.POST.get('comment', None)
             result = post_comment(request, comment, target, pk)
         elif verb=='get_box':
-            return get_box(request,"main/party/post_comment.html")
+            return get_box(request,"main/modules/post_comment.html")
         elif verb=='ensure_delete':
-            return get_box(request,"main/party/ensure_delete.html")
+            return get_box(request,"main/modules/ensure_delete.html")
         elif verb=='delete':
             result = delete_comment(request, pk)
         else:

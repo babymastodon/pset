@@ -90,7 +90,8 @@ def exec_search(query, category=None, page=1, force_category=False):
                 item['title'] = trunc(a.get_title(),45)
                 item['description'] = trunc(a.get_description(),250)
                 item['metadata'] = 'Class Numbers: '+string.join([x.number for x in a.get_meta()],', ')
-                item['link']=reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
+                item['link']=a.get_link()
+                item['image']=a.get_image()
                 result_items.append(item)
             pageresults=len(result_items)
         if category=="People":
@@ -103,7 +104,8 @@ def exec_search(query, category=None, page=1, force_category=False):
                 item['title'] = trunc(a.get_title(), 30)
                 item['description'] = trunc(a.get_description(), 250)
                 item['metadata'] = a.get_meta()
-                item['link'] = reverse("main.search_views.parties_by_class", kwargs={'pk':a.pk})
+                item['link'] = a.get_link()
+                item['image']=a.get_image()
                 result_items.append(item)
             pageresults=len(result_items)
     prwidth = 3
@@ -130,29 +132,26 @@ def autocomplete_classes(query):
     else:
         return {'status': "no results found"}
 
-def create_party_dict(pk, letter, request, color="red", day="0"):
+def create_party_dict(ob, letter, request, color="red"):
     (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
     r = {}
-    r['title'] = "Blah BLah PARTY TIME blah moo?"
+    r['title'] = ob.get_name()
     r['letter'] = letter
-    r['day'] = "0"
-    r['day_name'] = "Toosday"
-    r['date_number'] = "1/1/1"
-    r['start_time'] = "9:00"
-    r['end_time'] = "9:00"
-    r['agenda'] = "Description"
-    r['location'] = "Location"
-    r['bldg_num'] = "W11"
-    r['detail_url'] = "detail link"
-    r['bldg_img'] = 'http://web.mit.edu/campus-map/objimgs/object-W35.thumb.jpg'
-    r['lat'] = lat
-    r['lng'] = lng
-    r['class_nums'] = ['5.111','5.112']
-    r['class_title'] = "Principles of Chemistry"
+    r['day_name'] = ob.get_day_name()
+    r['date_number'] = ob.get_day()
+    r['start_time'] = ob.get_start_time()
+    r['end_time'] = ob.get_end_time()
+    r['agenda'] = ob.agenda
+    r['location'] = ob.location
+    r['room'] = ob.room
+    r['detail_url'] = ob.get_link()
+    r['bldg_img'] = ob.get_image()
+    r['lat'] = ob.lat
+    r['lng'] = ob.lng
+    r['class_nums'] = [x.number for x in ob.class_obj.get_meta()]
+    r['class_title'] = ob.class_obj.get_name() 
     r['color'] = color
-    r['pk'] = 0
-    r['friends_attending'] = 3
-    r['friends'] = 10
+    r['pk'] = ob.pk
     return r
 
 def get_parties_by_class(request, class_pk):
@@ -168,10 +167,13 @@ def get_parties_by_date(request, day):
     result_list=[]
     #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
     colorlist = ['red','orange','yellow','green','blue','purple']
-    todays_color = colorlist[int(day)]
-    for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-        r = create_party_dict("0", i, request, day=day, color=todays_color)
+    letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    counter = day*26
+    queryset = Party.objects.all()
+    for i in queryset:
+        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
         result_list.append(r)
+        counter+=1
     return {'status':'success', 'result_list':result_list}
 
 def search_page(request):
@@ -204,6 +206,8 @@ def ajax(request):
                 result = get_parties_by_class(request, class_pk)
             elif verb=='parties_by_date':
                 day = request.GET['day']
+                if day:
+                    day=int(day)
                 result = get_parties_by_date(request, day)
             elif verb=='class_suggestions':
                 query = request.GET['q']

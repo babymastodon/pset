@@ -16,13 +16,13 @@ var init_page="";
 var loaded=false;
 
 //creates a new result block from the hidden template and adds it to the bottom of the result column
-function append_result(name, description, img, meta, href){
+function append_result(r){
     a = $("#result_template .result_block").clone();
-    a.find('a').attr('href',href);
-    a.find(".result_title").html(name);
-    a.find(".result_description").html(description);
-    a.find("img").attr("src",img);
-    a.find(".result_metadata").html(meta);
+    a.find('a').attr('href',r['link']);
+    a.find(".result_title").html(r['title']);
+    a.find(".result_description").html(r['description']);
+    a.find("img").attr("src",r['image']);
+    a.find(".result_metadata").html(r['metadata']);
     a.appendTo("#result_col");
 }
 
@@ -125,8 +125,8 @@ function exec_search(options){
                 $("#result_template .no_results_found").clone().appendTo("#result_col");
             }else{
                 for (i=0; i<result['pageresults']; i++){
-                    r = result['result_items'][i]
-                        append_result(r['title'], r['description'], "/static/images/default.jpg",r['metadata'], r['link']);
+                    r = result['result_items'][i];
+                        append_result(r);
                 }
             }
             $("#result_num").html(result['totalresults']);

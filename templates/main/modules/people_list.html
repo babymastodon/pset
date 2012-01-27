@@ -1,7 +1,11 @@
 
 {% load url from future %}{% load staticfiles %}
 <div class="people_header clearfix">
+    {% if people.icon %}
+    <img src="{{people.icon}}"/>
+    {% else %}
     <img src="{% static 'images/css/icons/users32.png'%}"/>
+    {% endif %}
     <span class="header_text">{{people.header}}</span>
 </div>
 <ul class="people_list">

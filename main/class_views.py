@@ -17,6 +17,9 @@ from main.views_common import *
 
 def class_details(request, pk):
     rc={}
+    rc['class'] = get_object_or_404(Class,pk=pk)
+    rc['newsfeed'] = Activity.objects.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:10]
+    rc['comments']={'pk':pk, 'target':"Class"}
     return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
 
 def class_file_upload(request):
