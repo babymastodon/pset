@@ -120,18 +120,20 @@ def party_create(request):
 
 def party_registered(request, pk):
     rc={}
-    rc['event_name']='MOOMOMOO'
-    rc['event_location']="Building 35"
-    rc['event_time']="Monday, December 25 at 11:30pm"
+    p = get_object_or_404(Party, pk=pk)
+    rc['event_name']=p.get_name()
+    rc['event_location']=p.location
+    rc['event_time']=p.get_day() + " at " + p.get_start_time()
     rc['title']="Let the games begin!"
     rc['pk']=pk
     return render_to_response("main/party/party_registered.html", rc, context_instance=RequestContext(request))
 
 def party_unregistered(request, pk):
     rc={}
-    rc['event_name']='MOOMOMOO'
-    rc['event_location']="Building 35"
-    rc['event_time']="Monday, December 25 at 11:30pm"
+    p = get_object_or_404(Party, pk=pk)
+    rc['event_name']=p.get_name()
+    rc['event_location']=p.location
+    rc['event_time']=p.get_day() + " at " + p.get_start_time()
     rc['title']="Party Pooper :("
     rc['pk']=pk
     return render_to_response("main/party/party_unregistered.html", rc, context_instance=RequestContext(request))
