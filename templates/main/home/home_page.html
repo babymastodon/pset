@@ -51,7 +51,7 @@
         <form id="add_class_form" name='add_class_form' action="." method="POST">
         {% csrf_token %}
 
-        <input type="hidden" name="user_info" ref="20" value="{{form.user.value}}" />
+        <input type="hidden" name="user_info" ref="20" value="{{form.user_info.value}}" />
 
         <input type='text' name='class_obj' ref="100" 
               class="label_if_blank limit_text grid_3 large_gray_text_box"

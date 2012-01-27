@@ -28,10 +28,10 @@ def home_page(request):
     user = request.user
     rc['user'] = user
     rc['user_info'] = user.user_info
-    rc['classes'] = user.user_info.current_classes
+    rc['classes'] = user.user_info.klasses
     rc['friends'] = user.user_info.friends
     defaults = {}
-    defaults['user']=request.user.user_info
+    defaults['user_info']=request.user.user_info
     defaults['class_obj']="" 
     defaults['instructor']=defaults['recitation_leader']=defaults['experience']=""
     form = AddClassForm(defaults)
@@ -47,7 +47,7 @@ def home_page(request):
             klass = re.search("\w+\.\w+", d['class_obj'])
             klass_num = ClassNumber.objects.filter(number=klass.group())
             if klass_num:
-                userinfo = user_info.objects.filter(user=request.user)
+                userinfo = UserInfo.objects.filter(user=request.user)
                 if userinfo:
                     user_info_obj = userinfo[0]
                     newclass.user_info = user_info_obj
@@ -60,7 +60,7 @@ def home_page(request):
             else:
                 rc['error'] = "Class Number is invalid"
         else:
-            rc['error'] = "Form not valid"
+            rc['error'] = form.errors
     # passing stuff to the home page
     rc['form'] = form
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))

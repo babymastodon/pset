@@ -41,8 +41,8 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 class AddClassForm(forms.Form):
-    user = forms.CharField(max_length=100, required=True)
-    klass = forms.CharField(max_length=100, required=True)
+    user_info = forms.CharField(max_length=100, required=True)
+    class_obj = forms.CharField(max_length=100, required=True)
     instructor = forms.CharField(max_length=100, required=False)
     recitation_leader = forms.CharField(max_length=100, required=False)
     experience = forms.CharField(max_length=100, required=False)
