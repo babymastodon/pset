@@ -55,7 +55,7 @@
                         overflow: hidden;
                     }
                     .title{
-                        line-height: 20px;
+                        line-height: 24px;
                         width: $www;
                         float: left;
                         display: block;
@@ -65,23 +65,14 @@
                     .details{
                         position: absolute;
                         right: 10px;
-                        top: 35px;
+                        top: 10px;
                     }
-                    .location_row{
-                        font-style: oblique;
-                    }
-                    .class_numbers, .description{
-                        display: none;
-                    }
-                    .friends_attending{
-                        font-weight: bold;
-                    }
-                    .time_row, .attending_block, .class_title, .location_row{
+                    .attending_block, .class_title, .location, .room, .agenda{
                         display: block;
                         clear: both;
                         float: left;
                         margin-left: 20px;
-                        width: $www - 90px;
+                        width: $www - 30px;
                     }
                     .attend_button_container_container{
                         position: absolute;

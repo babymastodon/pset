@@ -5,6 +5,7 @@
     overflow: hidden;
     margin-bottom: 10px;
     position: relative;
+    background-color: $white;
     #result_list_shadow_top{
         @include box-shadow($gray-mid 2px 2px 3px 0px inset);
         height: 5px;
@@ -63,7 +64,7 @@
             .title{
                 font-size: 20px;
                 line-height: 24px;
-                width: 260px;
+                width: 280px;
             }
             .details{
                 float: right;

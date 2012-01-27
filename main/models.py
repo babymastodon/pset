@@ -219,10 +219,10 @@ class Party(models.Model):
     class_obj = models.ForeignKey(Class)
     starttime = models.DateTimeField()
     endtime = models.DateTimeField()
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=100)
     agenda = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
-    room = models.CharField(max_length=10, blank=True)
+    room = models.CharField(max_length=100, blank=True)
     building_img = models.CharField(max_length=200, blank=True)
     lat = models.CharField(max_length=20)
     lng = models.CharField(max_length=20)
@@ -243,19 +243,21 @@ class Party(models.Model):
         return time_string(self.starttime)
     def get_end_time(self):
         return time_string(self.endtime)
-    def get_day(self):
-        day = day_string(self.starttime)
-        if day == timezone.now().date():
+    def get_day(self, word=False):
+        s = timezone.localtime(self.starttime)
+        e = timezone.localtime(self.endtime)
+        now = timezone.now()
+        if s < now and now < e:
+            return "Right Now!"
+        if s.date() == now.date():
             return "Today"
-    def get_day_name(self):
-        day = self.starttime.date()
-        today = timezone.now().date()
-        if day == today:
-            return "Today"
-        if today - day == timedelta(days=1):
+        if now.date() - s.date() == timedelta(days=1):
             return "Tomorrow"
-        else:
-            return day.strftime("%A")
+        if word:
+            return s.strftime("%A")
+        return day_string(self.starttime)
+    def get_day_name(self):
+        return self.get_day(word=True)
 
 class PendingHash(models.Model):
     user = models.ForeignKey(User)

@@ -61,7 +61,7 @@ function save_refresh(){
 
 $(document).ready(function(){
     r = $('input[name="refresh_token"]');
-    if (r.val()==""){
+    if (r.val()=="" && $(".errors").length==0){
       get_current_position(on_get_valid_loc);
       r.val("visited");
     }
