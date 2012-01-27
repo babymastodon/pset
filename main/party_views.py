@@ -36,7 +36,7 @@ def party_details(request, pk):
     attending=request.GET.get('attending',None)
     if attending and request.user.is_authenticated():
         party_register_helper_func(party, request.user)
-    rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
+    rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:10]
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 
