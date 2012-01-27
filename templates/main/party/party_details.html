@@ -16,38 +16,50 @@
         {% endwith %}
     </div>
 </div>
-<div class="grid_8 details_panel">
+<div class="grid_12 details_panel">
     <div class="page_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
         <span class="header_text" style="width: 420px;">Party Details</span>
     </div>
-    <img src="{{party.get_image}}" class="details_image" />
-    <ul class="page_details">
-        <li>Location: {{party.location}}</li>
-        <li>Room: {{party.room}}</li>
-        <li>Date: {{party.get_day}}</li>
-        <li>Time: {{party.get_start_time}} to {{party.get_end_time}}</li>
-        <li>Agenda: {{party.agenda}}</li>
-    </ul>
-    <div class="clear"></div>
-    <div class="space_20"></div>
-    <div class="page_subheader clearfix">
-        <img src="{{party.class_obj.get_image}}"/>
-        <span class="header_text" style="width: 420px;">{{party.class_obj.get_name}}</span>
-        <a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a>
-    </div>
-    <div>
+</div>
+<div class="clear"></div>
+<div class="grid_8 details_panel">
+    <div class="whitebox clearfix" style="height: 300px">
+        <img src="{{party.get_image}}" class="details_image" />
+        <div class="page_details_scroll_container">
+            <ul class="page_details">
+                <li><h3>Location:</h3>{{party.location}}</li>
+                <li><h3>Room:</h3>{{party.room}}</li>
+                <li><h3>Date:</h3>{{party.get_day}}</li>
+                <li><h3>Time:</h3>{{party.get_start_time}} to {{party.get_end_time}}</li>
+                <li><h3>Agenda:</h3>{{party.agenda}}</li>
+            </ul>
+        </div>
         <div class="clear"></div>
-        <span class="detail_text">
-            <ul class="number_list hcenter clearfix">
-            {% for c in party.class_obj.get_meta %}
-            <li>{{ c.number }}</li>
-            {% endfor %}
-        </ul>
-        </span>
+        <div class="space_10"></div>
+        <div class="page_subheader clearfix" style="margin: 5px 20px 0px 20px;">
+            <img src="{{party.class_obj.get_image}}"/>
+            <span class="header_text" style="width: 360px;" title="{{party.class_obj.get_name}}">{{party.class_obj.get_name}}</span>
+            <a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a>
+        </div>
+        <div>
+            <div class="clear"></div>
+            <span class="detail_text">
+                <ul class="number_list hcenter clearfix">
+                    {% for c in party.class_obj.get_meta %}
+                    <li>{{ c.number }}</li>
+                    {% endfor %}
+                </ul>
+            </span>
+        </div>
     </div>
-    <div class="clear"></div>
-    <div class="space_60"></div>
+</div>
+<div id="right_col" class="grid_4">
+    <div id="mapdiv" style="width: 300px; height: 300px;"></div>
+</div>
+<div class="clear"></div>
+<div class="space_60"></div>
+<div class="grid_8">
     <div>
         {% with comment_header="Comments" %}
         {% include 'main/modules/comment_list.html' %}
@@ -61,10 +73,7 @@
         {% endwith %}
     </div>
 </div>
-<div id="right_col" class="grid_4">
-    <div id="mapdiv" style="width: 300px; height: 300px;"></div>
-    <div class="clear"></div>
-    <div class="space_20"></div>
+<div class="grid_4">
     <div>
         {% with people=admins %}
         {% include 'main/modules/people_list.html' %}

@@ -496,7 +496,9 @@ $tw: 260px - $tb - 2* $tp;
     &.page_subheader{
         border-bottom: none;
         .header_text{
-            font-size: 24px;
+            font-size: 20px;
+            white-space: nowrap;
+            overflow: hidden;
         }
     }
 }
@@ -538,9 +540,8 @@ $tw: 260px - $tb - 2* $tp;
 .number_list{
     li{
         width: 80px;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
-        margin-top: 10px;
         text-align: center;
         float: left;
     }
@@ -618,12 +619,16 @@ $tw: 260px - $tb - 2* $tp;
         @include opacity(1);
     }
 }
+.whitebox{
+    @include box-shadow($gray-mid 2px 2px 3px 0px inset);
+    background-color: $white;
+}
 .details_panel{
     h1{
         font-size: 35px;
         line-height: 35px;
         margin-bottom: 15px;
-        width: 520px;
+        width: 700px;
         white-space: nowrap;
         overflow: hidden;
         float: left;
@@ -635,15 +640,27 @@ $tw: 260px - $tb - 2* $tp;
             overflow: visible;
         }
     }
-    .page_details{
-        font-size: 18px;
-        line-height: 22px;
-        float: right;
-        width: 350px;
-        margin-left: 30px;
-        text-indent: -30px;
-        li{
-            margin-bottom: 10px;
+    .page_details_scroll_container{
+        overflow-y: auto;
+        height: 185px;
+        margin-top: 20px;
+        .page_details{
+            font-size: 16px;
+            line-height: 22px;
+            float: left;
+            margin-left: 120px;
+            text-indent: -100px;
+            width: 260px;
+            li{
+                margin-bottom: 10px;
+                h3{
+                    font-size: 18px;
+                    width: 80px;
+                    margin-right: 10px;
+                    display: block;
+                    float: left;
+                }
+            }
         }
     }
     .details_image{
@@ -651,6 +668,7 @@ $tw: 260px - $tb - 2* $tp;
         width: 200px;
         display: block;
         margin-left: 20px;
+        margin-top: 20px;
     }
 }
 

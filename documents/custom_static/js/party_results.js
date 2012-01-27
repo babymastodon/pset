@@ -31,7 +31,7 @@ function set_detail_box_contents(letter){
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',item.bldg_img);
     box.find(".details").attr("href",item.detail_url);
-    box.find(".title").html(item.title);
+    box.find(".title").html(item.title).attr("title",item.title);
     box.find(".agenda").html(string_trim(item.agenda, 32)).attr("title",item.agenda);
     box.find(".location").html(item.location);
     box.find(".room").html(item.room);
@@ -129,7 +129,7 @@ function scroll_to(target_row){
 }
 
 function scroll_down(){
-    scroll_to(Math.min(current_row_index + 3, num_rows-3));
+    scroll_to(Math.min(current_row_index + 3, Math.max(num_rows-3,0)));
 }
 
 function scroll_up(){
