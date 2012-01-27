@@ -529,6 +529,7 @@ $tw: 260px - $tb - 2* $tp;
     float: left;
 }
 .number_list{
+    padding: 0px 20px;
     li{
         width: 80px;
         font-size: 16px;
@@ -659,7 +660,8 @@ b{
     }
     .details_image{
         float: left;
-        width: 200px;
+        max-width: 200px;
+        max-height: 185px;
         display: block;
         margin-left: 20px;
         margin-top: 20px;

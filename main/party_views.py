@@ -47,13 +47,19 @@ def party_create(request):
     defaults['day'] = now.strftime("%m/%d/%y")
     def clean_time(s):
         return s.lower().lstrip('0')
+    #set the default field values
+    defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
+    klass_pk = request.GET.get('class')
+    if klass_pk:
+        klass_qs = Class.objects.filter(pk=klass_pk)
+        if klass_qs:
+            defaults['klass'] = string.join([x.number for x in klass_qs[0].get_meta()],', ')
     defaults['start_time'] = clean_time(now.strftime("%I:%M%p"))
     defaults['end_time'] = clean_time((now+timedelta(hours=1)).strftime("%I:%M%p"))
     defaults['location'] = "W20: Stratton Student Center"
     defaults['lng'] = "-71.094774920000006"
     defaults['lat'] = "42.359042619999997"
     defaults['building_img'] = "http://web.mit.edu/campus-map/objimgs/object-W20.jpg"
-    defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
     form = PartyCreateForm(defaults)
     if request.method=="POST":
         form = PartyCreateForm(request.POST)
@@ -61,7 +67,8 @@ def party_create(request):
             d = form.cleaned_data
             party = Party()
             party.starttime = datetime.combine(d['day'],d['start_time'])
-            party.endtime = datetime.combine(d['day'],d['end_time'])
+            endday = d['day'] if d['start_time'] < d['end_time'] else d['day'] + timedelta(days=1)
+            party.endtime = datetime.combine(endday, d['end_time'])
             party.title = d['title']
             party.agenda = d['agenda']
             party.location = d['location']
@@ -70,7 +77,7 @@ def party_create(request):
             party.lng = d['lng']
             party.building_img = d['building_img']
             klass = re.search("\w+\.\w+", d['klass'])
-            klass_num = ClassNumber.objects.filter(number=klass.group())
+            klass_num = ClassNumber.objects.filter(number=klass.group().upper())
             if klass_num:
                 klass_obj = klass_num[0].class_obj
                 party.class_obj = klass_obj
@@ -147,7 +154,7 @@ def party_must_login(request, pk):
 def party_register_helper_func(party, user):
     party.attendees.add(user)
     party.save()
-    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk).exists():
+    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk, activity_type='attending').exists():
         Activity.create(actor=user, activity_type="attending", target=party)
 
 def party_register_ajax(request, party_pk):

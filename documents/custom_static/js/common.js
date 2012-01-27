@@ -68,7 +68,6 @@ function limit_text(){
             keycode = (event.keyCode ? event.keyCode : event.which);
             if (((keycode >= 48 && keycode <= 90) || (keycode >=107 && keycode <=111) || (keycode>=186 && keycode<=222)) && !meta_pressed){
                 event.preventDefault();
-                console.log('moo');
             }
         }
     });

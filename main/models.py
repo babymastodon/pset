@@ -174,7 +174,7 @@ class UserInfo(FacebookProfileModel):
     description = models.TextField(blank=True) #user description
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
-    current_classes = models.ManyToManyField(Class, through="UserClassData", blank=True)
+    klasses = models.ManyToManyField(Class, blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     def __unicode__(self):
@@ -317,6 +317,8 @@ class Activity(models.Model):
             return self.get_linked_actor() + " updated " + self.target.get_linked_name()
         elif self.activity_type=='attending':
             return self.get_linked_actor() + " is attending " + self.target.get_linked_name()
+        elif self.activity_type=='joined':
+            return self.get_linked_actor() + " joined " + self.target.get_linked_name()
     def get_time(self):
         return time_ago(self.time_created)
     def get_actor(self):
