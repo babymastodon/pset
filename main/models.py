@@ -130,12 +130,12 @@ class ClassNumber(models.Model):
 """
 class UserInfo(FacebookProfileModel):
     user = models.OneToOneField(User, related_name="user_info")
-    description = models.TextField() #user description
-    courses = models.ManyToManyField(Course)
+    description = models.TextField(blank=True) #user description
+    courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
-    current_classes = models.ManyToManyField(Class, through="UserClassData")
-    followees = models.ManyToManyField("self", symmetrical=False, related_name="followers")
-    friends = models.ManyToManyField("self")
+    current_classes = models.ManyToManyField(Class, through="UserClassData", blank=True)
+    followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
+    friends = models.ManyToManyField("self", blank=True)
     def __unicode__(self):
         return unicode(self.user) + "info"
 
@@ -163,6 +163,7 @@ class UserInfo(FacebookProfileModel):
 #getname and get_link for the user class
 User.get_name = lambda self: self.user_info.get_name()
 User.get_link = lambda self: self.user_info.get_link()
+User.get_prof_pic = lambda self: self.user_info.get_prof_pic()
 
 class UserClassData(models.Model):
     #things like confidence

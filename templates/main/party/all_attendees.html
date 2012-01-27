@@ -1,0 +1,12 @@
+{% load url from future %}{% load staticfiles %}
+
+<span class="title">All Attending</span>
+<div class="content_box">
+    <div id="attendee_box">
+        {% for a in attendees %}
+        <span class="attendee">
+            <a href="{{a.get_link}}" ><img  src="{{a.get_prof_pic}}" />{{a.get_name}}</a> 
+        </span>
+        {% endfor %}
+    </div>
+</div>

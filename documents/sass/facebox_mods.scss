@@ -67,6 +67,39 @@
             width: 360px;
             height: 150px;
         }
+        #attendee_box{
+            overflow-x: hidden;
+            overflow-y: scroll;
+            width:360px;
+            height: 400px;
+            background-color: $white;
+            .attendee{
+                width: 149px;
+                padding: 3px;
+                margin-left: 10px;
+                margin-top: 10px;
+                background-color: $hue1-light;
+                overflow: hidden;
+                float: left;
+                a{
+                    width: 149px;
+                    line-height: 32px;
+                    font-weight: bold;
+                    float: left;
+                    display: block;
+                    &:hover{
+                        cursor: pointer;
+                    }
+                }
+                img{
+                    width: 32px;
+                    height: 32px;
+                    float: left;
+                    display: block;
+                    margin-right: 10px;
+                }
+            }
+        }
     }
     .close{
         background-color: transparent;

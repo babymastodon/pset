@@ -24,6 +24,9 @@ def party_details(request, pk):
     rc['party'] = party
     rc['admins'] = party.admins.all()
     rc['attendees'] = party.attendees.all()[:10]
+    numpeople=len(rc['attendees'])
+    rc['numpeople'] = str(numpeople) + (" People " if numpeople!=1 else " Person ") + "Attending"
+    rc['party_pk']=pk
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
@@ -33,6 +36,12 @@ def party_details(request, pk):
     rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
+
+def all_attendees(request, pk):
+    rc={}
+    party = get_object_or_404(Party, pk=pk)
+    rc['attendees'] = party.attendees.all()
+    return render_to_response("main/party/all_attendees.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
     rc={'error':None}
@@ -187,6 +196,8 @@ def ajax(request):
     try:
         verb = request.REQUEST.get('verb',None)
         party_pk = request.REQUEST.get('pk',None)
+        if party_pk:
+            party_pk=int(party_pk)
         if verb=='isregistered':
             result = is_registered(request, party_pk)
         elif verb=='get_attend_button':
@@ -195,6 +206,8 @@ def ajax(request):
             result=party_register_ajax(request, party_pk)
         elif verb=='unregister':
             result=party_unregister_ajax(request, party_pk)
+        elif verb=='all_attendees':
+            return all_attendees(request, party_pk)
         else:
             result['status']="verb didn't match"
     except Exception as e:
