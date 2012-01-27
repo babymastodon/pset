@@ -71,27 +71,6 @@ def home_page(request):
     rc['form'] = form
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
-def add_class(request):
-    rc={error:None}
-    if request.method=="POST":
-        form = AddClassForm(request.POST)
-        if form.is_valid():
-            d = form.cleaned_data
-            newclass = UserClassData()
-            newclass.user_info = request.user.user_info
-            newclass.instructor = d['instructor']
-            newclass.recitation_leader = d['recitation_leader']
-            newclass.experience = d['experience']
-            klass = re.search("\w+\.\w+", d['klass'])
-            try:
-                party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
-                status=None
-            except Exception as e:
-                rc['error'] = "Class Number is invalid"
-                raise e
-    retu
-            
-
 def about(request):
     rc={}
     return render_to_response("main/home/about.html", rc, context_instance=RequestContext(request))
