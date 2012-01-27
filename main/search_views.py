@@ -168,7 +168,7 @@ def make_party_list(request, queryset, counter=0):
 
 def get_parties_by_class(request, class_pk):
     today=timezone.now()
-    queryset = Party.objects.filter(endtime__gt=today, class_obj__pk=class_pk, active=True)
+    queryset = Party.objects.filter(endtime__gt=today, class_obj__pk=class_pk, active=True).order_by('starttime')
     result_list = make_party_list(request, queryset)
     return {'status':'success', 'result_list':result_list}
 
@@ -179,7 +179,7 @@ def get_parties_by_date(request, day):
     if day==0: ##then we don't want to get teh completed ones
         d=timezone.now()
     delta = timedelta(days=1)
-    queryset = Party.objects.filter(endtime__gt=d, starttime__lt=d+delta, active=True)
+    queryset = Party.objects.filter(endtime__gt=d, starttime__lt=d+delta, active=True).order_by('starttime')
     result_list = make_party_list(request, queryset, counter)
     return {'status':'success', 'result_list':result_list}
 

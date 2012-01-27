@@ -47,13 +47,19 @@ def party_create(request):
     defaults['day'] = now.strftime("%m/%d/%y")
     def clean_time(s):
         return s.lower().lstrip('0')
+    #set the default field values
+    defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
+    klass_pk = request.GET.get('class')
+    if klass_pk:
+        klass_qs = Class.objects.filter(pk=klass_pk)
+        if klass_qs:
+            defaults['klass'] = string.join([x.number for x in klass_qs[0].get_meta()],', ')
     defaults['start_time'] = clean_time(now.strftime("%I:%M%p"))
     defaults['end_time'] = clean_time((now+timedelta(hours=1)).strftime("%I:%M%p"))
     defaults['location'] = "W20: Stratton Student Center"
     defaults['lng'] = "-71.094774920000006"
     defaults['lat'] = "42.359042619999997"
     defaults['building_img'] = "http://web.mit.edu/campus-map/objimgs/object-W20.jpg"
-    defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
     form = PartyCreateForm(defaults)
     if request.method=="POST":
         form = PartyCreateForm(request.POST)
