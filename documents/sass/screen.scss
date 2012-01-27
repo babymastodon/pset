@@ -320,6 +320,7 @@ $tw: 260px - $tb - 2* $tp;
     display: table;
     margin-left: auto;
     margin-right: auto;
+    float: none;
 }
 
 #date_nav_bar{
@@ -612,6 +613,9 @@ $tw: 260px - $tb - 2* $tp;
 .whitebox{
     @include box-shadow($gray-mid 2px 2px 3px 0px inset);
     background-color: $white;
+}
+b{
+    font-weight: bold;
 }
 .details_panel{
     h1{
