@@ -23,10 +23,10 @@ def party_details(request, pk):
     party = get_object_or_404(Party, pk=pk)
     rc['party'] = party
     rc['admins'] = party.admins.all()
-    rc['attendees'] = party.attendees.all()[:10]
-    numpeople=len(rc['attendees'])
-    rc['numpeople'] = str(numpeople) + (" People " if numpeople!=1 else " Person ") + "Attending"
-    rc['party_pk']=pk
+    attendees = party.attendees.all()[:10]
+    numpeople=len(attendees)
+    all_attendees_header = str(numpeople) + (" People " if numpeople!=1 else " Person ") + "Attending"
+    rc['all_attendees'] = {"show_all":reverse("main.people_views.all_attending", kwargs={"pk":pk}), 'list':attendees, 'header':all_attendees_header}
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
@@ -36,12 +36,6 @@ def party_details(request, pk):
     rc['newsfeed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).order_by('-time_created')[(page-1)*30:page*30]
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
-
-def all_attendees(request, pk):
-    rc={}
-    party = get_object_or_404(Party, pk=pk)
-    rc['attendees'] = party.attendees.all()
-    return render_to_response("main/party/all_attendees.html", rc, context_instance=RequestContext(request))
 
 def party_create(request):
     rc={'error':None}

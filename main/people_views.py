@@ -14,22 +14,11 @@ from django import forms
 from main.models import *
 from main.forms import *
 from main.views_common import *
-import main.search_views as search_views
-import main.party_views as party_views
-import  main.class_views as class_views
-import main.comment_views as comment_views
-import main.people_views as people_views
 
-def ajax(request):
-    module = request.REQUEST.get("module","")
-    if module=="search":
-        return search_views.ajax(request)
-    elif module=="party":
-        return party_views.ajax(request)
-    elif module=="class":
-        return class_views.ajax(request)
-    elif module=="comments":
-        return comment_views.ajax(request)
-    else:
-        return HttpResponse('{"status":"module not found"}', mimetype="application/json");
+def all_attending(request, pk):
+    rc={}
+    party = get_object_or_404(Party, pk=pk)
+    rc['attendees'] = party.attendees.all()
+    rc['title']= 'All Attending'
+    return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
 

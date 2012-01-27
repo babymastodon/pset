@@ -1,0 +1,35 @@
+
+{% load url from future %}{% load staticfiles %}
+<div class="people_header clearfix">
+    <img src="{% static 'images/css/icons/users32.png'%}"/>
+    <span class="header_text">{{people.header}}</span>
+</div>
+<ul class="people_list">
+    {% for p in people.list %}
+    <li class="clearfix">
+    <a class="user_select clearfix" href="{{p.get_link}}">
+        <img src="{{p.user_info.get_prof_pic}}" class="user_thm" />
+        <span class="people_text">{{p.get_name}}</span>
+    </a>
+    </li>
+    {% endfor %}
+</ul>
+{% if people.show_all %}
+<div class="clear space_10"></div>
+<a href="{{people.show_all}}" class="gray_button fright show_all">Show All</a>
+<script type="text/javascript">
+    if (!window.people_script_loaded){
+        $.ajax({
+            type: "GET",
+            url:"{% static 'js/people.js' %}",
+            dataType:"script",
+            success: function(data){
+                $(document).ready(init_people_buttons);
+                window.people_script_loaded=true;
+            },
+        });
+    }else{
+        $(document).ready(init_people_buttons);
+    }
+</script>
+{% endif %}

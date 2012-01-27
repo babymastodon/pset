@@ -48,6 +48,11 @@ urlpatterns += patterns('main.party_views',
     url(r'^party/create/$', 'party_create'),#form for creating a new party
 )
 
+#views for the people ajax popup
+urlpatterns += patterns('main.people_views',
+    url(r'^party/attending/(?P<pk>\d+)/$', 'all_attending'),#view after a successful party unregistration
+)
+
 #the ajax handler
 urlpatterns += patterns('main.ajax_views',
         url(r'ajax', 'ajax'),
