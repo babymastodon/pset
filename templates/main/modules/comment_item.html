@@ -1,7 +1,7 @@
 {% load url from future %}{% load staticfiles %}{% for i in comments %}
 <li id="comment_{{i.item.pk}}" class="clearfix">
 <img src="{{i.item.get_image}}" class="comment_icon" />
-<div class="comment_body">
+<div class="comment_body clearfix">
     <span class="comment_user fleft">{{i.item.get_linked_actor|safe}}</span>
     <span class="fleft word_spacer"> said </span>
     <span class="comment_timestamp fleft">{{i.item.get_time}}</span>
@@ -14,8 +14,8 @@
 </li>
 {% empty %}
 <li class="clearfix">
-<div class="comment_body">
-    <span>No comments to show</span>
+<div class="comment_body clearfix">
+    <span style="display: block; margin-bottom: 3px;">No comments to show</span>
 </div>
 </li>
 {% endfor %}

@@ -93,8 +93,11 @@ function load_json_parties(data){
             icon =  marker_url(item.color + "_Marker" + item.letter);
             item['icon'] = icon;
             moo.find("img").attr("src",icon);
-            moo.find(".class").html(item.class_nums.join(", "));
-            moo.find(".time").html(item.day_name + " " + item.start_time + " - " + item.end_time);
+            class_nums = item.class_nums.join(", ");
+            moo.find(".class").html(class_nums);
+            moo.attr("title",item.class_title + ": " + class_nums);
+            moo.find(".time").html(item.start_time + " - " + item.end_time);
+            moo.find(".day").html(item.day);
             moo.attr("id","resultitem_"+item.letter);
             loc = new google.maps.LatLng(item.lat, item.lng);
             m = new google.maps.Marker({

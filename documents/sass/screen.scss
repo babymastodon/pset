@@ -476,13 +476,15 @@ $tw: 260px - $tb - 2* $tp;
     white-space: nowrap;
 }
 
-.feed_header, .class_header, .comment_header, .people_header{
+.feed_header, .comment_header, .people_header, .page_header, .page_subheader{
     border-bottom: 2px solid $gray-mid-dark;
     padding-bottom: 5px;
     margin-bottom: 10px;
     img{
         display: block;
         float: left;
+        width: 32px;
+        height: 32px;
     }
     .header_text{
         display: block;
@@ -491,6 +493,12 @@ $tw: 260px - $tb - 2* $tp;
         margin-left: 20px;
         float: left;
     }
+    &.page_subheader{
+        border-bottom: none;
+        .header_text{
+            font-size: 24px;
+        }
+    }
 }
 .space_10{
     height: 10px;
@@ -498,13 +506,44 @@ $tw: 260px - $tb - 2* $tp;
 .space_20{
     height: 20px;
 }
+.space_30{
+    height: 30px;
+}
+.space_40{
+    height: 40px;
+}
+.space_50{
+    height: 50px;
+}
+.space_60{
+    height: 60px;
+}
+.space_70{
+    height: 70px;
+}
+.space_80{
+    height: 80px;
+}
 .class_title{
     font-size: 20px;
     margin-left: 30px;
 }
+.detail_text_block, .detail_text{
+    font-size: 20px;
+}
 .detail_text_block{
     margin-left: 30px;
     float: left;
+}
+.number_list{
+    li{
+        width: 80px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+        float: left;
+    }
 }
 .newsfeed, .comment_feed, .people_list{
    margin-left: 32px;
@@ -543,6 +582,7 @@ $tw: 260px - $tb - 2* $tp;
         width: 420px;
         display: block;
         margin-top: 5px;
+        overflow: hidden;
     }
     .news_timestamp{
         display: block;
@@ -596,14 +636,14 @@ $tw: 260px - $tb - 2* $tp;
         }
     }
     .page_details{
-        font-size: 20px;
+        font-size: 18px;
         line-height: 22px;
         float: right;
         width: 350px;
         margin-left: 30px;
         text-indent: -30px;
         li{
-            margin-bottom: 4px;
+            margin-bottom: 10px;
         }
     }
     .details_image{

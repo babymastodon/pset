@@ -17,36 +17,44 @@
     </div>
 </div>
 <div class="grid_8 details_panel">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/gear32.png'%}"/>
+        <span class="header_text" style="width: 420px;">Party Details</span>
+    </div>
     <img src="{{party.get_image}}" class="details_image" />
     <ul class="page_details">
         <li>Location: {{party.location}}</li>
         <li>Room: {{party.room}}</li>
-        <li>{{party.get_day}}</li>
-        <li>{{party.get_start_time}} to {{party.get_end_time}}</li>
+        <li>Date: {{party.get_day}}</li>
+        <li>Time: {{party.get_start_time}} to {{party.get_end_time}}</li>
         <li>Agenda: {{party.agenda}}</li>
     </ul>
-    <div class="clear space_20"></div>
-    <div class="class_header clearfix">
-        <img src="{% static 'images/css/icons/gear32.png'%}"/>
-        <span class="header_text" style="width: 420px;">{{party.class_obj.title}}</span>
+    <div class="clear"></div>
+    <div class="space_20"></div>
+    <div class="page_subheader clearfix">
+        <img src="{{party.class_obj.get_image}}"/>
+        <span class="header_text" style="width: 420px;">{{party.class_obj.get_name}}</span>
         <a href="{% url 'main.class_views.class_details' pk=party.class_obj.pk %}" class="gray_button fright">Go to Class Page</a>
     </div>
     <div>
-        <div class="clear space_10"></div>
-        <span class="detail_text_block">
-            Class Numbers:
+        <div class="clear"></div>
+        <span class="detail_text">
+            <ul class="number_list hcenter clearfix">
             {% for c in party.class_obj.get_meta %}
-            {{ c.number }}
+            <li>{{ c.number }}</li>
             {% endfor %}
+        </ul>
         </span>
     </div>
-    <div class="clear space_20"></div>
+    <div class="clear"></div>
+    <div class="space_60"></div>
     <div>
         {% with comment_header="Comments" %}
         {% include 'main/modules/comment_list.html' %}
         {% endwith %}
     </div>
-    <div class="clear space_20"></div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
     <div>
         {% with feed_list=newsfeed feed_header="Recent Activity" %}
         {% include 'main/modules/feed_list.html' %}
@@ -55,13 +63,15 @@
 </div>
 <div id="right_col" class="grid_4">
     <div id="mapdiv" style="width: 300px; height: 300px;"></div>
-    <div class="clear space_10"></div>
+    <div class="clear"></div>
+    <div class="space_20"></div>
     <div>
         {% with people=admins %}
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>
-    <div class="clear space_10"></div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
     <div>
         {% with people=all_attendees %}
         {% include 'main/modules/people_list.html' %}
