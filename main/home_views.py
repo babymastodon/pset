@@ -49,12 +49,18 @@ def home_page(request):
             if klass_num:
                 userinfo = UserInfo.objects.filter(user=request.user)
                 if userinfo:
-                    user_info_obj = userinfo[0]
-                    newclass.user_info = user_info_obj
-                    klass_obj = klass_num[0].class_obj
-                    newclass.class_obj = klass_obj
-                    newclass.save()
-                    Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+                    #check if interaction already exists
+                    courses = UserClassData.objects.filter(user_info=userinfo, class_obj=klass_num[0].class_obj)
+                    if not courses:
+                        user_info_obj = userinfo[0]
+                        newclass.user_info = user_info_obj
+                        klass_obj = klass_num[0].class_obj
+                        newclass.class_obj = klass_obj
+                        newclass.save()
+                        Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+                        form = AddClassForm(defaults)
+                    else:
+                        rc['error'] = "Already signed up for course"
                 else:
                     rc['error'] = "No userinfo found"
             else:

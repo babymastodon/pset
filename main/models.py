@@ -174,7 +174,7 @@ class UserInfo(FacebookProfileModel):
     description = models.TextField(blank=True) #user description
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
-    klasses = models.ManyToManyField(Class, blank=True)
+    klasses = models.ManyToManyField(Class, through="UserClassData", blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     def __unicode__(self):
