@@ -338,16 +338,6 @@ $tw: 260px - $tb - 2* $tp;
 .attend_button_container{
     display: block;
     line-height: 30px;
-    .gray_button{
-        margin-left: 20px;
-    }
-    .already_attending{
-        display: block;
-        .undo_button{
-            float: right;
-            margin-left: 10px;
-        }
-    }
 }
 
 .facebook_button{
@@ -652,7 +642,7 @@ $tw: 260px - $tb - 2* $tp;
             text-indent: -100px;
             width: 260px;
             li{
-                margin-bottom: 10px;
+                margin-bottom: 6px;
                 h3{
                     font-size: 18px;
                     width: 80px;

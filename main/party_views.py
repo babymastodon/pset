@@ -70,8 +70,10 @@ def party_create(request):
             party.lng = d['lng']
             party.building_img = d['building_img']
             klass = re.search("\w+\.\w+", d['klass'])
-            try:
-                party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
+            klass_num = ClassNumber.objects.filter(number=klass.group())
+            if klass_num:
+                klass_obj = klass_num[0].class_obj
+                party.class_obj = klass_obj
                 status=None
                 if request.user.is_anonymous():
                     if d['username']:
@@ -99,7 +101,7 @@ def party_create(request):
                 elif status=="account_created":
                     party.active=False
                     party.save()
-                    creator=request.user
+                    creator=moo['user']
                     moo['ph'].party=party
                     moo['ph'].save()
                     next_url = reverse('main.account_views.email_sent')
@@ -110,9 +112,8 @@ def party_create(request):
                     Activity.create(actor=creator, activity_type="created", target=party)
                     Activity.create(actor=creator, activity_type="attending", target=party)
                     return redirect(next_url)
-            except Exception as e:
+            else:
                 rc['error'] = "Class Number is invalid"
-                raise e
         else:
             rc['error'] = "There were errors in the form. Please make sure that all the fields are filled out."
     rc['form'] = rc['rform'] =  form

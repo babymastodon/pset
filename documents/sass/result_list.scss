@@ -27,6 +27,12 @@
         position: absolute;
         top: 0px;
         padding-top: 10px;
+        .empty{
+            font-size: 28px;
+            text-align: center;
+            margin-top: 100px;
+            width: 940px;
+        }
         .result_item{
             background-color: $hue1-light;
             @include unselectable;

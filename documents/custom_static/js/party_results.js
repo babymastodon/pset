@@ -114,6 +114,9 @@ function load_json_parties(data){
             item['coords'] = loc;
             item_dict[item.letter]=item;
         }
+        if (l.length==0){
+            $(".templates .empty").clone().appendTo("#result_list_container");
+        }
         setTimeout(marker_animate,0);
     }
 }

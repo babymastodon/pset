@@ -13,6 +13,7 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import Raw
 import logging, simplejson, string, re, urllib, random
 from django.core import serializers
+from django.utils import timezone
 
 #import models and forms here
 from main.models import *
@@ -169,7 +170,12 @@ def get_parties_by_date(request, day):
     colorlist = ['red','orange','yellow','green','blue','purple']
     letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     counter = day*26
-    queryset = Party.objects.all()
+    today=timezone.now().date()
+    d = today + timedelta(days=day)
+    if day==0: ##then we don't want to get teh completed ones
+        d=timezone.now()
+    delta = timedelta(days=1)
+    queryset = Party.objects.filter(endtime__gt=d, starttime__lt=d+delta, active=True)
     for i in queryset:
         r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
         result_list.append(r)

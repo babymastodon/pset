@@ -80,6 +80,7 @@ def create_from_email_pwd(email, pwd, request):
     uname=email.split("@")[0]
     if User.objects.filter(username=uname).exists():
         rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
+        return rc
     else:
         account=createAccount(email=email, 
                               username=uname, 
