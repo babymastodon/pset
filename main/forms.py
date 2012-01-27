@@ -1,6 +1,5 @@
 from django import forms
 from main.models import *
-from userena.forms import SignupForm, SignupFormOnlyEmail
 
 #Make forms here
 
@@ -40,6 +39,13 @@ class EmailRegisterForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+class AddClassForm(forms.Form):
+    user = forms.CharField(max_length=100, required=True)
+    klass = forms.CharField(max_length=100, required=True)
+    instructor = forms.CharField(max_length=100, required=False)
+    recitation_leader = forms.CharField(max_length=100, required=False)
+    experience = forms.CharField(max_length=100, required=False)
 
 valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']
 class PartyCreateForm(forms.Form):

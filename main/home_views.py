@@ -15,6 +15,8 @@ from main.models import *
 from main.forms import *
 from main.views_common import *
 
+import re
+
 def front_page(request):
     rc={}
     rc['rform'] = EmailRegisterForm() 
@@ -25,11 +27,56 @@ def home_page(request):
     rc={}
     user = request.user
     rc['user'] = user
-    rc['userinfo'] = user.user_info
+    rc['user_info'] = user.user_info
     rc['classes'] = user.user_info.current_classes
     rc['friends'] = user.user_info.friends
+    defaults = {}
+    defaults['user_info']=request.user
+    defaults['klass']="" 
+    defaults['instructor']=defaults['recitation_leader']=defaults['experience']=""
+    form = AddClassForm(defaults)
+    if request.method=="POST":
+        form = AddClassForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            newclass = UserClassData()
+            newclass.user_info = request.user.user_info
+            newclass.instructor = d['instructor']
+            newclass.recitation_leader = d['recitation_leader']
+            newclass.experience = d['experience']
+            klass = re.search("\w+\.\w+", d['klass'])
+            klass_num = ClassNumber.objects.filter(number=klass.group())
+            if klass_num:
+                klass_obj = klass_num[0].class_obj
+                newclass.class_obj = klass_obj
+                newclass.save()
+                Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+            else:
+                rc['error'] = "Class Number is invalid"
     # passing stuff to the home page
+    rc['form'] = form
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
+
+def add_class(request):
+    rc={error:None}
+    if request.method=="POST":
+        form = AddClassForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            newclass = UserClassData()
+            newclass.user_info = request.user.user_info
+            newclass.instructor = d['instructor']
+            newclass.recitation_leader = d['recitation_leader']
+            newclass.experience = d['experience']
+            klass = re.search("\w+\.\w+", d['klass'])
+            try:
+                party.class_obj = ClassNumber.objects.get(number=klass.group()).class_obj
+                status=None
+            except Exception as e:
+                rc['error'] = "Class Number is invalid"
+                raise e
+    retu
+            
 
 def about(request):
     rc={}
