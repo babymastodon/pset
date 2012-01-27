@@ -4,22 +4,42 @@
 {% block main_content %}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="{% static 'js/geolocation.js'%}" type="text/javascript"></script>
-<script type="text/javascript">
-    loc = new google.maps.LatLng({{party.lat}},{{party.lng}});
-</script>
-<script src="{% static 'js/party_details.js'%}" type="text/javascript"></script>
+<script src="{% static 'js/class_details.js'%}" type="text/javascript"></script>
+<div class="grid_12 details_panel">
+    <h1>{{class.get_name}}</h1>
+    <div class="party_details_attend">
+        <div id="add_this_class" class="gray_button fright">Add This Class</div>
+        <div id="drop_this_class" style="display:none;" class="gray_button fright">Drop This Class</div>
+    </div>
+</div>
+<div class="grid_12 details_panel">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/gear32.png'%}"/>
+        <span class="header_text" style="width: 420px;">Class Details</span>
+    </div>
+</div>
+<div class="clear"></div>
 <div class="grid_8 details_panel">
-    <h1 class="wrap">{{class.get_name}}</h1>
-    <img src="{{class.get_image}}" class="details_image" />
-    <ul class="page_details">
-        <li>Location: {{party.location}}</li>
-        <li>Room: {{party.room}}</li>
-        <li>{{party.get_day}}</li>
-        <li>{{party.get_start_time}} to {{party.get_end_time}}</li>
-        <li>Agenda: {{party.agenda}}</li>
-    </ul>
-    <div class="clear space_20"></div>
-    <div class="clear space_20"></div>
+    <div class="whitebox clearfix" style="height: 250px;">
+        <img src="{{class.get_image}}" class="details_image" />
+        <div class="page_details_scroll_container">
+            <ul class="page_details">
+                <li><h3>Location:</h3>moo</li>
+                <li><h3>Room:</h3>moo2</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="grid_4">
+    <div id="mapdiv" style="width: 300px; height: 150px;"></div>
+    <div class="space_20"></div>
+    <div class="center" style="font-size: 24px;"><b>5</b> parties on the schedule</div>
+    <div class="space_20"></div>
+    <a href="{{class.map_view}}" class="gray_button hcenter">Switch to Map View</a>
+</div>
+<div class="clear"></div>
+<div class="space_60"></div>
+<div class="grid_8">
     <div>
         {% with comment_header="Comments" %}
         {% include 'main/modules/comment_list.html' %}
@@ -33,12 +53,6 @@
     </div>
 </div>
 <div id="right_col" class="grid_4">
-    <div class="party_details_attend">
-        <div id="add_this_class" class="gray_button fright">Add This Class</div>
-        <div id="drop_this_class" style="display:none;" class="gray_button fright">Drop This Class</div>
-    </div>
-    <div id="mapdiv" style="width: 300px; height: 300px;"></div>
-    <div class="clear space_10"></div>
     <div>
         {% with people=admins %}
         {% include 'main/modules/people_list.html' %}

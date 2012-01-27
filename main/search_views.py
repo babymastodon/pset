@@ -155,20 +155,24 @@ def create_party_dict(ob, letter, request, color="red"):
     r['pk'] = ob.pk
     return r
 
-def get_parties_by_class(request, class_pk):
-    result_list=[]
-    #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
-    colorlist = ['red','orange','yellow','green','blue','purple']
-    for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-        r = create_party_dict("0", i, request)
-        result_list.append(r)
-    return {'status':'success', 'result_list':result_list}
-
-def get_parties_by_date(request, day):
-    result_list=[]
+def make_party_list(request, queryset, counter=0):
     #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
     colorlist = ['red','orange','yellow','green','blue','purple']
     letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    result_list=[]
+    for i in queryset:
+        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
+        result_list.append(r)
+        counter+=1
+    return result_list
+
+def get_parties_by_class(request, class_pk):
+    today=timezone.now()
+    queryset = Party.objects.filter(endtime__gt=today, class_obj__pk=class_pk, active=True)
+    result_list = make_party_list(request, queryset)
+    return {'status':'success', 'result_list':result_list}
+
+def get_parties_by_date(request, day):
     counter = day*26
     today=timezone.now().date()
     d = today + timedelta(days=day)
@@ -176,10 +180,7 @@ def get_parties_by_date(request, day):
         d=timezone.now()
     delta = timedelta(days=1)
     queryset = Party.objects.filter(endtime__gt=d, starttime__lt=d+delta, active=True)
-    for i in queryset:
-        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
-        result_list.append(r)
-        counter+=1
+    result_list = make_party_list(request, queryset, counter)
     return {'status':'success', 'result_list':result_list}
 
 def search_page(request):

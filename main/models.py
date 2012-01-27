@@ -122,6 +122,8 @@ class Class(models.Model):
         return unicode(self.title)
     def get_link(self):
         return reverse("main.class_views.class_details", kwargs={'pk': self.pk})
+    def map_view(self):
+        return reverse("main.search_views.parties_by_class", kwargs={'pk': self.pk})
     def get_name(self):
         return unicode(self)
     def get_image(self):
