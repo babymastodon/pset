@@ -22,11 +22,14 @@ def party_details(request, pk):
     rc={}
     party = get_object_or_404(Party, pk=pk)
     rc['party'] = party
-    rc['admins'] = party.admins.all()
+    #list of all attendees
     attendees = party.attendees.all()[:10]
     numpeople=len(attendees)
     all_attendees_header = str(numpeople) + (" People " if numpeople!=1 else " Person ") + "Attending"
     rc['all_attendees'] = {"show_all":reverse("main.people_views.all_attending", kwargs={"pk":pk}), 'list':attendees, 'header':all_attendees_header}
+    #list of all admins
+    admins = party.admins.all()
+    rc['admins'] = {'list':admins, 'header':'Admins'}
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
