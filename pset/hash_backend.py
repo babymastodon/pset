@@ -18,6 +18,5 @@ class HashBackend(ModelBackend):
             return user
         except PendingHash.DoesNotExist:
             return None
-
-
+        return None
 

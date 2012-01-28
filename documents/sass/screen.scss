@@ -536,6 +536,10 @@ $tw: 260px - $tb - 2* $tp;
     margin-left: 30px;
     float: left;
 }
+.plain_text{
+    font-size: 16px;
+    line-height: 22px;
+}
 .number_list{
     padding: 0px 20px;
     li{
@@ -627,16 +631,22 @@ b{
     font-weight: bold;
 }
 .profile_panel{
-    ul{
+    font-size: 18px;
+    line-height: 22px;
+    margin: 20px;
+    width: 260px;
+    td{
+        padding-bottom: 6px;
+        font-size: 16px;
+        display: table-cell;
+        vertical-align: top;
+        &:first-child{
             font-size: 16px;
-            line-height: 22px;
-        li{
-            margin-bottom: 6px;
-            h3{
-                font-size: 18px;
-                margin-right: 10px;
-                display: block;
-                float: left;
+            font-weight: bold;
+            width: 100px;
+            &.bio{
+                font-weight: normal;
+                padding-left: 20px;
             }
         }
     }
@@ -691,8 +701,8 @@ b{
     }
 }
 .profile_image{
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 220px;
+    max-height: 150px;
 }
 
 .party_details_attend{

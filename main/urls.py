@@ -12,7 +12,8 @@ urlpatterns = patterns('main.home_views',
 urlpatterns += patterns('main.account_views',
     url(r'^profile/(?P<pk>\d+)/$', 'profile_page'),#page for displaying profile info such as comments, personal info, classes
     url(r'^profile/me/$', 'my_profile_page'),#basically a wrapper for the previous rule but using the pk of the logged-in user
-    url(r'^profile/edit/$', 'bio_info'),#page for editing profile info
+    url(r'^profile/bio/$', 'bio_info'),#page for editing profile info
+    url(r'^profile/settings/$', 'account_info'),#page for editing profile info
     url(r'^newaccount/bio/$', 'new_bio_info'),#page for editing profile info
     url(r'^newaccount/$', 'create_account_page'),#gives a form to create an accoutn from email, or possibly ssl certificate
     url(r'^newaccount/email_sent$', 'email_sent'),#the verification email has been sent

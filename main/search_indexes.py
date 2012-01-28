@@ -51,7 +51,7 @@ class ClassNumberIndex(indexes.SearchIndex, indexes.Indexable):
             self.remove_object(instance, **kwargs)
             return False    
 
-class UserInfoIndex(indexes.SearchIndex, indexes.Indexable):
+class UserInfoIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     courses = indexes.MultiValueField(indexed=True, stored=True)
     suggestions = indexes.FacetCharField()

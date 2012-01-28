@@ -180,6 +180,7 @@ class UserInfo(FacebookProfileModel):
     klasses = models.ManyToManyField(Class, through="UserClassData", blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
+    last_seen = models.DateTimeField(auto_now=True)
     def __unicode__(self):
         return unicode(self.user) + "info"
 
@@ -192,7 +193,7 @@ class UserInfo(FacebookProfileModel):
     def get_meta(self):
         meta = self.user.first_name + " " + self.user.last_name
         if self.graduation_year != None:
-            meta = meta + ", '" + self.graduation_year
+            meta = meta + ", '" + str(self.graduation_year)
         return meta 
     
     def get_prof_pic(self):
@@ -275,9 +276,21 @@ class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
     hashcode = models.CharField(max_length=100)
+    @staticmethod
+    def create(user):
+        h1 = "%032x" % random.getrandbits(128)
+        ph = PendingHash(user, h1)
+        ph.save()
+        return ph
+
+class DummyTarget(models.Model):
+    def get_name(self):
+        return "Dum Dum"
+    get_link = get_name
+    get_linked_name = get_name
 
 target_types = [(a,a) for a in ['User','Class','Party']]
-target_dict = {'User':User, 'Class':Class, 'Party':Party}
+target_dict = {'User':User, 'Class':Class, 'Party':Party, 'DummyTarget':DummyTarget}
 class Target(models.Model):
     target_id = models.IntegerField()
     target_type = models.CharField(max_length=20)
@@ -296,7 +309,7 @@ class Target(models.Model):
     def __unicode__(self):
         return self.target_type + ": " + self.get_name()
 
-activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]
+activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined', 'newaccount']]
 class Activity(models.Model):
     activity_type = models.CharField(max_length=20, choices=activity_types)
     actor = models.ForeignKey(User)
@@ -316,6 +329,8 @@ class Activity(models.Model):
             return static + 'pencil32.png'
         elif self.activity_type=='joined':
             return static + 'plus32.png'
+        elif self.activity_type=='newaccount':
+            return static + 'glitter32.png'
     def get_content(self):
         if self.activity_type=="comment":
             return self.get_linked_actor() + " left a comment at " + self.target.get_linked_name()
@@ -327,12 +342,21 @@ class Activity(models.Model):
             return self.get_linked_actor() + " is attending " + self.target.get_linked_name()
         elif self.activity_type=='joined':
             return self.get_linked_actor() + " added " + self.target.get_linked_name()
+        elif self.activity_type=='newaccount':
+            return self.get_linked_actor() + " joined InTheLoop!"
     def get_time(self):
         return time_ago(self.time_created)
     def get_actor(self):
         return str(self.actor)
     @staticmethod
-    def create(activity_type, actor, target):
+    def create(activity_type, actor, target=None):
+        if not target:
+            dummies = DummyTarget.objects.all()
+            if not dummies:
+                target = DummyTarget()
+                target.save()
+            else:
+                target=dummies[0]
         t = Target(target_id=target.pk, target_type=target.__class__.__name__)
         t.save()
         a = Activity(activity_type=activity_type, actor=actor, target=t)

@@ -9,4 +9,4 @@ cd ..
 ./manage.py build_solr_schema > apache/solr_schema.xml
 python apache/mod_schema.py
 touch ./${PWD##*/}/wsgi.py
-chmod -R 777 documents/media
+chmod 777 documents/media

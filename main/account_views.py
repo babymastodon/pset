@@ -64,6 +64,8 @@ def profile_page(request, pk):
     rc['person']=user
     rc['newsfeed'] = get_newsfeed('profile',pk)
     rc['comments']={'pk':pk, 'target':"User"}
+    rc['join_date']=day_string(request.user.date_joined)
+    rc['last_seen']=time_ago(request.user.user_info.last_seen)
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
@@ -87,9 +89,7 @@ def create_from_email_pwd(email, pwd, request):
                               username=uname, 
                               password=pwd, 
                               is_active=False)
-        h = "%032x" % random.getrandbits(128)
-        ph = PendingHash(user=account, hashcode=h)
-        ph.save()
+        ph = PendingHash.create(user=account)
         t = loader.get_template('emails/verify.txt')
         html = loader.get_template('emails/verify.html')
         root_email = request.get_host()
@@ -137,15 +137,21 @@ def verify(request, hashcode):
     rc={}
     user = authenticate(hashcode=hashcode)
     if not user:
-        render_to_response("main/account/verify_expired.html", 
+        return render_to_response("main/account/verify_expired.html", 
                                   rc, context_instance=RequestContext(request))
     rc['next']=reverse('main.account_views.bio_info')#redirect to bio page
+    Activity.create(actor=user, activity_type='newaccount')
     login(request,user)
     return redirect(reverse('main.account_views.my_profile_page'))
 
 def link_to_facebook(request):
     rc={}
     return render_to_response("main/account/link_to_facebook.html", rc, context_instance=RequestContext(request))
+
+@login_required
+def account_info(request):
+    rc={}
+    return render_to_response("main/account/account_info.html", rc, context_instance=RequestContext(request))
 
 def new_bio_info(request):
     return bio_info(request, True)
@@ -185,7 +191,7 @@ def bio_info(request, new=False):
             ##process picture
             try:
                 if d['pic']:
-                    image = resize_image(d['pic'])
+                    image = resize_image(d['pic'], 300)
                     i.image.save(d['pic'].name+"-"+str(timezone.localtime(timezone.now())), image)
             except Exception as e:
                 raise e

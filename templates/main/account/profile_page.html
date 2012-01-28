@@ -7,7 +7,7 @@
 </script>
 <script src="{% static 'js/profile_details.js'%}" type="text/javascript"></script>
 <div class="grid_12 details_panel">
-    <h1>{{person.get_name}}'s Profile</h1>
+    <h1 style="width: 600px;">{{person.get_name}}'s Profile</h1>
     {% if user.is_authenticated %}
     <div class="party_details_attend">
         {% if user = person %}
@@ -15,39 +15,40 @@
         {% else %}
         <div id="add_this_class" class="gray_button fright {% if joined %}hidden{% endif %}">Follow {{person.get_name}}</div>
         <div id="drop_this_class" class="gray_button fright {% if not joined %}hidden{% endif %}">Stop Following {{person.get_name}}</div>
-    </div>
     {% endif %}
-    {% endif %}
+</div>
+{% endif %}
 </div>
 <div class="clear"></div>
-<div class="grid_4 details_panel">
-    <div class="whitebox clearfix" style="height: 250px;">
+<div class="grid_12 details_panel">
+    <div class="grid_3 alpha center">
         <img src="{{person.get_image}}" class="profile_image" />
-        <ul class="profile_panel">
-            <li><h3>Class:</h3>{{user.user_info.graduation_year}}</li>
-            <li><h3>Department:</h3>{{user.user_info.department}}</li>
-            <li><h3>Bio:</h3>{{user.user_info.bio}}</li>
-        </ul>
-        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a>
+    </div>
+    <div class="whitebox clearfix grid_9 omega" style="height: 150px;">
     </div>
 </div>
-<div class="grid_8">
-    <div>
-        {% with feed=newsfeed %}
-        {% include 'main/modules/feed_list.html' %}
-        {% endwith %}
+<div class="clear"></div>
+<div class="space_20"></div>
+<div class="grid_4 details_panel center">
+    <div class="clear"></div>
+    <div class="people_header clearfix">
+        {% if people.icon %}
+        <img src="{{people.icon}}"/>
+        {% else %}
+        <img src="{% static 'images/css/icons/users32.png'%}"/>
+        {% endif %}
+        <span class="header_text">{{user.get_name}}</span>
     </div>
+    <table class="profile_panel">
+        <tr><td>Department:</td><td>{{user.user_info.department}}</td></tr>
+        <tr><td>Class Year:</td><td>{{user.user_info.graduation_year}}</td></tr>
+        <tr><td>Join Date:</td><td>{{join_date}}</td></tr>
+        <tr><td>Last Seen:</td><td>{{last_seen}}</td></tr>
+        <tr><td>Bio:</td></tr>
+        <tr><td colspan=2 class="bio">{{user.user_info.bio}}</td></tr>
+    </table>
     <div class="clear"></div>
     <div class="space_40"></div>
-    <div>
-        {% with comment_header="Comments" %}
-        {% include 'main/modules/comment_list.html' %}
-        {% endwith %}
-    </div>
-</div>
-<div class="clear"></div>
-<div class="space_60"></div>
-<div id="right_col" class="grid_4">
     <div>
         {% with people=admins %}
         {% include 'main/modules/people_list.html' %}
@@ -58,6 +59,20 @@
     <div>
         {% with people=all_attendees %}
         {% include 'main/modules/people_list.html' %}
+        {% endwith %}
+    </div>
+</div>
+<div class="grid_8 details_panel">
+    <div>
+        {% with feed=newsfeed %}
+        {% include 'main/modules/feed_list.html' %}
+        {% endwith %}
+    </div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
+    <div>
+        {% with comment_header="Comments" %}
+        {% include 'main/modules/comment_list.html' %}
         {% endwith %}
     </div>
 </div>

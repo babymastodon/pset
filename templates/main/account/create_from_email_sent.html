@@ -2,5 +2,17 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-An email containing a verification link has been sent to {{ email }}. Please visit that link to complete the registration process.
+<div class="grid_6" style="height: 200px">
+</div>
+<div class="clearfix"></div>
+<div class="page_details grid_6 prefix_6">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/mail32.png'%}"/>
+        <div class="header_text">Verification Email</div>
+    </div>
+    <div class="plain_text">An email containing a verification link has been sent to the email address you provided. Please visit that link to complete the registration process.</div>
+    <div class="space_20"></div>
+    <div class="plain_text">If you cannot find the email, check your spam filters. If that fails, you can <a href="{% url 'main.account_views.create_account_page' %}" style="text-decoration: underline;" >try re-registering here.</a>
+    </div>
+</div>
 {% endblock %}
