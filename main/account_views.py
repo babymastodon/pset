@@ -12,6 +12,7 @@ from django.db import IntegrityError
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template import loader, Context
 from django import forms
+from django.utils import timezone
 import random
 import urllib
 import re
@@ -156,14 +157,46 @@ def bio_info(request, new=False):
     defaults['first_name'] = request.user.first_name
     defaults['last_name'] = request.user.last_name
     defaults['department'] = request.user.user_info.department
-    defaults['graduation_year'] = request.user.user_info.graduation_year
+    defaults['graduation_year'] = string_or_blank(request.user.user_info.graduation_year)
     defaults['bio'] = request.user.user_info.bio
-    rc['form'] = UserBioForm(defaults)
+    form = UserBioForm(defaults)
     rc['department_choices']=str(department_choices)
     if new:
         rc['title'] = "Tell us a bit about yourself before getting started"
     else: 
         rc['title'] = "Edit your profile information"
+    if request.method=="POST":
+        form = UserBioForm(request.POST, request.FILES)
+        if form.is_valid():
+            i = request.user.user_info
+            d = form.cleaned_data
+            request.user.first_name = d['first_name']
+            request.user.last_name = d['last_name']
+            i.department = d['department']
+            try:
+                if d['graduation_year']:
+                    if (len(d['graduation_year'])!=4):
+                        raise ValueError("Year is not the right length")
+                    year = int(d['graduation_year'])
+                    i.graduation_year = year
+            except ValueError:
+                rc['error']="Please enter a valid year"
+            i.bio = d['bio']
+            ##process picture
+            try:
+                if d['pic']:
+                    image = resize_image(d['pic'])
+                    i.image.save(d['pic'].name+"-"+str(timezone.localtime(timezone.now())), image)
+            except Exception as e:
+                raise e
+                rc['error'] = "Image file could not be processed"
+            if not 'error' in rc:
+                i.save()
+                return redirect('main.account_views.my_profile_page')
+        else:
+            #most likely an invalid department
+            rc['error']="Please enter a valid department name"
+    rc['form']=form
     return render(request, 'main/account/bio_info.html', rc)
     
 def login_page(request):

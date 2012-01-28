@@ -24,8 +24,9 @@
     <div class="whitebox clearfix" style="height: 250px;">
         <img src="{{person.get_image}}" class="profile_image" />
         <ul class="profile_panel">
-            <li><h3>Location:</h3>moo</li>
-            <li><h3>Room:</h3>moo2</li>
+            <li><h3>Class:</h3>{{user.user_info.graduation_year}}</li>
+            <li><h3>Department:</h3>{{user.user_info.department}}</li>
+            <li><h3>Bio:</h3>{{user.user_info.bio}}</li>
         </ul>
         <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a>
     </div>

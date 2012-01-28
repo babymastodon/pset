@@ -7,6 +7,7 @@ from django_facebook.models import FacebookProfileModel
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils import timezone
 from datetime import datetime, date, timedelta
+from PIL import Image
 
 #datetime to string
 def time_string(t):

@@ -16,6 +16,11 @@ from itertools import chain
 from main.models import *
 from main.forms import *
 
+def string_or_blank(s):
+    if s:
+        return str(s)
+    return ""
+
 #replacing the default login_required with our own
 def login_required(f):
     def login_required_func(*args, **kwargs):

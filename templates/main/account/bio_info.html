@@ -14,10 +14,12 @@
 {% block main_content %}
 <div class="details_panel grid_12">
     <h1>{{title}}</h1>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error}}</div>{% endif %}
 </div>
 <div class="clear"></div>
 <div class="space_30"></div>
-<form class="clearfix" id="bio_form" name="bio_form" action="." method="POST">
+<form class="clearfix" id="bio_form" enctype="multipart/form-data" name="bio_form" action="." method="POST">{% csrf_token %}
 
     <h3 class="grid_2 right">{{form.first_name.label}}</h3>
     <input type="text" name="{{form.first_name.html_name}}" class="label_if_blank limit_text grid_3 large_gray_text_box" title="" ref="30" value="{{form.first_name.value}}" />
