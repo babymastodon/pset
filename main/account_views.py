@@ -27,6 +27,7 @@ from BeautifulSoup import BeautifulSoup
 
 def login(request, user):
     request.session['last_authenticate']=timezone.now()
+    request.session.modified = True
     django_login(request,user)
 
 def fetch_fullname(username):
