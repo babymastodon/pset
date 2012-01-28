@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.core import serializers
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as django_login
 from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
@@ -23,6 +24,10 @@ from main.models import *
 from main.forms import *
 from main.views_common import *
 from BeautifulSoup import BeautifulSoup
+
+def login(request, user):
+    request.session['last_authenticate']=timezone.now()
+    django_login(request,user)
 
 def fetch_fullname(username):
     # Returns tuple: [firstName, lastName]
@@ -44,7 +49,7 @@ def fetch_fullname(username):
 #function for creating and saving account
 def createAccount(email="", username="", first_name="", last_name="", 
                   password="", is_active=True):
-    user = User.objects.create_user(username, email=email, password=password)
+    user = User.objects.create_user(username, email=email.lower(), password=password)
     user.is_active = is_active
     if not first_name and not last_name:
         (first_name, last_name) = fetch_fullname(username)
@@ -81,31 +86,28 @@ def create_from_email_pwd(email, pwd, request):
     rc={}
     user=ph=None
     uname=email.split("@")[0]
-    if User.objects.filter(username=uname).exists():
-        rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
-        return rc
+    account = User.objects.filter(username=uname)
+    if account:
+        account = account[0]
+        if account.is_active:
+            rc['error']='You already have an account. Did you <a href="' + reverse("main.account_views.forgot_password") + '" class="underlined">forget your password?</a>'
+            return {'rc':rc}
     else:
-        account=createAccount(email=email, 
-                              username=uname, 
-                              password=pwd, 
-                              is_active=False)
-        ph = PendingHash.create(user=account)
-        ph.save()
-        t = loader.get_template('emails/verify.txt')
-        html = loader.get_template('emails/verify.html')
-        root_email = request.get_host()
-        c = RequestContext(request, {
-            'username':user.get_name(),
-            'web_root': root_email,
-            'h':h,
-        })
-        subject = 'Email Verification'
-        from_email, to = 'no-reply@babymastodon.com', email
-        msg = EmailMultiAlternatives(subject, t.render(c), 
-                                     from_email, [to])
-        msg.attach_alternative(html.render(c), "text/html")
-        msg.send()
-        rc['email'] = email
+        account=createAccount(email=email, username=uname, password=pwd, is_active=False)
+    ph = PendingHash.create(user=account)
+    ph.save()
+    html = loader.get_template('emails/verify.html')
+    root_email = request.get_host()
+    c = RequestContext(request, {
+        'username':account.get_name(),
+        'link':root_email+reverse('main.account_views.verify', kwargs={'hashcode':ph.hashcode}),
+    })
+    subject = 'Email Verification'
+    from_email, to = 'no-reply@babymastodon.com', email
+    msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
+    msg.content_subtype = "html"
+    msg.send()
+    rc['email'] = email
     return {'rc':rc, 'user':account, 'ph':ph}
     
 
@@ -127,7 +129,7 @@ def create_account_page(request):
     return render_to_response("main/account/create_account_page.html", rc, context_instance=RequestContext(request))
 
 def reset_email_sent(request):
-    return render(reqeust, 'main/account/reset_email_sent.html')
+    return render(request, 'main/account/reset_email_sent.html')
 
 def forgot_password(request):
     rc={}
@@ -136,40 +138,39 @@ def forgot_password(request):
         form = EmailForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            if not User.objects.filter(email=email.lower()).exists():
-                ph = PendingHash.create(user=account)
+            user = User.objects.filter(email=email.lower())
+            if user:
+                user = user[0]
+                ph = PendingHash.create(user)
                 ph.save()
-                t = loader.get_template('emails/forgot.txt')
                 html = loader.get_template('emails/forgot.html')
                 root_email = request.get_host()
                 c = RequestContext(request, {
                     'username':user.get_name(),
-                    'web_root': root_email,
-                    'link':reverse('main.account_views.reset_password_hashcode', kwargs={'hashcode':ph.hashcode})
+                    'link': root_email+reverse('main.account_views.reset_password_hashcode', kwargs={'hashcode':ph.hashcode})
                 })
-                subject = 'Email Verification'
+                subject = 'Reset Password'
                 from_email, to = 'no-reply@babymastodon.com', email
-                msg = EmailMultiAlternatives(subject, t.render(c), 
-                                             from_email, [to])
-                msg.attach_alternative(html.render(c), "text/html")
+                msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
+                msg.content_subtype = "html"
                 msg.send()
                 return redirect(reverse('main.account_views.reset_email_sent'))
             else:
-                rc['errors'] = "You do not have an account yet"
+                rc['error'] = "You do not have an account yet"
         else:
-            rc['errors']="Email address was invalid"
+            rc['error']="Email address was invalid"
+    rc['form'] = form
     return render_to_response("main/account/forgot_password.html", rc, context_instance=RequestContext(request))
 
 def reset_password_hashcode(request, hashcode):
     rc={}
     user = authenticate(hashcode=hashcode)
     if not user:
-        return render_to_response("main/account/password_expired.html", 
-                                  rc, context_instance=RequestContext(request))
+        return render_to_response("main/account/password_expired.html", rc, context_instance=RequestContext(request))
     login(request,user)
     return redirect(reverse('main.account_views.change_password'))
 
-def re_auth(reqeust):
+def re_auth(request):
     rc={}
     form = LoginForm()
     if request.method=="POST":
@@ -181,25 +182,25 @@ def re_auth(reqeust):
                 login(request,user)
                 request.session['last_authenticate'] = timezone.now()
                 return render(request, 'main/account/change_password.html', {'form':ResetPasswordForm()})
-        rc['errors'] = "Username and password are invalid"
+        rc['error'] = "Username and password are invalid"
     rc['form'] = form
-    return render(reqeust, 'main/account/re_auth.html', rc)
+    return render(request, 'main/account/re_auth.html', rc)
 
 @login_required
 def change_password(request):
     rc={}
-    if timezone.now() - request.session['last_authenticate']:
+    if (not 'last_authenticate' in request.session) or  timezone.now() - request.session['last_authenticate'] > timedelta(minutes=5):
         return re_auth(request)
     form = ResetPasswordForm()
     if request.method=="POST":
         form = ResetPasswordForm()
         if form.is_valid():
             d = form.cleaned_data
-            if d['pw1']==d['pw2']:
+            if d['pw1']==d['pw2'] and d['pw1']:
                 request.user.set_password(d['pw1'])
                 request.user.save()
                 return redirect(reverse('main.account_views.account_info'))
-        rc['errors'] = "Passwords don't match"
+        rc['error'] = "Passwords don't match"
     rc['form'] = form
     return render(request, 'main/account/change_password.html', rc)
     
@@ -295,7 +296,7 @@ def login_page(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(n)
-        rc['errors']="Username and Password were invalid"
+        rc['error']="Username and Password were invalid"
     if n:
         rc['next']=n
     rc['form']=form

@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+<div class="grid_6" style="height: 200px">
+</div>
+<div class="clearfix"></div>
+<div class="page_details grid_6 prefix_6">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/mail32.png'%}"/>
+        <div class="header_text">Email Sent!</div>
+    </div>
+    <div class="plain_text">An email containing instructions on resetting your password has been sent to the address you provided.</div>
+    <div class="space_20"></div>
+    <div class="plain_text">If you cannot find the email, please check your spam filters</a>
+    </div>
+</div>
+{% endblock %}

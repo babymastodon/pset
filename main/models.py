@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils import timezone
 from datetime import datetime, date, timedelta
 from PIL import Image
+import random
 
 #datetime to string
 def time_string(t):
@@ -279,7 +280,7 @@ class PendingHash(models.Model):
     @staticmethod
     def create(user):
         h1 = "%032x" % random.getrandbits(128)
-        ph = PendingHash(user, h1)
+        ph = PendingHash(user=user, hashcode=h1)
         ph.save()
         return ph
 

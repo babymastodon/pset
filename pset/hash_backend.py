@@ -2,6 +2,7 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.admin.models import User
 from main.models import PendingHash
+from django.utils import timezone
    
 class HashBackend(ModelBackend):
     def authenticate(self, hashcode):
@@ -9,7 +10,6 @@ class HashBackend(ModelBackend):
             ph = PendingHash.objects.get(hashcode=hashcode)
             user=ph.user
             user.is_active=True
-            request.session['last_authenticate']=timezone.now()
             user.save()
             if ph.party:
                 ph.party.active=True
