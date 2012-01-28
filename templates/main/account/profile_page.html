@@ -2,5 +2,55 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-Edit Profile Details
+<script type="text/javascript">
+    person_pk = {{person.pk}};
+</script>
+<script src="{% static 'js/profile_details.js'%}" type="text/javascript"></script>
+<div class="grid_12 details_panel">
+    <h1>{{person.get_name}}'s Profile</h1>
+    {% if user.is_authenticated %}
+    <div class="party_details_attend">
+        <div id="add_this_class" class="gray_button fright {% if joined %}hidden{% endif %}">Follow {{person.get_name}}</div>
+        <div id="drop_this_class" class="gray_button fright {% if not joined %}hidden{% endif %}">Stop Following {{person.get_name}}</div>
+    </div>
+    {% endif %}
+</div>
+<div class="clear"></div>
+<div class="grid_4 details_panel">
+    <div class="whitebox clearfix" style="height: 250px;">
+        <img src="{{person.get_image}}" class="profile_image" />
+        <ul class="profile_panel">
+            <li><h3>Location:</h3>moo</li>
+            <li><h3>Room:</h3>moo2</li>
+        </ul>
+        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a>
+    </div>
+</div>
+<div class="grid_8">
+    <div>
+        {% with feed=newsfeed %}
+        {% include 'main/modules/feed_list.html' %}
+        {% endwith %}
+    </div>
+    <div>
+        {% with comment_header="Comments" %}
+        {% include 'main/modules/comment_list.html' %}
+        {% endwith %}
+    </div>
+</div>
+<div class="clear"></div>
+<div class="space_60"></div>
+<div id="right_col" class="grid_4">
+    <div>
+        {% with people=admins %}
+        {% include 'main/modules/people_list.html' %}
+        {% endwith %}
+    </div>
+    <div class="clear space_10"></div>
+    <div>
+        {% with people=all_attendees %}
+        {% include 'main/modules/people_list.html' %}
+        {% endwith %}
+    </div>
+</div>
 {% endblock %}

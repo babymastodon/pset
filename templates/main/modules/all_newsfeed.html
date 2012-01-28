@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+<div class="grid_12 details_panel">
+    <h1>Newsfeed for {{feed.name}}</h1>
+</div>
+<div class="clear"></div>
+<div class="space_30"></div>
+<div class="grid_4">
+    <h1 class="fright">Page {{page}}</h1>
+</div>
+<div class="grid_8">
+    {% include 'main/modules/feed_list.html' %}
+</div>
+{% if next %}
+<a href="{{next}}" class="gray_button fright">Next</a>
+{% endif %}
+{% if prev %}
+<a href="{{prev}}" class="gray_button fright">Prev</a>
+{% endif %}
+{% endblock %}

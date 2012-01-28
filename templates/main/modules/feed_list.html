@@ -2,10 +2,10 @@
 
 <div class="feed_header clearfix">
     <img src="{% static 'images/css/icons/rss32.png'%}"/>
-    <span class="header_text">{{feed_header}}</span>
+    <span class="header_text">{{feed.header}}</span>
 </div>
 <ul class="newsfeed">
-    {% for item in feed_list %}
+    {% for item in feed.feed %}
     <li class="clearfix">
         <img src="{{item.get_icon}}" class="news_icon" />
         <span class="news_timestamp">{{item.get_time}}</span>
@@ -13,3 +13,7 @@
     </li>
     {% endfor %}
 </ul>
+<div class="space_10"></div>
+{% if feed.link %}
+<a href="{{feed.link}}" class="gray_button fright">See All</a>
+{% endif %}

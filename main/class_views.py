@@ -22,10 +22,10 @@ def class_details(request, pk):
     rc={}
     klass = get_object_or_404(Class,pk=pk)
     rc['class'] = klass
-    rc['newsfeed'] = Activity.objects.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:10]
     rc['comments']={'pk':pk, 'target':"Class"}
     if request.user.is_authenticated():
         rc['joined'] = request.user.user_info in klass.userinfo_set.all()
+    rc['newsfeed'] = get_newsfeed('class', pk)
     parties = get_parties_by_class(request, pk).get('result_list',[])
     rc['num_parties'] = len(parties)
     rc['party_list'] = simplejson.dumps(parties)

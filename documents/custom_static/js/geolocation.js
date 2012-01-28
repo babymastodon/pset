@@ -141,10 +141,17 @@ function toggle_detail_box(){
     if ($("#detail_box").hasClass("closed")) open_detail_box();
     else if ($("#detail_box").hasClass("open")) close_detail_box();
 }
+function hide_instruction_box(){
+    b = $("#instruction_box");
+    b.animate({top:-b.outerHeight()}, 'slow');
+}
+
 $(document).ready(function(){
     init_map();
     $("#detail_box_button").click(toggle_detail_box);
     /*google.maps.event.addListener(map, 'click', function(ob){
       query_whereis(ob.latLng);
       });*/
+    $("#map_container").mousedown(hide_instruction_box);
+    $("#instruction_box").show();
 });

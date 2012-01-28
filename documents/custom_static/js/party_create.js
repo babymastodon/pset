@@ -64,6 +64,8 @@ $(document).ready(function(){
     if (r.val()=="" && $(".errors").length==0){
       get_current_position(on_get_valid_loc);
       r.val("visited");
+    }else{
+        $("#instruction_box").hide();
     }
     default_lat = $('#detail_box_contents [name="lat"]').val();
     default_lng = $('#detail_box_contents [name="lng"]').val();

@@ -618,6 +618,21 @@ $tw: 260px - $tb - 2* $tp;
 b{
     font-weight: bold;
 }
+.profile_panel{
+    ul{
+            font-size: 16px;
+            line-height: 22px;
+        li{
+            margin-bottom: 6px;
+            h3{
+                font-size: 18px;
+                margin-right: 10px;
+                display: block;
+                float: left;
+            }
+        }
+    }
+}
 .details_panel{
     h1{
         font-size: 35px;
@@ -666,6 +681,10 @@ b{
         margin-left: 20px;
         margin-top: 20px;
     }
+}
+.profile_image{
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .party_details_attend{

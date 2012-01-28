@@ -295,10 +295,12 @@ class Activity(models.Model):
             return static + 'commentblack32.png'
         elif self.activity_type=='created':
             return static + 'glitter32.png'
-        elif self.activity_type in ['attending', 'joined']:
+        elif self.activity_type == 'attending':
             return static + 'userplus32.png'
         elif self.activity_type=='edited':
             return static + 'pencil32.png'
+        elif self.activity_type=='joined':
+            return static + 'plus32.png'
     def get_content(self):
         if self.activity_type=="comment":
             return self.get_linked_actor() + " left a comment at " + self.target.get_linked_name()
@@ -309,7 +311,7 @@ class Activity(models.Model):
         elif self.activity_type=='attending':
             return self.get_linked_actor() + " is attending " + self.target.get_linked_name()
         elif self.activity_type=='joined':
-            return self.get_linked_actor() + " joined " + self.target.get_linked_name()
+            return self.get_linked_actor() + " added " + self.target.get_linked_name()
     def get_time(self):
         return time_ago(self.time_created)
     def get_actor(self):
@@ -341,6 +343,7 @@ class Comment(models.Model):
         t.save()
         a = Comment(comment=comment, actor=actor, target=t)
         a.save()
+        Activity.create(actor=actor, activity_type="comment", target=target)
         return a
     def __unicode__(self):
         return str(self.actor) + " comment to " + str(self.target)

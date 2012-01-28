@@ -8,6 +8,17 @@
         width: 940px;
         height: 380px;
     }
+    #instruction_box{
+        background-color: $white;
+        position: absolute;
+        font-size: 20px;
+        line-height: 20px;
+        padding: 10px;
+        border: 1px solid $gray-mid;
+        top: 0px;
+        right: 0px;
+        display: none;
+    }
     #detail_box{
         background-color: $white;
         position:absolute;

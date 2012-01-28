@@ -28,6 +28,7 @@ function string_trim(s, n){
 
 function set_detail_box_contents(letter){
     item=item_dict[letter];
+    hide_instruction_box();
     box = $("#detail_box_contents");
     box.find(".building_img").attr('src',item.bldg_img);
     box.find(".details").attr("href",item.detail_url);

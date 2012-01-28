@@ -15,6 +15,7 @@ from django import forms
 import random
 import urllib
 import re
+from itertools import chain
 
 #import models and forms here
 from main.models import *
@@ -58,6 +59,9 @@ def createAccount(email="", username="", first_name="", last_name="",
 #views start here
 def profile_page(request, pk):
     rc={}
+    user = get_object_or_404(User, pk=pk)
+    rc['person']=user
+    rc['newsfeed'] = get_newsfeed('profile',pk,0)
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required

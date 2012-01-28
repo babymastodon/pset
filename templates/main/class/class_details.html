@@ -34,7 +34,7 @@
                 <li><h3>Room:</h3>moo2</li>
             </ul>
         </div>
-        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a> for this class.
+        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a>
     </div>
 </div>
 <div class="grid_4">
@@ -54,7 +54,7 @@
     </div>
     <div class="clear space_20"></div>
     <div>
-        {% with feed_list=newsfeed feed_header="Recent Activity" %}
+        {% with feed=newsfeed %}
         {% include 'main/modules/feed_list.html' %}
         {% endwith %}
     </div>

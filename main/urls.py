@@ -55,5 +55,10 @@ urlpatterns += patterns('main.people_views',
 
 #the ajax handler
 urlpatterns += patterns('main.ajax_views',
-        url(r'ajax', 'ajax'),
+        url(r'^ajax', 'ajax'),
+)
+
+#misc views
+urlpatterns += patterns('main.views_common',
+    url(r'^newsfeed/(?P<feedtype>\w+)/(?P<pk>\d+)/(?P<page>\d+)/$', 'all_newsfeed'),
 )
