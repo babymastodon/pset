@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render_to_response, redirect, render
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core import serializers
@@ -61,17 +61,13 @@ def profile_page(request, pk):
     rc={}
     user = get_object_or_404(User, pk=pk)
     rc['person']=user
-    rc['newsfeed'] = get_newsfeed('profile',pk,0)
+    rc['newsfeed'] = get_newsfeed('profile',pk)
+    rc['comments']={'pk':pk, 'target':"User"}
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def my_profile_page(request):
     return profile_page(request, request.user.pk)
-
-@login_required
-def profile_edit(request):
-    rc={}
-    return render_to_response("main/account/profile_edit.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def profile_new_user_info(request):
@@ -142,15 +138,34 @@ def verify(request, hashcode):
     if not user:
         render_to_response("main/account/verify_expired.html", 
                                   rc, context_instance=RequestContext(request))
-    rc['next']=reverse('main.home_views.home_page')#redirect to home after login
+    rc['next']=reverse('main.account_views.bio_info')#redirect to bio page
     login(request,user)
     return redirect(reverse('main.account_views.my_profile_page'))
 
 def link_to_facebook(request):
     rc={}
-    return render_to_response("main/account/link_to_facebook.html", rc, 
-                              context_instance=RequestContext(request))
+    return render_to_response("main/account/link_to_facebook.html", rc, context_instance=RequestContext(request))
 
+def new_bio_info(request):
+    return bio_info(request, True)
+
+@login_required
+def bio_info(request, new=False):
+    rc={}
+    defaults={}
+    defaults['first_name'] = request.user.first_name
+    defaults['last_name'] = request.user.last_name
+    defaults['department'] = request.user.user_info.department
+    defaults['graduation_year'] = request.user.user_info.graduation_year
+    defaults['bio'] = request.user.user_info.bio
+    rc['form'] = UserBioForm(defaults)
+    rc['department_choices']=str(department_choices)
+    if new:
+        rc['title'] = "Tell us a bit about yourself before getting started"
+    else: 
+        rc['title'] = "Edit your profile information"
+    return render(request, 'main/account/bio_info.html', rc)
+    
 def login_page(request):
     rc={}
     n = request.GET.get('next',"/")

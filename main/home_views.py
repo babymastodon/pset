@@ -20,11 +20,12 @@ import re
 def front_page(request):
     rc={}
     user = request.user
+    """ i still need to access the front page for debugging convenience
     if user.is_authenticated():
         return home_page(request)
-    else:
-        rc['rform'] = EmailRegisterForm() 
-        return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
+    else:"""
+    rc['rform'] = EmailRegisterForm() 
+    return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def home_page(request):

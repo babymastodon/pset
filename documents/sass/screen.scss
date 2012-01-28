@@ -109,12 +109,12 @@ textarea{
     padding: 5px;
 }
 
-input[type="text"], input[type="password"]{
+input[type="text"], input[type="password"], textarea{
     @include input_box;
     width: 90px;
     padding: 2px 5px;
     font-size: 13px;
-    &.large_gray_text_box{
+    &.large_gray_text_box, &.large_gray_textarea{
         border: 2px solid $gray-mid-dark;
         font-size: 20px;
         @include border-radius(4px);
@@ -130,6 +130,11 @@ input[type="text"], input[type="password"]{
         }
         &.grid_2{
             width: 126px;
+        }
+        &.large_gray_textarea{
+            height: 200px;
+            width: 300px - 4px - 10px;
+            overflow-y: auto;
         }
     }
 }
@@ -390,13 +395,16 @@ $tw: 260px - $tb - 2* $tp;
     text-align: left;
 }
 
-#new_party_form{
+#new_party_form, #bio_form{
     display: block;
     .title, h2{
         line-height: 40px;
         font-size: 30px;
         display: block;
         margin-bottom: 20px;
+    }
+    input[type="file"]{
+        margin-top: 6px;
     }
     #map_div{
         margin-bottom: 30px;

@@ -20,6 +20,9 @@ from main.forms import *
 def login_required(f):
     def login_required_func(*args, **kwargs):
         if args[0].user.is_authenticated():
+            #for debugging purposes only: automatically generate userinfos so no error
+            if not UserInfo.objects.filter(user=args[0].user).exists():
+                UserInfo(user=args[0].user).save()
             return f(*args,**kwargs)
         return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(args[0].get_full_path()))
     return login_required_func
@@ -37,7 +40,7 @@ def all_newsfeed(request, feedtype, pk, page=1):
 
 def get_newsfeed(feedtype, pk, page=1):
     r={}
-    r['link'] = reverse("main.views_common.all_newsfeed", kwargs={'feedtype':feedtype, 'page':0, 'pk':pk})
+    r['link'] = reverse("main.views_common.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
     r['header']="Recent Activity"
     if feedtype=="profile":
         newsfeed1 = Activity.objects.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*10]

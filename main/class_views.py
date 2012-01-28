@@ -40,8 +40,7 @@ def add_class(request,pk):
         return {'status': 'user not authenticated'}
     c = Class.objects.filter(pk=pk)
     if c:
-        request.user.user_info.klasses.add(c[0])
-        request.user.user_info.save()
+        UserClassData(user_info = request.user.user_info, class_obj = c[0]).save()
         if not Activity.objects.filter(target__target_type='Class', activity_type='joined', actor=request.user, target__target_id=c[0].pk).exists():
             Activity.create('joined',request.user,c[0])
         return {'status':'success'}
@@ -52,7 +51,7 @@ def drop_class(request,pk):
         return {'status': 'user not authenticated'}
     c = Class.objects.filter(pk=pk)
     if c:
-        request.user.user_info.klasses.remove(c[0])
+        UserClassData.objects.filter(user_info = request.user.user_info, class_obj = c[0]).delete()
         return {'status':'success'}
     return {'status': 'class does not exist'}
 

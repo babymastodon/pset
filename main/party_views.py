@@ -36,7 +36,7 @@ def party_details(request, pk):
     attending=request.GET.get('attending',None)
     if attending and request.user.is_authenticated():
         party_register_helper_func(party, request.user)
-    rc['newsfeed'] = get_newsfeed('party', pk, 0)
+    rc['newsfeed'] = get_newsfeed('party', pk)
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
 

@@ -174,6 +174,8 @@ class UserInfo(FacebookProfileModel):
     description = models.TextField(blank=True) #user description
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
+    bio = models.TextField(blank=True)
+    department = models.CharField(max_length=100)
     klasses = models.ManyToManyField(Class, through="UserClassData", blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
@@ -202,7 +204,10 @@ class UserInfo(FacebookProfileModel):
     def get_link(self):
         return reverse("main.account_views.profile_page", kwargs={'pk': self.user.pk})
     def get_name(self):
-        return self.user.first_name + " " + self.user.last_name
+        if self.user.first_name or self.user.last_name:
+            return self.user.first_name + " " + self.user.last_name
+        else:
+            return self.user.username
     def get_linked_name(self):
         return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
 

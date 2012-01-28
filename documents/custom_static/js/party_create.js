@@ -82,7 +82,6 @@ $(document).ready(function(){
     open_detail_box();
     class_input = $('input[name="klass"]').autocomplete({
         source: autocomplete_callback,
-        autoFocus: true,
         delay: 300,
         minLength: 2,
         close: save_refresh,

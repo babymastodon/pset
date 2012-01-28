@@ -10,9 +10,13 @@
     <h1>{{person.get_name}}'s Profile</h1>
     {% if user.is_authenticated %}
     <div class="party_details_attend">
+        {% if user = person %}
+        <a href="{% url 'main.account_views.bio_info' %}" class="gray_button fright">Edit Profile</a>
+        {% else %}
         <div id="add_this_class" class="gray_button fright {% if joined %}hidden{% endif %}">Follow {{person.get_name}}</div>
         <div id="drop_this_class" class="gray_button fright {% if not joined %}hidden{% endif %}">Stop Following {{person.get_name}}</div>
     </div>
+    {% endif %}
     {% endif %}
 </div>
 <div class="clear"></div>
@@ -32,6 +36,8 @@
         {% include 'main/modules/feed_list.html' %}
         {% endwith %}
     </div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
     <div>
         {% with comment_header="Comments" %}
         {% include 'main/modules/comment_list.html' %}
@@ -46,7 +52,8 @@
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>
-    <div class="clear space_10"></div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
     <div>
         {% with people=all_attendees %}
         {% include 'main/modules/people_list.html' %}
