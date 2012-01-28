@@ -2,27 +2,33 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-{% if error %}
-<div class="errors grid_12">***{{ error|safe }}***</div>
-{% endif %}
-<div class="grid_7 page_text prefix_1">
-    <h1>Benefits of registration include:</h1>
-    <ul class="bullet_list">
-        <li>Moo1</li>
-        <li>Moo2</li>
-        <li>Moo3</li>
-    </ul>
+<div class="details_panel grid_12 clearfix">
+    <h1>New Account</h1>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error|safe}}</div>{% endif %}
 </div>
-<div class="grid_4 page_text">
-    <h2>Register with MIT email</h2>
+<div class="clear"></div>
+<div class="space_30"></div>
+<div class="grid_5 prefix_1">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/wand32.png'%}"/>
+        <span class="header_text">Register with MIT email</span>
+    </div>
+    <div class="plain_text">
+        Register here with your MIT email address. (not currently enforced for judges)
+    </div>
+    <div class="space_20"></div>
     {% include 'main/account/create_account_form.html' %}
 </div>
-{% comment %}
-<form action="{% url facebook_connect %}?facebook_login=1" method="post">{% csrf_token %}
-    <ul>
-        {{ form.as_ul}}
+<div class="grid_5">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/check32.png'%}"/>
+        <span class="header_text">Members can:</span>
+    </div>
+    <ul class="bullet_list plain_text">
+        <li>Host their own pset parties</li>
+        <li>Recieve automatic notifications when their class is holding a pset party</li>
+        <li>Always know where their friends are psetting</li>
     </ul>
-    <input type="submit" value="Register" class="button" />
-</form>
-{% endcomment %}
+</div>
 {% endblock %}

@@ -193,7 +193,7 @@ def change_password(request):
         return re_auth(request)
     form = ResetPasswordForm()
     if request.method=="POST":
-        form = ResetPasswordForm()
+        form = ResetPasswordForm(request.POST)
         if form.is_valid():
             d = form.cleaned_data
             if d['pw1']==d['pw2'] and d['pw1']:

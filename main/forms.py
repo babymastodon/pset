@@ -36,6 +36,10 @@ class EmailRegisterForm(forms.Form):
     pw1 = forms.CharField(widget=forms.PasswordInput, label='Password')
     pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
 
+class ResetPasswordForm(forms.Form):
+    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password')
+    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)

@@ -1,10 +1,9 @@
 {% load url from future %}{% load staticfiles %}
 
-<form method="post" action="{% url 'main.account_views.login_page' %}">
+<form method="post" id="login_form" action="{% url 'main.account_views.login_page' %}">
     {% csrf_token %}
     {% include 'main/account/login_form_fields.html' %}
-<input type="submit" class="hidden" />
 <div class="space_20"></div>
-<a href="javascript: $('#signup_form').submit()" class="gray_button fright">Login</a>
 <input type="hidden" name="next" value="{{ next }}" />
+<input type="submit" class="gray_button fright" value="Login" />
 </form>

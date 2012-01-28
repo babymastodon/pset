@@ -17,6 +17,9 @@
         <input type="hidden" name="refresh_token" value=""/>
         <div class="title">Host a Pset Party</div>
         {% if error %}<div class="errors">{{error}}</div>{% endif %}
+        <div class="plain_text grid_10 alpha prefix_1">This could be a big event or just a spontaneous get-together. Just remember to say what's up in the summary box.</div>
+        <div class="clear"></div>
+        <div class="space_20"></div>
         <h3 class="grid_2 alpha right">Title</h3>
         <input type="text" name="title" class="label_if_blank limit_text grid_3 large_gray_text_box" title="quick description" ref="30" value="{{form.title.value}}" />
         <h3 class="grid_2 right">Class Number</h3>
@@ -34,7 +37,7 @@
         </span>
         <div class="clear"></div>
 
-        <h3 class="grid_2 alpha right" >Agenda</h3>
+        <h3 class="grid_2 alpha right" >Summary</h3>
         <input type="text" name="agenda" class="label_if_blank limit_text grid_3 large_gray_text_box" ref="100" title="eg. Pset 9" value="{{form.agenda.value}}" />
         <div class="clear"></div>
         <div class="grid_7 alpha omega prefix_4 suffix_1">

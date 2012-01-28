@@ -78,7 +78,7 @@
                                 </div>
                                 <input type='submit' class="button" value="Login"/>
                                 <input type='hidden' name="next" value="{% if request.path = '/' %}{% url 'main.home_views.home_page' %}{% else %}{{ request.get_full_path }}{% endif %}"/>
-                                <a href="/forgot/">Forgot password?</a>
+                                <a href="{% url 'main.account_views.forgot_password' %}">Forgot password?</a>
                                 {% csrf_token %}
                             </form>
                         </div>
