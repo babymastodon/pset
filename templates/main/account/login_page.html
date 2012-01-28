@@ -2,15 +2,27 @@
 {% load url from future %}{% load staticfiles %}
 
 {% block main_content %}
-<div class="grid_4 page_text">
-    <h2>Login with your Athena username</h2>
+<div class="details_panel grid_12 clearfix">
+    <h1>Login Page</h1>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error}}</div>{% endif %}
+</div>
+<div class="clear"></div>
+<div class="prefix_7 grid_4">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/lock32.png'%}" class=/>
+        <span class="header_text">MIT username</span>
+    </div>
+    <div class="space_20"></div>
     {% include 'main/account/login_form.html' %}
 </div>
-<div class="grid_4">
-    OR
-</div>
-<div class="grid_4 page_text">
-    <h2>Not Registered?</h2>
-    <a href="{% url 'main.account_views.create_account_page' %}" class="large_gray_button">Create Account</a>
+<div class="clear"></div>
+<div class="prefix_1 grid_4">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/cup32.png'%}" class=/>
+        <span class="header_text">Not Registered?</span>
+    </div>
+    <div class="space_40"></div>
+    <a href="{% url 'main.account_views.create_account_page' %}" class="large_gray_button hcenter">Create Account</a>
 </div>
 {% endblock %}

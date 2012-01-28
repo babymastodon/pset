@@ -9,6 +9,7 @@ class HashBackend(ModelBackend):
             ph = PendingHash.objects.get(hashcode=hashcode)
             user=ph.user
             user.is_active=True
+            request.session['last_authenticate']=timezone.now()
             user.save()
             if ph.party:
                 ph.party.active=True

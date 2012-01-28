@@ -90,11 +90,12 @@ def create_from_email_pwd(email, pwd, request):
                               password=pwd, 
                               is_active=False)
         ph = PendingHash.create(user=account)
+        ph.save()
         t = loader.get_template('emails/verify.txt')
         html = loader.get_template('emails/verify.html')
         root_email = request.get_host()
         c = RequestContext(request, {
-            'username':uname,
+            'username':user.get_name(),
             'web_root': root_email,
             'h':h,
         })
@@ -125,9 +126,83 @@ def create_account_page(request):
     rc['rform'] = form
     return render_to_response("main/account/create_account_page.html", rc, context_instance=RequestContext(request))
 
+def reset_email_sent(request):
+    return render(reqeust, 'main/account/reset_email_sent.html')
+
 def forgot_password(request):
     rc={}
+    form = EmailForm()
+    if request.method=="POST":
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            if not User.objects.filter(email=email.lower()).exists():
+                ph = PendingHash.create(user=account)
+                ph.save()
+                t = loader.get_template('emails/forgot.txt')
+                html = loader.get_template('emails/forgot.html')
+                root_email = request.get_host()
+                c = RequestContext(request, {
+                    'username':user.get_name(),
+                    'web_root': root_email,
+                    'link':reverse('main.account_views.reset_password_hashcode', kwargs={'hashcode':ph.hashcode})
+                })
+                subject = 'Email Verification'
+                from_email, to = 'no-reply@babymastodon.com', email
+                msg = EmailMultiAlternatives(subject, t.render(c), 
+                                             from_email, [to])
+                msg.attach_alternative(html.render(c), "text/html")
+                msg.send()
+                return redirect(reverse('main.account_views.reset_email_sent'))
+            else:
+                rc['errors'] = "You do not have an account yet"
+        else:
+            rc['errors']="Email address was invalid"
     return render_to_response("main/account/forgot_password.html", rc, context_instance=RequestContext(request))
+
+def reset_password_hashcode(request, hashcode):
+    rc={}
+    user = authenticate(hashcode=hashcode)
+    if not user:
+        return render_to_response("main/account/password_expired.html", 
+                                  rc, context_instance=RequestContext(request))
+    login(request,user)
+    return redirect(reverse('main.account_views.change_password'))
+
+def re_auth(reqeust):
+    rc={}
+    form = LoginForm()
+    if request.method=="POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            user = authenticate(username = d['username'], password=d['password'])
+            if user:
+                login(request,user)
+                request.session['last_authenticate'] = timezone.now()
+                return render(request, 'main/account/change_password.html', {'form':ResetPasswordForm()})
+        rc['errors'] = "Username and password are invalid"
+    rc['form'] = form
+    return render(reqeust, 'main/account/re_auth.html', rc)
+
+@login_required
+def change_password(request):
+    rc={}
+    if timezone.now() - request.session['last_authenticate']:
+        return re_auth(request)
+    form = ResetPasswordForm()
+    if request.method=="POST":
+        form = ResetPasswordForm()
+        if form.is_valid():
+            d = form.cleaned_data
+            if d['pw1']==d['pw2']:
+                request.user.set_password(d['pw1'])
+                request.user.save()
+                return redirect(reverse('main.account_views.account_info'))
+        rc['errors'] = "Passwords don't match"
+    rc['form'] = form
+    return render(request, 'main/account/change_password.html', rc)
+    
 
 def email_sent(request):
     rc={}
@@ -139,10 +214,9 @@ def verify(request, hashcode):
     if not user:
         return render_to_response("main/account/verify_expired.html", 
                                   rc, context_instance=RequestContext(request))
-    rc['next']=reverse('main.account_views.bio_info')#redirect to bio page
     Activity.create(actor=user, activity_type='newaccount')
     login(request,user)
-    return redirect(reverse('main.account_views.my_profile_page'))
+    return redirect(reverse('main.account_views.bio_info'))
 
 def link_to_facebook(request):
     rc={}
@@ -221,7 +295,7 @@ def login_page(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(n)
-        rc['error']=True
+        rc['errors']="Username and Password were invalid"
     if n:
         rc['next']=n
     rc['form']=form

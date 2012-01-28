@@ -109,3 +109,6 @@ class UserBioForm(forms.Form):
     graduation_year = forms.CharField(max_length=100, required=False, label="Class year")
     bio = forms.CharField(max_length=500, required=False)
     pic = forms.ImageField(required=False)
+
+class EmailForm(forms.Form):
+    email = forms.EmailField()

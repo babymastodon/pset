@@ -17,7 +17,10 @@ urlpatterns += patterns('main.account_views',
     url(r'^newaccount/bio/$', 'new_bio_info'),#page for editing profile info
     url(r'^newaccount/$', 'create_account_page'),#gives a form to create an accoutn from email, or possibly ssl certificate
     url(r'^newaccount/email_sent$', 'email_sent'),#the verification email has been sent
+    url(r'^account/reset_email_sent$', 'reset_email_sent'),#the verification email has been sent
     url(r'^newaccount/verify/(?P<hashcode>.+)/$', 'verify'),#the user gets sent an email and the verification link goes here, the verification link will have a unique hash
+    url(r'^account/reset/(?P<hashcode>.+)/$', 'reset_password_hashcode'),#the user gets sent an email and the verification link goes here, the verification link will have a unique hash
+    url(r'^account/chpass/$', 'change_password'),#the user gets sent an email and the verification link goes here, the verification link will have a unique hash
     url(r'^newaccount/info/$', 'verify'),#the page where a new user inputs info such as major, grade, etc, connect with facebook, etc.
     url(r'^linkaccount/facebook/$', 'link_to_facebook'),#page when the user wants to link account to facebook
     url(r'^login/$', 'login_page'),#the view that processes the login form, redirecting to profile/me/ if successful, redisplaying the form if not

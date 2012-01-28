@@ -395,7 +395,7 @@ $tw: 260px - $tb - 2* $tp;
     text-align: left;
 }
 
-#new_party_form, #bio_form{
+#new_party_form, #bio_form, form{
     display: block;
     .title, h2{
         line-height: 40px;
@@ -654,8 +654,8 @@ b{
 .details_panel{
     h1{
         font-size: 35px;
-        line-height: 35px;
-        margin-bottom: 15px;
+        line-height: 40px;
+        margin-bottom: 10px;
         width: 700px;
         white-space: nowrap;
         overflow: hidden;
@@ -723,4 +723,45 @@ b{
 }
 .cright{
     clear: right;
+}
+.registration{
+    background-color:$hue1-mid-light;
+    width:280px;
+    padding: 10px;
+    @include border-radius(5px);
+    h2{
+        padding:20px 20px 10px 20px;
+        margin: 0px;
+    }
+    h4{
+        text-align: center;
+    }
+    form{
+        display: block;
+        height: 300px;
+        padding: 10px 30px;
+        label{
+            //font-weight:lighter;
+            font-size:16px;
+            line-height:30px;
+            display: block;
+            float: left;
+            clear: both;
+            width:140px;
+        }
+        input[type='text'], input[type='password']{
+            clear: both;
+            float: right;
+            padding: 3px 3px;
+            text-shadow: none;
+            margin-bottom: 4px;
+            width: 160px;
+            font-size:16px;
+            border:1px solid;
+            display: block;
+        }
+        input[type='submit']{
+            margin-top:15px;
+        }        
+    }
 }
