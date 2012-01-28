@@ -19,8 +19,12 @@ import re
 
 def front_page(request):
     rc={}
-    rc['rform'] = EmailRegisterForm() 
-    return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
+    user = request.user
+    if user.is_authenticated():
+        return home_page(request)
+    else:
+        rc['rform'] = EmailRegisterForm() 
+        return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def home_page(request):
