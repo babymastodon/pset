@@ -1,0 +1,236 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Activity	main/models.py	/^class Activity(models.Model):$/;"	c
+Class	main/models.py	/^class Class(models.Model):$/;"	c
+ClassAdmin	main/admin.py	/^class ClassAdmin(admin.ModelAdmin):$/;"	c
+ClassIndex	main/search_indexes.py	/^class ClassIndex(indexes.SearchIndex, indexes.Indexable):$/;"	c
+ClassNumber	main/models.py	/^class ClassNumber(models.Model):$/;"	c
+ClassNumberIndex	main/search_indexes.py	/^class ClassNumberIndex(indexes.SearchIndex, indexes.Indexable):$/;"	c
+ClassNumberInline	main/admin.py	/^class ClassNumberInline(admin.StackedInline):$/;"	c
+Comment	main/models.py	/^class Comment(models.Model):$/;"	c
+Course	main/models.py	/^class Course(models.Model):$/;"	c
+EmailRegisterForm	main/forms.py	/^class EmailRegisterForm(forms.Form):$/;"	c
+FileForm	main/forms.py	/^class FileForm(forms.ModelForm):$/;"	c
+LinkForm	main/forms.py	/^class LinkForm(forms.ModelForm):$/;"	c
+LoginForm	main/forms.py	/^class LoginForm(forms.Form):$/;"	c
+Meta	main/forms.py	/^    class Meta:$/;"	c	class:FileForm
+Meta	main/forms.py	/^    class Meta:$/;"	c	class:LinkForm
+Meta	main/forms.py	/^    class Meta:$/;"	c	class:PictureFileForm
+Meta	main/forms.py	/^    class Meta:$/;"	c	class:PictureLinkForm
+Party	main/models.py	/^class Party(models.Model):$/;"	c
+PartyCreateForm	main/forms.py	/^class PartyCreateForm(forms.Form):$/;"	c
+PendingHash	main/models.py	/^class PendingHash(models.Model):$/;"	c
+Picture	main/models.py	/^class Picture(models.Model):$/;"	c
+PictureFileForm	main/forms.py	/^class PictureFileForm(forms.ModelForm):$/;"	c
+PictureLinkForm	main/forms.py	/^class PictureLinkForm(forms.ModelForm):$/;"	c
+RESULTS_PER_PAGE	main/search_views.py	/^RESULTS_PER_PAGE = getattr(settings,'RESULTS_PER_PAGE',10)$/;"	v
+Resource	main/models.py	/^class Resource(models.Model):$/;"	c
+SimpleTest	main/tests.py	/^class SimpleTest(TestCase):$/;"	c
+Target	main/models.py	/^class Target(models.Model):$/;"	c
+UserClassData	main/models.py	/^class UserClassData(models.Model):$/;"	c
+UserInfo	main/models.py	/^class UserInfo(FacebookProfileModel):$/;"	c
+UserInfoIndex	main/search_indexes.py	/^class UserInfoIndex(indexes.SearchIndex, indexes.Indexable):$/;"	c
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:Activity	file:
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:Class	file:
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:ClassNumber	file:
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:Party	file:
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:Target	file:
+__unicode__	main/models.py	/^    def __unicode__(self):$/;"	m	class:UserInfo	file:
+_class	main/models.py	/^    _class = models.ForeignKey(Class)$/;"	v	class:UserClassData
+about	main/home_views.py	/^def about(request):$/;"	f
+active	main/models.py	/^    active = models.BooleanField(default=True)$/;"	v	class:Party
+activity_type	main/models.py	/^    activity_type = models.CharField(max_length=20, choices=activity_types)$/;"	v	class:Activity
+activity_types	main/models.py	/^activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined']]$/;"	v
+actor	main/models.py	/^    actor = models.ForeignKey(User)$/;"	v	class:Activity
+actor	main/models.py	/^    actor = models.ForeignKey(User)$/;"	v	class:Comment
+admins	main/models.py	/^    admins = models.ManyToManyField(User, related_name="admin_set")$/;"	v	class:Party
+agenda	main/forms.py	/^    agenda = forms.CharField(max_length=100, required=True)$/;"	v	class:PartyCreateForm
+agenda	main/models.py	/^    agenda = models.TextField(blank=True)$/;"	v	class:Party
+ajax	main/ajax_views.py	/^def ajax(request):$/;"	f
+ajax	main/class_views.py	/^def ajax(request):$/;"	f
+ajax	main/party_views.py	/^def ajax(request):$/;"	f
+ajax	main/search_views.py	/^def ajax(request):$/;"	f
+ajax_man	main/manage_views.py	/^def ajax_man(request):$/;"	f
+attendees	main/models.py	/^    attendees = models.ManyToManyField(User, related_name="attendee_set")$/;"	v	class:Party
+autocomplete_classes	main/search_views.py	/^def autocomplete_classes(query):$/;"	f
+building_img	main/forms.py	/^    building_img = forms.CharField()#the json from the whereis request$/;"	v	class:PartyCreateForm
+building_img	main/models.py	/^    building_img = models.CharField(max_length=200, blank=True)$/;"	v	class:Party
+class_details	main/class_views.py	/^def class_details(request, pk):$/;"	f
+class_file_upload	main/class_views.py	/^def class_file_upload(request):$/;"	f
+class_obj	main/models.py	/^    class_obj = models.ForeignKey(Class)$/;"	v	class:Party
+class_obj	main/models.py	/^    class_obj = models.ForeignKey(Class, null=True)#default related name is classnumber_set$/;"	v	class:ClassNumber
+clean_time	main/party_views.py	/^    def clean_time(s):$/;"	f	function:party_create
+comment	main/models.py	/^    comment = models.TextField()$/;"	v	class:Comment
+courses	main/models.py	/^    courses = models.ManyToManyField(Course)$/;"	v	class:UserInfo
+courses	main/search_indexes.py	/^    courses = indexes.MultiValueField(indexed=True, stored=True)$/;"	v	class:UserInfoIndex
+create	main/forms.py	/^    def create(self,page):$/;"	m	class:FileForm
+create	main/forms.py	/^    def create(self,page):$/;"	m	class:LinkForm
+create	main/forms.py	/^    def create(self,page):$/;"	m	class:PictureFileForm
+create	main/forms.py	/^    def create(self,page):$/;"	m	class:PictureLinkForm
+create	main/models.py	/^    def create(activity_type, actor, target):$/;"	m	class:Activity
+createAccount	main/account_views.py	/^def createAccount(email="", username="", first_name="", last_name="", $/;"	f
+create_account_page	main/account_views.py	/^def create_account_page(request):$/;"	f
+create_from_email_pwd	main/account_views.py	/^def create_from_email_pwd(email, pwd, request):$/;"	f
+create_party_dict	main/search_views.py	/^def create_party_dict(pk, letter, request, color="red", day="0"):$/;"	f
+current_classes	main/models.py	/^    current_classes = models.ManyToManyField(Class, through="UserClassData")$/;"	v	class:UserInfo
+day	main/forms.py	/^    day = forms.DateField(required=True)$/;"	v	class:PartyCreateForm
+day	main/models.py	/^    day = models.DateField()$/;"	v	class:Party
+description	main/models.py	/^    description = models.TextField() #user description$/;"	v	class:UserInfo
+description	main/models.py	/^    description = models.TextField()$/;"	v	class:Class
+downloadImage	main/models.py	/^    def downloadImage(page, url):$/;"	m	class:Picture
+email	main/forms.py	/^    email = forms.EmailField(label="MIT Email")$/;"	v	class:EmailRegisterForm
+email	main/forms.py	/^    email = forms.EmailField(label="MIT Email", required=False)$/;"	v	class:PartyCreateForm
+email_sent	main/account_views.py	/^def email_sent(request):$/;"	f
+end_time	main/forms.py	/^    end_time = forms.TimeField(input_formats=valid_time_formats, required=True)$/;"	v	class:PartyCreateForm
+endtime	main/models.py	/^    endtime = models.TimeField()$/;"	v	class:Party
+exec_search	main/search_views.py	/^def exec_search(query, category=None, page=1, force_category=False):$/;"	f
+extra	main/admin.py	/^    extra = 12$/;"	v	class:ClassNumberInline
+fetch_fullname	main/account_views.py	/^def fetch_fullname(username):$/;"	f
+fields	main/forms.py	/^        fields=('file',)$/;"	v	class:FileForm.Meta
+fields	main/forms.py	/^        fields=('image',)$/;"	v	class:PictureFileForm.Meta
+fields	main/forms.py	/^        fields=('link',)$/;"	v	class:LinkForm.Meta
+fields	main/forms.py	/^        fields=('link',)$/;"	v	class:PictureLinkForm.Meta
+file	main/models.py	/^    file = models.FileField(upload_to='%y\/%m\/file',blank=True)$/;"	v	class:Resource
+followees	main/models.py	/^    followees = models.ManyToManyField("self", symmetrical=False, related_name="followers")$/;"	v	class:UserInfo
+forgot_password	main/account_views.py	/^def forgot_password(request):$/;"	f
+friends	main/models.py	/^    friends = models.ManyToManyField("self")$/;"	v	class:UserInfo
+front_page	main/home_views.py	/^def front_page(request):$/;"	f
+getUrl	main/models.py	/^    def getUrl():$/;"	m	class:Picture
+getUrl	main/models.py	/^    def getUrl():$/;"	m	class:Resource
+get_actor	main/models.py	/^    def get_actor(self):$/;"	m	class:Activity
+get_content	main/models.py	/^    def get_content(self):$/;"	m	class:Activity
+get_description	main/models.py	/^    def get_description(self):$/;"	m	class:Class
+get_description	main/models.py	/^    def get_description(self):$/;"	m	class:ClassNumber
+get_description	main/models.py	/^    def get_description(self):$/;"	m	class:UserInfo
+get_icon	main/models.py	/^    def get_icon(self):$/;"	m	class:Activity
+get_image	main/models.py	/^    def get_image(self):$/;"	m	class:Comment
+get_link	main/models.py	/^    def get_link(self):$/;"	m	class:Class
+get_link	main/models.py	/^    def get_link(self):$/;"	m	class:Party
+get_link	main/models.py	/^    def get_link(self):$/;"	m	class:Target
+get_link	main/models.py	/^    def get_link(self):$/;"	m	class:UserInfo
+get_linked_actor	main/models.py	/^    def get_linked_actor(self):$/;"	m	class:Activity
+get_linked_name	main/models.py	/^    def get_linked_name(self):$/;"	m	class:Target
+get_meta	main/models.py	/^    def get_meta(self):$/;"	m	class:Class
+get_meta	main/models.py	/^    def get_meta(self):$/;"	m	class:ClassNumber
+get_meta	main/models.py	/^    def get_meta(self):$/;"	m	class:UserInfo
+get_model	main/search_indexes.py	/^    def get_model(self):$/;"	m	class:ClassIndex
+get_model	main/search_indexes.py	/^    def get_model(self):$/;"	m	class:ClassNumberIndex
+get_model	main/search_indexes.py	/^    def get_model(self):$/;"	m	class:UserInfoIndex
+get_name	main/models.py	/^    def get_name(self):$/;"	m	class:Class
+get_name	main/models.py	/^    def get_name(self):$/;"	m	class:Party
+get_name	main/models.py	/^    def get_name(self):$/;"	m	class:Target
+get_name	main/models.py	/^    def get_name(self):$/;"	m	class:UserInfo
+get_parties_by_class	main/search_views.py	/^def get_parties_by_class(request, class_pk):$/;"	f
+get_parties_by_date	main/search_views.py	/^def get_parties_by_date(request, day):$/;"	f
+get_prof_pic	main/models.py	/^    def get_prof_pic(self):$/;"	m	class:UserInfo
+get_time	main/models.py	/^    def get_time(self):$/;"	m	class:Activity
+get_title	main/models.py	/^    def get_title(self):$/;"	m	class:Class
+get_title	main/models.py	/^    def get_title(self):$/;"	m	class:ClassNumber
+get_title	main/models.py	/^    def get_title(self):$/;"	m	class:UserInfo
+graduation_year	main/models.py	/^    graduation_year = models.IntegerField(blank=True, null=True)$/;"	v	class:UserInfo
+hashcode	main/models.py	/^    hashcode = models.CharField(max_length=100)$/;"	v	class:PendingHash
+home_page	main/home_views.py	/^def home_page(request):$/;"	f
+image	main/models.py	/^    image = models.ImageField(upload_to='%y\/%m\/img\/',blank=True)$/;"	v	class:Picture
+index_queryset	main/search_indexes.py	/^    def index_queryset(self):$/;"	m	class:ClassIndex
+index_queryset	main/search_indexes.py	/^    def index_queryset(self):$/;"	m	class:ClassNumberIndex
+index_queryset	main/search_indexes.py	/^    def index_queryset(self):$/;"	m	class:UserInfoIndex
+inlines	main/admin.py	/^    inlines = [ClassNumberInline]$/;"	v	class:ClassAdmin
+is_registered	main/party_views.py	/^def is_registered(request, party_pk):$/;"	f
+klass	main/forms.py	/^    klass = forms.CharField(max_length=100, required=True)$/;"	v	class:PartyCreateForm
+lat	main/forms.py	/^    lat = forms.CharField(max_length=100)$/;"	v	class:PartyCreateForm
+lat	main/models.py	/^    lat = models.CharField(max_length=20)$/;"	v	class:Party
+link	main/models.py	/^    link = models.CharField(max_length=1000,blank=True)$/;"	v	class:Picture
+link	main/models.py	/^    link = models.CharField(max_length=1000,blank=True)$/;"	v	class:Resource
+linkImage	main/models.py	/^    def linkImage(page, url):$/;"	m	class:Picture
+link_to_facebook	main/account_views.py	/^def link_to_facebook(request):$/;"	f
+lng	main/forms.py	/^    lng = forms.CharField(max_length=100)$/;"	v	class:PartyCreateForm
+lng	main/models.py	/^    lng = models.CharField(max_length=20)$/;"	v	class:Party
+location	main/forms.py	/^    location = forms.CharField(max_length=100, required=True)$/;"	v	class:PartyCreateForm
+location	main/models.py	/^    location = models.CharField(max_length=100, blank=True)$/;"	v	class:Party
+logger	main/search_views.py	/^logger = logging.getLogger(__name__)$/;"	v
+login_facebook	main/account_views.py	/^def login_facebook(request):$/;"	f
+login_page	main/account_views.py	/^def login_page(request):$/;"	f
+login_required	main/views_common.py	/^def login_required(f):$/;"	f
+login_required_func	main/views_common.py	/^    def login_required_func(*args, **kwargs):$/;"	f	function:login_required
+logout_view	main/account_views.py	/^def logout_view(request):$/;"	f
+manage	main/manage_views.py	/^def manage(request):$/;"	f
+model	main/admin.py	/^    model = ClassNumber$/;"	v	class:ClassNumberInline
+model	main/forms.py	/^        model=Picture$/;"	v	class:PictureFileForm.Meta
+model	main/forms.py	/^        model=Picture$/;"	v	class:PictureLinkForm.Meta
+model	main/forms.py	/^        model=Resource$/;"	v	class:FileForm.Meta
+model	main/forms.py	/^        model=Resource$/;"	v	class:LinkForm.Meta
+my_profile_page	main/account_views.py	/^def my_profile_page(request):$/;"	f
+number	main/models.py	/^    number = models.CharField(max_length=20)$/;"	v	class:ClassNumber
+number	main/models.py	/^    number = models.CharField(max_length=5)$/;"	v	class:Course
+parties_by_class	main/search_views.py	/^def parties_by_class(request, pk):$/;"	f
+parties_by_date	main/search_views.py	/^def parties_by_date(request):$/;"	f
+party	main/models.py	/^    party = models.ForeignKey(Party, null=True)$/;"	v	class:PendingHash
+party_create	main/party_views.py	/^def party_create(request):$/;"	f
+party_details	main/party_views.py	/^def party_details(request, pk):$/;"	f
+party_must_login	main/party_views.py	/^def party_must_login(request, pk):$/;"	f
+party_register_ajax	main/party_views.py	/^def party_register_ajax(request, party_pk):$/;"	f
+party_registered	main/party_views.py	/^def party_registered(request, pk):$/;"	f
+party_unregister_ajax	main/party_views.py	/^def party_unregister_ajax(request, party_pk):$/;"	f
+party_unregistered	main/party_views.py	/^def party_unregistered(request, pk):$/;"	f
+password	main/forms.py	/^    password = forms.CharField(widget=forms.PasswordInput)$/;"	v	class:LoginForm
+password	main/forms.py	/^    password = forms.CharField(widget=forms.PasswordInput, required=False)$/;"	v	class:PartyCreateForm
+prepare	main/search_indexes.py	/^    def prepare(self, obj):$/;"	m	class:ClassIndex
+prepare	main/search_indexes.py	/^    def prepare(self, obj):$/;"	m	class:ClassNumberIndex
+prepare	main/search_indexes.py	/^    def prepare(self, obj):$/;"	m	class:UserInfoIndex
+prepare_courses	main/search_indexes.py	/^    def prepare_courses(self, obj):$/;"	m	class:UserInfoIndex
+prepare_text	main/search_indexes.py	/^    def prepare_text(self, obj):$/;"	m	class:ClassNumberIndex
+profile_edit	main/account_views.py	/^def profile_edit(request):$/;"	f
+profile_new_user_info	main/account_views.py	/^def profile_new_user_info(request):$/;"	f
+profile_page	main/account_views.py	/^def profile_page(request, pk):$/;"	f
+pw1	main/forms.py	/^    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password')$/;"	v	class:EmailRegisterForm
+pw1	main/forms.py	/^    pw1 = forms.CharField(widget=forms.PasswordInput, label='Password', required=False)$/;"	v	class:PartyCreateForm
+pw2	main/forms.py	/^    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')$/;"	v	class:EmailRegisterForm
+pw2	main/forms.py	/^    pw2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password', required=False)$/;"	v	class:PartyCreateForm
+resize_dimensions	main/models.py	/^def resize_dimensions(width, height, longest_side):$/;"	f
+resize_image	main/models.py	/^def resize_image(i,dim=400, w=None, h=None):$/;"	f
+room	main/forms.py	/^    room = forms.CharField(max_length=100, required=True)$/;"	v	class:PartyCreateForm
+room	main/models.py	/^    room = models.CharField(max_length=10, blank=True)$/;"	v	class:Party
+search_page	main/search_views.py	/^def search_page(request):$/;"	f
+sequence	main/models.py	/^    sequence = models.IntegerField(default=10) #sequence number in case order needs to change$/;"	v	class:Resource
+sequence	main/models.py	/^    sequence = models.IntegerField(default=10) #sequence number in case their order needs to change$/;"	v	class:Picture
+shorten	main/search_views.py	/^    def shorten(s):$/;"	f	function:autocomplete_classes
+should_update	main/search_indexes.py	/^    def should_update(self, instance, **kwargs):$/;"	m	class:ClassIndex
+should_update	main/search_indexes.py	/^    def should_update(self, instance, **kwargs):$/;"	m	class:ClassNumberIndex
+should_update	main/search_indexes.py	/^    def should_update(self, instance, **kwargs):$/;"	m	class:UserInfoIndex
+start_time	main/forms.py	/^    start_time = forms.TimeField(input_formats=valid_time_formats, required=True)$/;"	v	class:PartyCreateForm
+starttime	main/models.py	/^    starttime = models.TimeField()$/;"	v	class:Party
+suggestions	main/search_indexes.py	/^    suggestions = indexes.FacetCharField()$/;"	v	class:ClassIndex
+suggestions	main/search_indexes.py	/^    suggestions = indexes.FacetCharField()$/;"	v	class:ClassNumberIndex
+suggestions	main/search_indexes.py	/^    suggestions = indexes.FacetCharField()$/;"	v	class:UserInfoIndex
+target	main/models.py	/^    target = models.OneToOneField(Target)$/;"	v	class:Activity
+target	main/models.py	/^    target = models.OneToOneField(Target)$/;"	v	class:Comment
+target_dict	main/models.py	/^target_dict = {'User':User, 'Class':Class, 'Party':Party}$/;"	v
+target_id	main/models.py	/^    target_id = models.IntegerField()$/;"	v	class:Target
+target_type	main/models.py	/^    target_type = models.CharField(max_length=20)$/;"	v	class:Target
+target_types	main/models.py	/^target_types = [(a,a) for a in ['User','Class','Party']]$/;"	v
+test_basic_addition	main/tests.py	/^    def test_basic_addition(self):$/;"	m	class:SimpleTest
+text	main/search_indexes.py	/^    text = indexes.CharField(document=True)$/;"	v	class:ClassNumberIndex
+text	main/search_indexes.py	/^    text = indexes.CharField(document=True, use_template=True)$/;"	v	class:ClassIndex
+text	main/search_indexes.py	/^    text = indexes.CharField(document=True, use_template=True)$/;"	v	class:UserInfoIndex
+thumbnail150	main/models.py	/^    thumbnail150 = models.ImageField(upload_to='%y\/%m\/thm150')$/;"	v	class:Picture
+thumbnail300	main/models.py	/^    thumbnail300 = models.ImageField(upload_to='%y\/%m\/thm300')$/;"	v	class:Picture
+time_created	main/models.py	/^    time_created = models.DateTimeField(auto_now_add=True)$/;"	v	class:Activity
+time_created	main/models.py	/^    time_created = models.DateTimeField(auto_now_add=True)$/;"	v	class:Comment
+title	main/forms.py	/^    title = forms.CharField(max_length=100, required=True)$/;"	v	class:PartyCreateForm
+title	main/models.py	/^    title = models.CharField(max_length=200)$/;"	v	class:Class
+title	main/models.py	/^    title = models.CharField(max_length=30)$/;"	v	class:Party
+trunc	main/search_views.py	/^trunc = lambda s,n: s if len(s)<n-3 else s[:n-3]+"..."$/;"	v
+uploadImage	main/models.py	/^    def uploadImage(page, image):$/;"	m	class:Picture
+urlpatterns	main/urls.py	/^urlpatterns = patterns('main.home_views',$/;"	v
+user	main/models.py	/^    user = models.ForeignKey(User)$/;"	v	class:PendingHash
+user	main/models.py	/^    user = models.OneToOneField(User, related_name="user_info")$/;"	v	class:UserInfo
+user_info	main/models.py	/^    user_info = models.ForeignKey(UserInfo)$/;"	v	class:UserClassData
+userinfo_by_username	main/search_views.py	/^def userinfo_by_username(request, pk):$/;"	f
+username	main/forms.py	/^    username = forms.CharField()$/;"	v	class:LoginForm
+username	main/forms.py	/^    username = forms.CharField(required=False)$/;"	v	class:PartyCreateForm
+valid_time_formats	main/forms.py	/^valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']$/;"	v
+verify	main/account_views.py	/^def verify(request, hashcode):$/;"	f

@@ -15,20 +15,64 @@ from main.models import *
 from main.forms import *
 from main.views_common import *
 
+import re
+
 def front_page(request):
     rc={}
-    rc['rform'] = EmailRegisterForm() 
-    return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
+    user = request.user
+    if user.is_authenticated():
+        return home_page(request)
+    else:
+        rc['rform'] = EmailRegisterForm() 
+        return render_to_response("main/home/front_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
 def home_page(request):
     rc={}
     user = request.user
     rc['user'] = user
-    rc['userinfo'] = user.user_info
-    rc['classes'] = user.user_info.current_classes
+    rc['user_info'] = user.user_info
+    rc['classes'] = user.user_info.klasses
     rc['friends'] = user.user_info.friends
+    defaults = {}
+    defaults['user_info']=request.user.user_info
+    defaults['class_obj']="" 
+    defaults['instructor']=defaults['recitation_leader']=defaults['experience']=""
+    form = AddClassForm(defaults)
+    if request.method=="POST":
+        form = AddClassForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            newclass = UserClassData()
+            newclass.user_info = user.user_info
+            newclass.instructor = d['instructor']
+            newclass.recitation_leader = d['recitation_leader']
+            newclass.experience = d['experience']
+            klass = re.search("\w+\.\w+", d['class_obj'])
+            klass_num = ClassNumber.objects.filter(number=klass.group())
+            if klass_num:
+                userinfo = UserInfo.objects.filter(user=request.user)
+                if userinfo:
+                    #check if interaction already exists
+                    courses = UserClassData.objects.filter(user_info=userinfo, class_obj=klass_num[0].class_obj)
+                    if not courses:
+                        user_info_obj = userinfo[0]
+                        newclass.user_info = user_info_obj
+                        klass_obj = klass_num[0].class_obj
+                        newclass.class_obj = klass_obj
+                        newclass.save()
+                        Activity.create(actor=request.user, activity_type="joined", target=klass_obj)
+                        form = AddClassForm(defaults)
+                    else:
+                        rc['error'] = "Already signed up for course"
+                else:
+                    rc['error'] = "No userinfo found"
+            else:
+                rc['error'] = "Class Number is invalid"
+        else:
+            rc['error'] = form.errors
     # passing stuff to the home page
+    rc['form'] = form
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):

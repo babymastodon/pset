@@ -174,7 +174,7 @@ class UserInfo(FacebookProfileModel):
     description = models.TextField(blank=True) #user description
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
-    klasses = models.ManyToManyField(Class, blank=True)
+    klasses = models.ManyToManyField(Class, through="UserClassData", blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     def __unicode__(self):
@@ -205,12 +205,21 @@ class UserInfo(FacebookProfileModel):
         return self.user.first_name + " " + self.user.last_name
     def get_linked_name(self):
         return '<a href="' + self.get_link() + '" >' + self.get_name() + "</a>"
+
 #getname and get_link for the user class
 User.get_name = lambda self: self.user_info.get_name()
 User.get_link = lambda self: self.user_info.get_link()
 User.get_prof_pic = lambda self: self.user_info.get_prof_pic()
 User.get_image = lambda self: self.user_info.get_image()
 User.get_linked_name = lambda self: self.user_info.get_linked_name()
+
+class UserClassData(models.Model):
+    #things like confidence
+    user_info = models.ForeignKey(UserInfo)
+    class_obj = models.ForeignKey(Class)
+    experience = models.CharField(max_length=100)
+    instructor = models.CharField(max_length=100)
+    recitation_leader = models.CharField(max_length=100) 
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)
