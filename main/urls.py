@@ -6,6 +6,7 @@ urlpatterns = patterns('main.home_views',
     url(r'^$', 'front_page'),#the first page
     url(r'^home/$', 'home_page'),#the personalized home page with Notifications etc
     url(r'^about/$', 'about'),#about page
+    url(r'^friendsignup/$', 'send_invite')
 )   
 
 #account-related views
@@ -28,7 +29,6 @@ urlpatterns += patterns('main.account_views',
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
     url(r'^forgotpw/$', 'forgot_password'),
     url(r'^facebook/', include('django_facebook.urls')),
-    url(r'^accounts/', include('userena.urls')),
 )
 
 #search views

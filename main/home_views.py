@@ -81,3 +81,16 @@ def about(request):
     rc={}
     return render_to_response("main/home/about.html", rc, context_instance=RequestContext(request))
 
+def send_invite(request):
+    rc={}
+    if request.user.first_name and request.user.last_name:
+        rc['name'] = request.user.first_name + " " + request.user.last_name
+    elif request.user:
+        rc['name'] = request.user.username
+    else:
+        rc['name'] = "Dr. Incognito"
+    rc['link'] = request.get_host()+reverse('main.party_views.party_details', kwargs={'pk':1})
+    rc['event'] = "My Party"
+    send_email(request, 'maxtang@mit.edu','Invite Email','signup.html', rc)
+    return render_to_response("emails/signup.html", rc, context_instance=RequestContext(request))
+
