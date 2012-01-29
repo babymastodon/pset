@@ -9,13 +9,17 @@
 {% endblock %}
 
 {% block main_content %}
+{% comment %}
 <div id="slideshow" class="grid_12">
     <div id="slide_container">
-        {% for i in 12345|make_list %}
-        <div id="slide_{{forloop.counter0}}" class="slide_contents">
-            <img class="slide_img" src="{{STATIC_URL}}slider_test/img{{forloop.counter0}}.jpg"/>
+        <div id="slide_0" class="slide_contents">
+            <img class="slide_img" src="{{STATIC_URL}}slider_test/img0.png"/>
+        </div>
+        {% for i in 1234|make_list %}
+        <div id="slide_{{forloop.counter}}" class="slide_contents">
+            <img class="slide_img" src="{{STATIC_URL}}slider_test/img{{forloop.counter}}.jpg"/>
             <a href="{% url 'main.home_views.front_page' %}">
-                <div class="slide_text s_{{forloop.counter0}}"><b>Galois Theory with Donuts:</b> 10pm Simmons common room</div>
+                <div class="slide_text s_{{forloop.counter}}"><b>Galois Theory with Donuts:</b> 10pm Simmons common room</div>
             </a>
         </div>
         {% endfor %}
@@ -28,6 +32,7 @@
     </div>
 </div>
 <div class="clear"></div>
+{% endcomment %}
 <div class="page_text grid_4">
     <div class="text_block">
         <h3>InTheLoop</h3> makes it easy for you to find pset parties and connect with your friends. Want to instantly see the hottest pset parties on campus?
@@ -48,6 +53,7 @@
     </div>
     {% include 'main/account/create_account_form.html' %}
 </div>
+{% comment %}
 <div class="clear"></div>
 <div class="grid_10 prefix_1 suffix_1"><div class="hline"></div></div>
 <div class="clear"></div>
@@ -67,4 +73,5 @@
     {% endwith %}
 </div>
 <div class="clear"></div>
+{% endcomment %}
 {% endblock %}

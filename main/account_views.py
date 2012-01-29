@@ -70,8 +70,8 @@ def profile_page(request, pk):
     rc['person']=user
     rc['newsfeed'] = get_newsfeed('profile',pk)
     rc['comments']={'pk':pk, 'target':"User"}
-    rc['join_date']=day_string(request.user.date_joined)
-    rc['last_seen']=time_ago(request.user.user_info.last_seen)
+    rc['join_date']=day_string(user.date_joined)
+    rc['last_seen']=time_ago(user.user_info.last_seen)
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
