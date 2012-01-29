@@ -185,6 +185,9 @@ class UserInfo(FacebookProfileModel):
     email_invitations = models.BooleanField(default=True)
     email_party = models.BooleanField(default=True)
     email_comment = models.BooleanField(default=True)
+    private_profile = models.BooleanField(default=False)
+    private_activities = models.BooleanField(default=False)
+    private_comments = models.BooleanField(default=False)
     reindex = models.BooleanField(default=True)
     def __unicode__(self):
         return unicode(self.user) + "info"

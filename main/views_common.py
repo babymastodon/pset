@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
 from django.template import loader, Context
+from django.utils import timezone
 import urllib
 from django import forms
 from itertools import chain
@@ -31,7 +32,9 @@ def login_required(f):
             if not UserInfo.objects.filter(user=args[0].user).exists():
                 UserInfo(user=args[0].user).save()
             else:
-                args[0].user.user_info.save()
+                ui = args[0].user.user_info
+                ui.last_seen = timezone.now()
+                ui.save()
             return f(*args,**kwargs)
         return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(args[0].get_full_path()))
     return login_required_func
@@ -39,7 +42,7 @@ def login_required(f):
 def all_newsfeed(request, feedtype, pk, page=1):
     rc={}
     page = int(page)
-    rc['feed'] = get_newsfeed(feedtype, pk, page)
+    rc['feed'] = get_newsfeed(request, feedtype, pk, page)
     rc['next'] = reverse('main.views_common.all_newsfeed', kwargs={'feedtype':feedtype, 'pk':pk, 'page':page+1})
     if page>1:
         rc['prev'] = reverse('main.views_common.all_newsfeed', kwargs={'feedtype':feedtype, 'pk':pk, 'page':page-1})
@@ -47,11 +50,14 @@ def all_newsfeed(request, feedtype, pk, page=1):
     rc['feed']['link'] = None
     return render(request, 'main/modules/all_newsfeed.html', rc)
 
-def get_newsfeed(feedtype, pk, page=1):
+def get_newsfeed(request, feedtype, pk, page=1):
     r={}
     r['link'] = reverse("main.views_common.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
     r['header']="Recent Activity"
     NUM_PER_PAGE=6
+    qs = Activity.objects.all()
+    if request.user.is_anonymous():
+        qs = qs.filter(actor__user_info__private_activities=False)
     if feedtype=="profile":
         newsfeed1 = Activity.objects.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
 
@@ -70,7 +76,6 @@ def get_newsfeed(feedtype, pk, page=1):
     except Exception as e:
         pass
     return r
-
 
 def send_email(request, to, subject, template, rc):
     html = loader.get_template('emails/'+template)

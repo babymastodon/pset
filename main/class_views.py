@@ -25,7 +25,7 @@ def class_details(request, pk):
     rc['comments']={'pk':pk, 'target':"Class"}
     if request.user.is_authenticated():
         rc['joined'] = request.user.user_info in klass.userinfo_set.all()
-    rc['newsfeed'] = get_newsfeed('class', pk)
+    rc['newsfeed'] = get_newsfeed(request,'class', pk)
     parties = get_parties_by_class(request, pk).get('result_list',[])
     rc['num_parties'] = len(parties)
     rc['party_list'] = simplejson.dumps(parties)

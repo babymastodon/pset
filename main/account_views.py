@@ -67,10 +67,14 @@ def profile_page(request, pk):
     rc={}
     user = get_object_or_404(User, pk=pk)
     rc['person']=user
-    rc['newsfeed'] = get_newsfeed('profile',pk)
-    rc['comments']={'pk':pk, 'target':"User"}
-    rc['join_date']=day_string(user.date_joined)
-    rc['last_seen']=time_ago(user.user_info.last_seen)
+    if (not user.user_info.private_profile) or request.user.is_authenticated():
+        rc['private']=False
+        rc['newsfeed'] = get_newsfeed(request,'profile',pk)
+        rc['comments']={'pk':pk, 'target':"User"}
+        rc['join_date']=day_string(user.date_joined)
+        rc['last_seen']=time_ago(user.user_info.last_seen)
+    else:
+        rc['private'] = True
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
@@ -215,7 +219,7 @@ def link_to_facebook(request):
 def account_info(request):
     rc={}
     ui = request.user.user_info
-    defaults={'email_invitations': ui.email_invitations, 'email_comment': ui.email_comment, 'email_party': ui.email_party}
+    defaults={'email_invitations': ui.email_invitations, 'email_comment': ui.email_comment, 'email_party': ui.email_party, 'private_profile': ui.private_profile, 'private_activities': ui.private_activities, 'private_comments': ui.private_comments}
     form = AccountSettingsForm(defaults)
     if request.method=="POST":
         form = AccountSettingsForm(request.POST)
@@ -224,11 +228,15 @@ def account_info(request):
             ui.email_invitations = d['email_invitations']
             ui.email_comment = d['email_comment']
             ui.email_party = d['email_party']
+            ui.private_profile = d['private_profile']
+            ui.private_activities = d['private_activities']
+            ui.private_comments = d['private_comments']
             ui.save()
             return redirect(reverse('main.account_views.my_profile_page'))
         else:
             rc['error'] = "There were errors in the form"
-    rc['form'] = form
+    rc['email_settings'] = [form['email_invitations'], form['email_party'], form['email_comment']]
+    rc['privacy_settings'] = [form['private_profile'], form['private_activities'], form['private_comments']]
     return render_to_response("main/account/account_info.html", rc, context_instance=RequestContext(request))
 
 def new_bio_info(request):

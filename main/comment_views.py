@@ -28,6 +28,8 @@ def load_comments(request, target, pk, last_id=None):
     comments = Comment.objects.filter(target__target_type=target, target__target_id=pk).order_by('-time_created')
     if last_id:
         comments = comments.filter(pk__lt=last_id)
+    if request.user.is_anonymous():
+        comments = comments.filter(actor__user_info__private_comments=False)
     comments = list(comments[:6])
     return {'status':'success', 'html':render_comments(request,comments), 'last_id': comments[-1].pk if comments else last_id}
 

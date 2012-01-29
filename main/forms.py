@@ -51,6 +51,9 @@ class AccountSettingsForm(forms.Form):
     email_invitations = forms.BooleanField(label="Email me when I recieve a party invitation:", required=False)
     email_party = forms.BooleanField(label="Email me when one of my classes has a party:", required=False)
     email_comment = forms.BooleanField(label="Email me when someone comments on my profile:", required=False)
+    private_profile = forms.BooleanField(label="Hide my profile from the public", required=False)
+    private_activities = forms.BooleanField(label="Hide my activities from the public", required=False)
+    private_comments = forms.BooleanField(label="Hide my comments from the public", required=False)
 
 class AddClassForm(forms.Form):
     user_info = forms.CharField(max_length=100, required=True)

@@ -24,9 +24,17 @@
     <div class="grid_3 alpha center">
         <img src="{{person.get_image}}" class="profile_image" />
     </div>
+    {% if private %}
+    <div class="grid_9 omega plain_text">
+        <div class="space_40"></div>
+        {{person.get_name}} does not want to share his/her profile with the public. Please <a href="{% url 'main.account_views.login_page' %}?next={{request.path}}" class="underlined">Login</a> to continue.
+    </div>
+    {% else %}
     <div class="whitebox clearfix grid_9 omega" style="height: 150px;">
     </div>
+    {% endif %}
 </div>
+{% if not private %}
 <div class="clear"></div>
 <div class="space_20"></div>
 <div class="grid_4 details_panel center">
@@ -71,9 +79,10 @@
     <div class="clear"></div>
     <div class="space_40"></div>
     <div>
-        {% with comment_header="Comments" %}
+        {% with comment_header="Chatter" %}
         {% include 'main/modules/comment_list.html' %}
         {% endwith %}
     </div>
 </div>
+{% endif %}
 {% endblock %}
