@@ -28,6 +28,25 @@ function autocomplete_callback(ob, response_callback){
 
 
 function update_box(){
+    window.name_type="list";
+    $("#add_button").removeClass("disabled");
+}
+
+function box_changed(){
+    s = $('input[name="name"]').val();
+    if (s.match(/[^@]+@mit\.edu/)){
+        $("#add_button").removeClass("disabled");
+        window.name_type="email";
+    } else {
+        $("#add_button").addClass("disabled");
+        window.name_type=undefined;
+    }
+}
+
+function add_to_list(){
+    if (window.name_type){
+        alert("moo");
+    }
 }
 
 $(document).ready(function(){
@@ -35,6 +54,7 @@ $(document).ready(function(){
         source: autocomplete_callback,
         delay: 300,
         minLength: 2,
-        close: update_box,
-    });
+        select: update_box,
+    }).bind("textchange",box_changed);
+    $("#add_button").click(add_to_list);
 });

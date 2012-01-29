@@ -137,7 +137,7 @@ def autocomplete_person(query):
     sqs = SearchQuerySet().raw_search(wildcard_tokens).models(UserInfo)
     result = sqs[:5]
     nums = [a.object.get_name() for a in result]
-    metadata = [{"pk":a.pk, 'summary':a.object.get_summary(), "img":a.object.get_image()} for a in result]
+    metadata = [{"pk":a.pk, 'summary':a.object.get_summary(), 'name':a.object.get_name(), "img":a.object.get_image()} for a in result]
     if nums:
         return {"status":"success", 'result': nums, 'metadata': metadata}
     else:

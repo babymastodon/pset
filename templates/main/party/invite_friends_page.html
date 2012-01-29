@@ -31,9 +31,9 @@
 <div class="space_30"></div>
 <form class="clearfix" id="invite_form" action="." method="POST">{% csrf_token %}
 
-    <h3 class="grid_4 right">Enter name or email:</h3>
+    <h3 class="grid_4 right">Enter name or MIT email:</h3>
     <input type="text" name="name" class="label_if_blank grid_4 large_gray_text_box" title="Begin typing" value="" />
-    <div class="gray_button" style="line-height: 33px">Add to list</div>
+    <div id="add_button" class="gray_button disabled" style="line-height: 33px">Add to list</div>
 
     <div class="clear"></div>
     <div class="space_30"></div>
