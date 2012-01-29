@@ -19,47 +19,30 @@
 </div>
 <div class="clear"></div>
 <div class="space_30"></div>
-<form class="clearfix" id="bio_form" enctype="multipart/form-data" name="bio_form" action="." method="POST">{% csrf_token %}
 
-    <h3 class="grid_2 right">{{form.first_name.label}}</h3>
-    <input type="text" name="{{form.first_name.html_name}}" class="label_if_blank limit_text grid_3 large_gray_text_box" title="" ref="30" value="{{form.first_name.value}}" />
+<form class="clearfix" id="blah_form" enctype="multipart/form-data" name="bio_form" action="." method="POST">{% csrf_token %}
 
-    <h3 class="grid_2 right">{{form.last_name.label}}</h3>
-    <input type="text" name="{{form.last_name.html_name}}" class="label_if_blank limit_text grid_3 large_gray_text_box" title="" ref="30" value="{{form.last_name.value}}" />
-
-
-    <div class="clear"></div>
-    <div class="space_10"></div>
-
-
-    <h3 class="grid_2 right">{{form.department.label}}</h3>
-    <input type="text" name="{{form.department.html_name}}" class="label_if_blank limit_text grid_3 large_gray_text_box" title="" ref="30" value="{{form.department.value}}" />
-
-    <h3 class="grid_2 right">{{form.graduation_year.label}}</h3>
-    <input type="text" name="{{form.graduation_year.html_name}}" class="label_if_blank limit_text grid_2 large_gray_text_box" title="" ref="4" value="{{form.graduation_year.value}}" />
-
-
-    <div class="clear"></div>
-    <div class="space_10"></div>
-
-    
-    <h3 class="grid_2 right">{{form.bio.label}}</h3>
-    <textarea name="{{form.bio.html_name}}" class="label_if_blank limit_text grid_2 large_gray_textarea" title="" ref="400">{{form.bio.value}}</textarea>
-
-    <div class="grid_3 prefix_1">
-        <img src="{{user.get_image}}" class="grid_3 alpha omega"/>
-        <h3 class="grid_3 alpha omega">Current Profile Picture</h3>
+    <h3 class="grid_2 right">Password:</h3>
+    <div class="grid_3">
+        <a href="{% url 'main.account_views.change_password' %}" class="gray_button">Change Password</a>
     </div>
 
+
     <div class="clear"></div>
-    <div class="space_20"></div>
-    
-    <h3 class="grid_6 right">Upload new profile picture:</h3>
-    <h3 class="grid_4 prefix_1"><input type="file" name="{{form.pic.html_name}}"/></h3>
-    
+    <div class="space_10"></div>
+
+
+    <h3 class="grid_2 right">Settings:</h3>
+    {% for f in form %}
     <div class="clear"></div>
-    <div class="space_20"></div>
-    
-    <a href="javascript: $('#bio_form').submit()" class="gray_button submit_button">Submit</a>
+    <div class="space_10"></div>
+    <h3 class="grid_6 right sub">{{f.label}}</h3>
+    <div class="grid_3" style="padding-top: 6px;">
+        {{f}}
+    </div>
+    {% endfor %}
+
+
+    <div onclick="javascript: $('#blah_form').submit()" class="gray_button submit_button">Submit</div>
 </form>
 {% endblock %}

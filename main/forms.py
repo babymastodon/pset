@@ -44,6 +44,14 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
+class PasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+class AccountSettingsForm(forms.Form):
+    email_invitations = forms.BooleanField(label="Email me when I recieve a party invitation:", required=False)
+    email_party = forms.BooleanField(label="Email me when one of my classes has a party:", required=False)
+    email_comment = forms.BooleanField(label="Email me when someone comments on my profile:", required=False)
+
 class AddClassForm(forms.Form):
     user_info = forms.CharField(max_length=100, required=True)
     class_obj = forms.CharField(max_length=100, required=True)

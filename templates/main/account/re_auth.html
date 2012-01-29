@@ -12,8 +12,13 @@
 <div class="grid_4 prefix_7 page_text">
     <div class="people_header clearfix">
         <img src="{% static 'images/css/icons/lock32.png'%}"/>
-        <span class="header_text">Login</span>
+        <span class="header_text">{{form.password.label}}</span>
     </div>
-    {% include 'main/account/login_form.html' %}
+    <form method="post" id="login_form" action=".">
+        {% csrf_token %}
+        <input type="password" class="large_gray_text_box hcenter nofloat" name="{{form.password.html_name}}" />
+        <div class="space_20"></div>
+        <input type="submit" class="gray_button fright" value="Submit" />
+    </form>
 </div>
 {% endblock %}

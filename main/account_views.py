@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
 from django.db import IntegrityError
-from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template import loader, Context
 from django import forms
 from django.utils import timezone
@@ -97,17 +96,11 @@ def create_from_email_pwd(email, pwd, request):
         account=createAccount(email=email, username=uname, password=pwd, is_active=False)
     ph = PendingHash.create(user=account)
     ph.save()
-    html = loader.get_template('emails/verify.html')
     root_email = request.get_host()
-    c = RequestContext(request, {
+    send_email(request, email, 'InTheLooop Email Verification', 'verify.html', {
         'username':account.get_name(),
         'link':root_email+reverse('main.account_views.verify', kwargs={'hashcode':ph.hashcode}),
     })
-    subject = 'Email Verification'
-    from_email, to = 'no-reply@babymastodon.com', email
-    msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
-    msg.content_subtype = "html"
-    msg.send()
     rc['email'] = email
     return {'rc':rc, 'user':account, 'ph':ph}
     
@@ -144,17 +137,11 @@ def forgot_password(request):
                 user = user[0]
                 ph = PendingHash.create(user)
                 ph.save()
-                html = loader.get_template('emails/forgot.html')
                 root_email = request.get_host()
-                c = RequestContext(request, {
+                send_email(request, email, "Reset Password", 'forgot.html', {
                     'username':user.get_name(),
                     'link': root_email+reverse('main.account_views.reset_password_hashcode', kwargs={'hashcode':ph.hashcode})
                 })
-                subject = 'Reset Password'
-                from_email, to = 'no-reply@babymastodon.com', email
-                msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
-                msg.content_subtype = "html"
-                msg.send()
                 return redirect(reverse('main.account_views.reset_email_sent'))
             else:
                 rc['error'] = "You do not have an account yet"
@@ -173,24 +160,24 @@ def reset_password_hashcode(request, hashcode):
 
 def re_auth(request):
     rc={}
-    form = LoginForm()
+    form = PasswordForm()
     if request.method=="POST":
-        form = LoginForm(request.POST)
+        form = PasswordForm(request.POST)
         if form.is_valid():
             d = form.cleaned_data
-            user = authenticate(username = d['username'], password=d['password'])
+            user = authenticate(username = request.user.username, password=d['password'])
             if user:
                 login(request,user)
                 request.session['last_authenticate'] = timezone.now()
                 return render(request, 'main/account/change_password.html', {'form':ResetPasswordForm()})
-        rc['error'] = "Username and password are invalid"
+        rc['error'] = "Password is invalid"
     rc['form'] = form
     return render(request, 'main/account/re_auth.html', rc)
 
 @login_required
 def change_password(request):
     rc={}
-    if (not 'last_authenticate' in request.session) or  timezone.now() - request.session['last_authenticate'] > timedelta(minutes=5):
+    if (not 'last_authenticate' in request.session) or  timezone.now() - request.session['last_authenticate'] > timedelta(minutes=2):
         return re_auth(request)
     form = ResetPasswordForm()
     if request.method=="POST":
@@ -227,6 +214,21 @@ def link_to_facebook(request):
 @login_required
 def account_info(request):
     rc={}
+    ui = request.user.user_info
+    defaults={'email_invitations': ui.email_invitations, 'email_comment': ui.email_comment, 'email_party': ui.email_party}
+    form = AccountSettingsForm(defaults)
+    if request.method=="POST":
+        form = AccountSettingsForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            ui.email_invitations = d['email_invitations']
+            ui.email_comment = d['email_comment']
+            ui.email_party = d['email_party']
+            ui.save()
+            return redirect(reverse('main.account_views.my_profile_page'))
+        else:
+            rc['error'] = "There were errors in the form"
+    rc['form'] = form
     return render_to_response("main/account/account_info.html", rc, context_instance=RequestContext(request))
 
 def new_bio_info(request):
@@ -273,7 +275,9 @@ def bio_info(request, new=False):
                 raise e
                 rc['error'] = "Image file could not be processed"
             if not 'error' in rc:
+                i.reindex=True
                 i.save()
+                request.user.save()
                 return redirect('main.account_views.my_profile_page')
         else:
             #most likely an invalid department

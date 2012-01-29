@@ -177,11 +177,15 @@ class UserInfo(FacebookProfileModel):
     courses = models.ManyToManyField(Course, blank=True)
     graduation_year = models.IntegerField(blank=True, null=True)
     bio = models.TextField(blank=True)
-    department = models.CharField(max_length=100)
+    department = models.CharField(max_length=100, blank=True)
     klasses = models.ManyToManyField(Class, through="UserClassData", blank=True)
     followees = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     friends = models.ManyToManyField("self", blank=True)
     last_seen = models.DateTimeField(auto_now=True)
+    email_invitations = models.BooleanField(default=True)
+    email_party = models.BooleanField(default=True)
+    email_comment = models.BooleanField(default=True)
+    reindex = models.BooleanField(default=True)
     def __unicode__(self):
         return unicode(self.user) + "info"
 

@@ -5,9 +5,11 @@ from django.core import serializers
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
+from django.template import loader, Context
 import urllib
 from django import forms
 from itertools import chain
@@ -68,3 +70,12 @@ def get_newsfeed(feedtype, pk, page=1):
     except Exception as e:
         pass
     return r
+
+
+def send_email(request, to, subject, template, rc):
+    html = loader.get_template('emails/'+template)
+    c = RequestContext(request, rc)
+    from_email = 'InTheLoop@babymastodon.com'
+    msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
+    msg.content_subtype = "html"
+    msg.send()

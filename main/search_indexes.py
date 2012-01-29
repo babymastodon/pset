@@ -51,7 +51,7 @@ class ClassNumberIndex(indexes.SearchIndex, indexes.Indexable):
             self.remove_object(instance, **kwargs)
             return False    
 
-class UserInfoIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
+class UserInfoIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     courses = indexes.MultiValueField(indexed=True, stored=True)
     suggestions = indexes.FacetCharField()
@@ -66,7 +66,7 @@ class UserInfoIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.all()
+        return self.get_model().objects.filter(reindex=True)
 
     def get_model(self):
         return UserInfo

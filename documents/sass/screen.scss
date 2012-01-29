@@ -395,7 +395,7 @@ $tw: 260px - $tb - 2* $tp;
     text-align: left;
 }
 
-#new_party_form, #bio_form, form{
+#new_party_form, #bio_form, form, .input{
     display: block;
     .title, h2{
         line-height: 40px;
@@ -413,6 +413,10 @@ $tw: 260px - $tb - 2* $tp;
         display: block;
         font-size: 22px;
         line-height: 35px;
+        &.sub{
+            font-size: 18px;
+            line-height: 30px;
+        }
     }
     h3{
         margin-bottom: 10px;
