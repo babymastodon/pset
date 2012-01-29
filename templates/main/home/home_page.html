@@ -50,6 +50,15 @@
       </ul>
       {% endif %}
       {% endfor %}
+
+      <div class="clear"></div>
+      <div class="space_40"></div>
+      
+      <div>
+          {% with feed_list=newsfeed feed_header="Your Recent Activity" %}
+          {% include 'main/modules/feed_list.html' %}
+          {% endwith %}
+      </div>
     </div>
 
     <div id="add_class_div" class="grid_3">
@@ -84,7 +93,6 @@
     </div>
     <div id='clear'/>
     <div id='test2' class='grid_3'>moo2</div>
-    <div id='test3' class='grid_6'>moo3</div>
     <div id='testDiv' class='grid_3'> moo la la</div>
 </div>
 

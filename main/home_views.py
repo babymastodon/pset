@@ -35,6 +35,7 @@ def home_page(request):
     rc['user_info'] = user.user_info
     rc['classes'] = user.user_info.klasses
     rc['friends'] = user.user_info.friends
+    rc['feed'] = user.activity_set.all
     defaults = {}
     defaults['user_info']=request.user.user_info
     defaults['class_obj']="" 
