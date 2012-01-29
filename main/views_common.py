@@ -26,16 +26,16 @@ def string_or_blank(s):
 
 #replacing the default login_required with our own
 def login_required(f):
-    def login_required_func(*args, **kwargs):
-        if args[0].user.is_authenticated():
+    def login_required_func(request, *args, **kwargs):
+        if request.user.is_authenticated():
             #for debugging purposes only: automatically generate userinfos so no error
-            if not UserInfo.objects.filter(user=args[0].user).exists():
-                UserInfo(user=args[0].user).save()
+            if not UserInfo.objects.filter(user=request.user).exists():
+                UserInfo(user=request.user).save()
             else:
-                ui = args[0].user.user_info
+                ui = request.user.user_info
                 ui.last_seen = timezone.now()
                 ui.save()
-            return f(*args,**kwargs)
+            return f(request, *args,**kwargs)
         return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(args[0].get_full_path()))
     return login_required_func
    
@@ -62,7 +62,11 @@ def get_newsfeed(request, feedtype, pk, page=1):
         newsfeed1 = Activity.objects.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
 
         newsfeed2 = Activity.objects.filter(actor__pk=pk).order_by('-time_created')[:page*NUM_PER_PAGE]
-        r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[page*NUM_PER_PAGE-1:(page-1)*NUM_PER_PAGE-1:-1]
+        smax = page*NUM_PER_PAGE-1
+        smin = (page-1)*NUM_PER_PAGE-1
+        if smin==-1:
+            smin=None
+        r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[smax:smin:-1]
         n = User
     if feedtype=='class':
         r['feed'] = Activity.objects.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]

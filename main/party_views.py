@@ -22,6 +22,7 @@ def party_details(request, pk):
     rc={}
     party = get_object_or_404(Party, pk=pk)
     rc['party'] = party
+    rc['pk'] = pk
     #list of all attendees
     attendees = party.attendees.all()[:10]
     numpeople=len(attendees)
@@ -36,9 +37,19 @@ def party_details(request, pk):
     attending=request.GET.get('attending',None)
     if attending and request.user.is_authenticated():
         party_register_helper_func(party, request.user)
+    if request.user.is_authenticated():
+        if not party.attendees.filter(pk=request.user.pk).exists():
+            rc['not_registered'] = True
     rc['newsfeed'] = get_newsfeed(request,'party', pk)
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
+
+@login_required
+def invite_friends(request, pk):
+    rc={}
+    party = get_object_or_404(Party, pk=pk)
+    rc['party'] = party
+    return render(request, 'main/party/invite_friends_page.html', rc)
 
 def party_create(request):
     rc={'error':None}

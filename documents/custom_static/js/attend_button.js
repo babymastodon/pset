@@ -3,8 +3,14 @@ function register_success(ob){
     return function(data){
         if (data.status=="success"){
             if (data.authenticated){
-                if (data.registered) show_attend_button_already_attending(ob);
-                else show_attend_button(ob);
+                if (data.registered){
+                    show_attend_button_already_attending(ob);
+                    $(document).trigger("party.registered");
+                }
+                else{
+                    show_attend_button(ob);
+                    $(document).trigger("party.unregistered");
+                }
             }
             $.facebox({ ajax: data.link });
         }else{

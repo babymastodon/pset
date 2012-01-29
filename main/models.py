@@ -197,6 +197,10 @@ class UserInfo(FacebookProfileModel):
 
     def get_description(self):
         return self.description 
+    def get_summary(self):
+        s = self.get_name()
+        if self.graduation_year: s += ", " + str(self.graduation_year)
+        return s
 
     def get_meta(self):
         meta = self.user.first_name + " " + self.user.last_name
@@ -280,6 +284,11 @@ class Party(models.Model):
     def get_day_name(self):
         return self.get_day(word=True)
 
+class Invitation(models.Model):
+    sender = models.ForeignKey(User, related_name="sent_invitations")
+    invitee = models.ForeignKey(User, related_name="recieved_invitations")
+    event = models.ForeignKey(Party)
+
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
@@ -336,7 +345,7 @@ class Activity(models.Model):
         elif self.activity_type=='edited':
             return static + 'pencil32.png'
         elif self.activity_type=='joined':
-            return static + 'plus32.png'
+            return static + 'mapleleaf32.png'
         elif self.activity_type=='newaccount':
             return static + 'glitter32.png'
     def get_content(self):

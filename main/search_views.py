@@ -120,16 +120,26 @@ def exec_search(query, category=None, page=1, force_category=False):
         rmin=rmax=0
     return {'page':page,'numpages':numpages, 'result_items':result_items, 'category':category, 'pageresults':pageresults, 'totalresults':totalresults, 'pagerange':pagerange, 'rmin':rmin, 'rmax':rmax, 'status':'success'}
 
+def shorten(s):
+    if len(s)>33:
+        return s[:30]+"..."
+    return s
 def autocomplete_classes(query):
     wildcard_tokens = string.join([a + "* OR " + a for a in query.split()], " OR ")
     sqs = SearchQuerySet().raw_search(wildcard_tokens).models(ClassNumber)
-    def shorten(s):
-        if len(s)>33:
-            return s[:30]+"..."
-        return s
-    nums = [shorten(a.text).lower() for a in sqs[0:5]]
+    nums = [shorten(a.text) for a in sqs[0:5]]
     if nums:
         return {"status":"success", 'result': nums}
+    else:
+        return {'status': "no results found"}
+def autocomplete_person(query):
+    wildcard_tokens = string.join([a + "* OR " + a for a in query.split()], " OR ")
+    sqs = SearchQuerySet().raw_search(wildcard_tokens).models(UserInfo)
+    result = sqs[:5]
+    nums = [a.object.get_name() for a in result]
+    metadata = [{"pk":a.pk, 'summary':a.object.get_summary(), 'name':a.object.get_name(), "img":a.object.get_image()} for a in result]
+    if nums:
+        return {"status":"success", 'result': nums, 'metadata': metadata}
     else:
         return {'status': "no results found"}
 
@@ -221,6 +231,9 @@ def ajax(request):
         elif verb=="autocomplete_class":
             query = request.REQUEST['q']
             result = autocomplete_classes(query) 
+        elif verb=="autocomplete_person":
+            query = request.REQUEST['q']
+            result = autocomplete_person(query) 
         else:
             result['status']="verb didn't match"
     except Exception as e:

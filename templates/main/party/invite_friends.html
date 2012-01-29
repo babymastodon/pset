@@ -1,0 +1,18 @@
+{% load url from future %}{% load staticfiles %}
+<div class="invite_button_container not_initialized clearfix">
+    <a href="{% url 'main.party_views.invite_friends' pk=pk %}" class="gray_button invite_button {% if not_registered %} hidden{% endif %}">Invite Friends!!</a>
+</div>
+<script type="text/javascript">
+    if (!window.invite_button_loaded){
+        $.ajax({
+url:"{% static 'js/invite_button.js' %}",
+dataType:"script",
+success: function(data){
+$(document).ready(init_invite_buttons);
+window.invite_button_loaded=true;
+},
+});
+}else{
+    $(document).ready(init_invite_buttons);
+}
+</script>
