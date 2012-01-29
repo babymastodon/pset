@@ -131,6 +131,9 @@ input[type="text"], input[type="password"], textarea{
         &.grid_2{
             width: 126px;
         }
+        &.grid_4{
+            width: 286px;
+        }
         &.large_gray_textarea{
             height: 200px;
             width: 300px - 4px - 10px;
@@ -554,7 +557,7 @@ $tw: 260px - $tb - 2* $tp;
         float: left;
     }
 }
-.newsfeed, .comment_feed, .people_list{
+.newsfeed, .comment_feed, .people_list, .page_list{
    margin-left: 32px;
     li{
         padding: 5px 0px;
@@ -571,7 +574,7 @@ $tw: 260px - $tb - 2* $tp;
         float: left;
         display: block;
     }
-    .news_icon{
+    .news_icon, .list_icon{
         width: 32px;
         height: 32px;
         margin-right: 5px;
@@ -586,7 +589,7 @@ $tw: 260px - $tb - 2* $tp;
     a{
         font-weight: bold;
     }
-    .news_content{
+    .news_content, .list_content{
         float: left;
         width: 420px;
         display: block;

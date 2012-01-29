@@ -20,6 +20,11 @@
     <div class="page_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
         <span class="header_text" style="width: 420px;">Party Details</span>
+        <div class="fright">
+            {% with pk=party.pk %}
+            {% include 'main/party/invite_friends.html' %}
+            {% endwith %}
+        </div>
     </div>
 </div>
 <div class="clear"></div>

@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block head %}
+{{ block.super}}
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script> 
+<script src="{% static 'js/invite_friends_page.js'%}" type="text/javascript"></script>
+<script type="text/javascript">
+    party_pk={{party.pk}};
+</script>
+{% endblock %}
+
+{% block main_content %}
+<div class="details_panel grid_12">
+    <h1>Invite friends to: {{party.get_name}}</h1>
+    <a class="fright gray_button" href="{{party.get_link}}">Back to party page</a>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error}}</div>{% endif %}
+</div>
+
+
+<div class="clear"></div>
+<div class="space_20"></div>
+
+<div class="input">
+    <h3 class="grid_11 sub left prefix_1">Invite your friends to the pset party. It's okay if they're not InTheLoop, we'll just send them an email.</h3>
+</div>
+
+<div class="clear"></div>
+<div class="space_30"></div>
+<form class="clearfix" id="invite_form" action="." method="POST">{% csrf_token %}
+
+    <h3 class="grid_4 right">Enter name or email:</h3>
+    <input type="text" name="name" class="label_if_blank grid_4 large_gray_text_box" title="Begin typing" value="" />
+    <div class="gray_button" style="line-height: 33px">Add to list</div>
+
+    <div class="clear"></div>
+    <div class="space_30"></div>
+
+    <a href="javascript: $('#bio_form').submit()" class="gray_button submit_button">Submit</a>
+</form>
+{% endblock %}

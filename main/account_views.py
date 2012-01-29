@@ -72,6 +72,7 @@ def profile_page(request, pk):
         rc['newsfeed'] = get_newsfeed(request,'profile',pk)
         rc['comments']={'pk':pk, 'target':"User"}
         rc['join_date']=day_string(user.date_joined)
+        rc['classes'] = user.user_info.klasses.all()
         rc['last_seen']=time_ago(user.user_info.last_seen)
     else:
         rc['private'] = True
