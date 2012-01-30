@@ -98,23 +98,23 @@
         {% block content %}{% endblock %}
         <div class="clear"></div>
         {% block footer %}
-        <div id="footer" class="grid_12">
-            <div class="grid_3" style="height:40px;"></div>
-            <!--Social Buttons-->
-            <!--load social buttons after page load to prevent lag-->
-            <div id="socialbuttons" class="grid_6"> 
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $("#socialbuttons").load("{% url 'main.views_common.social_buttons' %}");
-                    });
-                </script>
-            </div>
-            <div class="grid_2" style="height:40px;"></div>
-            <!--Copyright-->
-            <div class="clear"></div>
-            <p><a href="http://www.youtube.com/watch?v=Gsl9ZGfy2nE">Mastodon Scripts</a> &copy; 2012</p>
-        </div>
         {% endblock %}
+    </div>
+    <div id="footer" class="">
+        <div class="grid_3" style="height:40px;"></div>
+        <!--Social Buttons-->
+        <!--load social buttons after page load to prevent lag-->
+        <div id="socialbuttons" class=""> 
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#socialbuttons").load("{% url 'main.views_common.social_buttons' %}");
+                });
+            </script>
+        </div>
+        <div class="grid_2" style="height:40px;"></div>
+        <!--Copyright-->
+        <div class="clear"></div>
+        <p><a href="http://www.youtube.com/watch?v=Gsl9ZGfy2nE">Mastodon Scripts</a> &copy; 2012</p>
     </div>
 </body>
 

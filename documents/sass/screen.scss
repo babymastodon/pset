@@ -18,7 +18,8 @@ body{
     font-family: "angie-sans";
     font-size: 16px;
     color: $gray-dark;
-    @include background(linear-gradient(left,$black,rgba($black, .25) 20%, rgba($black, 0) 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
+    //@include background(linear-gradient(left,$black,rgba($black, .25) 20%, rgba($black, 0) 50%, rgba($black,.25) 80%,$black),image-url("background.png"));
+    @include background(image-url("background.png"));
     background-color: white;
 }
 a{
@@ -34,16 +35,22 @@ h3{font-size: 15px;}
 
 #page{
     @include background(image-url("header.png"));
-    background-color: $hue1-light;
+    //background-color: $hue1-light;
     background-repeat: repeat-x;
+    min-height: 700px;
 }
 
 
 #footer{
     text-align: center;
     font-size: 13px;
-    margin-top: 120px;
-    margin-bottom: 60px;
+    margin-top: 100px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    color: $gray-light;
+    a{color: $gray-light;}
+    @include background(image-url("background_dark.png"));
+
 }
 button::-moz-focus-inner,
 input[type="reset"]::-moz-focus-inner,
@@ -52,6 +59,9 @@ input[type="submit"]::-moz-focus-inner,
 input[type="file"] > input[type="button"]::-moz-focus-inner {
     border: none;
     padding: 0;
+}
+#socialbuttons{
+    text-align: center;
 }
 .button{
     @include border-radius(5px);
