@@ -227,6 +227,7 @@ class UserInfo(FacebookProfileModel):
 
 #getname and get_link for the user class
 User.get_name = lambda self: self.user_info.get_name()
+User.get_summary = lambda self: self.user_info.get_summary()
 User.get_link = lambda self: self.user_info.get_link()
 User.get_prof_pic = lambda self: self.user_info.get_prof_pic()
 User.get_image = lambda self: self.user_info.get_image()
@@ -236,9 +237,9 @@ class UserClassData(models.Model):
     #things like confidence
     user_info = models.ForeignKey(UserInfo)
     class_obj = models.ForeignKey(Class)
-    experience = models.CharField(max_length=100)
-    instructor = models.CharField(max_length=100)
-    recitation_leader = models.CharField(max_length=100) 
+    experience = models.CharField(max_length=100, blank=True)
+    instructor = models.CharField(max_length=100, blank=True)
+    recitation_leader = models.CharField(max_length=100, blank=True) 
 
 class Party(models.Model):
     class_obj = models.ForeignKey(Class)

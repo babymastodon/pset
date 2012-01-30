@@ -25,6 +25,9 @@ def party_details(request, pk):
     party = get_object_or_404(Party, pk=pk)
     rc['party'] = party
     rc['pk'] = pk
+    attending=request.GET.get('attending',None)
+    if attending and request.user.is_authenticated():
+        party_register_helper_func(party, request.user)
     #list of all attendees
     attendees = get_all_attending(request, pk)
     numpeople=len(attendees)
@@ -36,9 +39,6 @@ def party_details(request, pk):
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
-    attending=request.GET.get('attending',None)
-    if attending and request.user.is_authenticated():
-        party_register_helper_func(party, request.user)
     if request.user.is_authenticated():
         if not party.attendees.filter(pk=request.user.pk).exists():
             rc['not_registered'] = True
@@ -67,13 +67,16 @@ def invite_friends(request, pk):
                     pks.add(key)
             rc['emails'] = []
             rc['invitees'] = []
+            rc['already'] = []
             for key in pks:
                 invitee = User.objects.filter(pk=key)
-                if invitee:
-                    invitee = invitee[0]
-                    rc['invitees'].append(invitee)
-                    i = Invitation(sender=reqeust.user, invitee=invitee, party=party)
-                    i.save()
+                if not party.attendees.filter(pk=key).exists():#if he is not already goign to the party
+                    if invitee:
+                        invitee = invitee[0]
+                        rc['invitees'].append(invitee)
+                        create_invite(request, sender=request.user, invitee=invitee, party=party)
+                else:
+                    rc['already'].append(invitee[0])
             for email in emails:
                 if re.match(r'[^@]+@mit.edu', email):
                     username = email.split('@')[0]
@@ -82,10 +85,9 @@ def invite_friends(request, pk):
                         name = first + " " + last
                     else:
                         name = username
+                    root_url = request.get_host()
                     rc['emails'].append(email + " - " + name)
                     email_rc = {}
-                    root_url = request.get_host()
-                    email_rc['root_url'] = root_url
                     ih = InviteHash.create(party, email)
                     email_rc['link'] = root_url +ih.get_invite_link()
                     email_rc['party'] = party
@@ -93,6 +95,7 @@ def invite_friends(request, pk):
                     send_email(request, email,request.user.get_name() + " has invited you to a pset party!",'signup.html', email_rc)
             rc['invitees'] = sorted(rc['invitees'], key=lambda x: x.get_name())
             rc['emails'] = sorted(rc['emails'])
+            rc['already'] = sorted(rc['already'], key=lambda x: x.get_name())
             return render(request, 'main/party/invitations_sent.html', rc)
         else:
             rc['error'] = "The server did not recieve the people list"
@@ -177,6 +180,14 @@ def party_create(request):
                     party.save()
                     Activity.create(actor=creator, activity_type="created", target=party)
                     Activity.create(actor=creator, activity_type="attending", target=party)
+                    for user in party.class_obj.userinfo_set.all().exclude(pk=creator.pk):
+                        if user.email_party:
+                            email_rc={}
+                            email_rc['party'] = party
+                            email_rc['creator'] = creator
+                            email_rc['recipient'] = user.user
+                            email_rc['link'] = party.get_link() + "?attending=1"
+                            send_email(request, user.user.email, creator.get_name() + " is hosting a pset party for your class", 'newparty.html', email_rc)
                     return redirect(next_url)
             else:
                 rc['error'] = "Class Number is invalid"

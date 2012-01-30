@@ -41,6 +41,15 @@ def post_comment(request, comment, target, pk):
             tt = t.objects.filter(pk=pk)
             if tt:#tt is the target (party, class, or user)
                 comment = Comment.create(comment, request.user, tt[0])
+                if comment.target.target_type == "User":
+                    us = User.objects.filter(pk=comment.target.target_id)
+                    if us:
+                        u = us[0]
+                        if u.user_info.email_comment:
+                            email_rc = {}
+                            email_rc['comment'] = comment
+                            email_rc['target'] = u
+                            send_email(request, u.email, "InTheLoop: " +  comment.actor.get_name() + " commented on your profile", "comment.html", email_rc)
                 return {'status': 'success', 'html':render_comments(request, [comment])}
             else:
                 return {'status': "pk does not exist found"}

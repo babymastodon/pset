@@ -45,5 +45,22 @@
     </ul>
     {% endif %}
     
+    {% if already %}
+    <h3 class="grid_8 prefix_2">Silly you, these people are already going to the party:</h3>
+    <div class="clear"></div>
+    <div class="space_20"></div>
+    <ul id="people_list" class="grid_5 prefix_2 page_list">
+        {% for i in already %}
+        <li class="clearfix list_item">
+        <img src="{{ i.get_image }}" class="list_icon"/>
+        <span class="list_text">{{i.get_summary}}</span>
+        {% endfor %}
+    </ul>
+    
+    <div class="clear"></div>
+    <div class="space_30"></div>
+    {% endif %}
+
+
 </div> 
 {% endblock %}

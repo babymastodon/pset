@@ -92,11 +92,23 @@ def social_buttons(request):
 
 def send_email(request, to, subject, template, rc):
     html = loader.get_template('emails/'+template)
+    rc['root_url'] = request.get_host()
     c = RequestContext(request, rc)
     from_email = 'InTheLoop@'+request.get_host()
     msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
     msg.content_subtype = "html"
     msg.send()
+
+def create_invite(request, sender, invitee, party):
+    root_url = request.get_host()
+    i = Invitation(sender=sender, invitee=invitee, party=party)
+    if invitee.user_info.email_invitations:
+        email_rc={}
+        email_rc['link'] = root_url + party.get_link() + "?attending=1" 
+        email_rc['party'] = party
+        email_rc['sender'] = request.user
+        send_email(request, invitee.email, request.user.get_name() + " has invited you to a pset party!", 'invitation.html', email_rc)
+    i.save()
 
 """
 def send_invite(request):

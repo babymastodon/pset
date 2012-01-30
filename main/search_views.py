@@ -101,6 +101,7 @@ def exec_search(query, category=None, page=1, force_category=False):
             numpages = totalresults/RESULTS_PER_PAGE+1
             tmp = [a.object for a in sqs[(page-1)*RESULTS_PER_PAGE:page*RESULTS_PER_PAGE]]
             for a in tmp:
+                #sometime in the future, might want to check if user is none: no need to worry unless we delete users
                 item = {}
                 item['title'] = trunc(a.get_title(), 30)
                 item['description'] = trunc(a.get_description(), 250)

@@ -197,17 +197,23 @@ def change_password(request):
     rc['form'] = form
     return render(request, 'main/account/change_password.html', rc)
 
+def set_password_expired(request, pk):
+    n = reverse('main.party_views.party_details', kwargs={'pk':pk})+"?attending=1"
+    link = reverse('main.account_views.login_page')+"?next=" + urllib.quote(n)
+    return render(request, 'main/account/set_password_expired.html', {'link':link})
+
 def invite_hashcode(request, hashcode, pk):
     rc={}
     ihs = InviteHash.objects.filter(hashcode=hashcode)
     if not ihs:
-        n = reverse('main.party_views.party_details', kwargs={'pk':pk})+"?attending=1"
         if request.user.is_authenticated():
-            return redirect(n)
-        link = reverse('main.account_views.login_page')+"?next=" + urllib.quote(n)
-        return render(request, 'main/account/set_password_expired.html', {'link':link})
+            return redirect( reverse('main.party_views.party_details', kwargs={'pk':pk})+"?attending=1")
+        return set_password_expired(request, pk)
     ih = ihs[0]
     uname = ih.email.split("@")[0]
+    if User.objects.filter(username=uname).exists():
+        ihs.delete()
+        return set_password_expired(request, pk)
     form = ResetPasswordForm()
     if request.method=="POST":
         form = ResetPasswordForm(request.POST)
