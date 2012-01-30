@@ -74,6 +74,7 @@ def profile_page(request, pk):
         rc['join_date']=day_string(user.date_joined)
         rc['classes'] = user.user_info.klasses.all()
         rc['last_seen']=time_ago(user.user_info.last_seen)
+        rc['following'] = user.user_info.followers.filter(pk=request.user.user_info.pk).exists()
     else:
         rc['private'] = True
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))

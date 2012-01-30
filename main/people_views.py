@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import datetime, date
 from django import forms
+import simplejson
 
 #import models and forms here
 from main.models import *
@@ -25,3 +26,40 @@ def get_all_attending(request, pk):
     party = get_object_or_404(Party, pk=pk)
     attendees = party.attendees.all()
     return attendees
+
+def follow(request,pk):
+    if request.user.is_anonymous():
+        return {'status': 'user not authenticated'}
+    c = User.objects.filter(pk=pk)
+    if c:
+        request.user.user_info.followees.add(c[0].user_info)
+        request.user.user_info.save()
+        return {'status':'success'}
+    return {'status': 'person does not exist'}
+
+def unfollow(request,pk):
+    if request.user.is_anonymous():
+        return {'status': 'user not authenticated'}
+    c = User.objects.filter(pk=pk)
+    if c:
+        request.user.user_info.followees.remove(c[0].user_info)
+        return {'status':'success'}
+    return {'status': 'person does not exist'}
+
+def ajax(request):
+    result={'status':"none"}
+    try:
+        verb = request.REQUEST.get('verb',None)
+        pk = request.REQUEST.get('pk',None)
+        if pk:
+            pk=int(pk)
+        if verb=='follow':
+            result = follow(request, pk)
+        elif verb=='unfollow':
+            result = unfollow(request, pk)
+        else:
+            result['status']="verb didn't match"
+    except Exception as e:
+        result['status']="error: "+ str(e)
+    json=simplejson.dumps(result)
+    return HttpResponse(json, mimetype="application/json")

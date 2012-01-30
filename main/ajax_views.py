@@ -30,6 +30,8 @@ def ajax(request):
         return class_views.ajax(request)
     elif module=="comments":
         return comment_views.ajax(request)
+    elif module=="people":
+        return people_views.ajax(request)
     else:
         return HttpResponse('{"status":"module not found"}', mimetype="application/json");
 
