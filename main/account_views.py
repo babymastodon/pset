@@ -103,7 +103,7 @@ def create_from_email_pwd(email, pwd, request):
     ph.save()
     root_email = request.get_host()
     send_email(request, email, 'InTheLooop Email Verification', 'verify.html', {
-        'username':account.get_name(),
+        'person':account,
         'link':root_email+reverse('main.account_views.verify', kwargs={'hashcode':ph.hashcode}),
     })
     rc['email'] = email
@@ -144,7 +144,7 @@ def forgot_password(request):
                 ph.save()
                 root_email = request.get_host()
                 send_email(request, email, "Reset Password", 'forgot.html', {
-                    'username':user.get_name(),
+                    'person':user,
                     'link': root_email+reverse('main.account_views.reset_password_hashcode', kwargs={'hashcode':ph.hashcode})
                 })
                 return redirect(reverse('main.account_views.reset_email_sent'))

@@ -13,7 +13,7 @@ from main.models import *
 from main.search_indexes import *
 from haystack import connections
 
-u = UserInfo.objects.filter(reindex=True)
+u = UserInfo.objects.filter(reindex=True, user__is_active=True)
 index = connections['default'].get_unified_index().get_index(UserInfo)
 connections["default"].get_backend().update(index,u)
 u.update(reindex=False)

@@ -66,7 +66,7 @@ class UserInfoIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.all()
+        return self.get_model().objects.filter(user__is_active=True)
 
     def get_model(self):
         return UserInfo
