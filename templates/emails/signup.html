@@ -1,3 +1,5 @@
+{% load url from future %}{% load staticfiles %}
+
 <div> 
   <br>
   <br>
@@ -18,12 +20,19 @@
             <table width="450px" border="0" cellpadding="0" cellspacing="0" style="padding:12px;padding-top:5px">
               <tbody><tr><td colspan="2" style="padding-bottom:20px;">
                     <p>
-                    {{name}} has invited you to {{event}} on InTheLoop
+                    <strong>{{sender.get_name}}</strong> has invited you to a pset party on InTheLoop
                     </p>
-                    <p>InTheLoop makes it easy and fun to host pset parties on campus! InTheLoop has:</p></td></tr>
+                    <p style="padding-left: 20px; line-height: 16px;">
+                    <strong>{{party.get_name}}</strong><br/>
+                    {{party.get_day}} at {{party.get_start_time}}<br/>
+                    Subject: {{party.class_obj.get_name}}<br/>
+                    Location: {{party.location}}<br/>
+                    Room: {{party.room}}<br/>
+                    </p>
+                    <p>InTheLoop makes it easy and fun to host pset parties on campus!</p></td></tr>
               <tr>
                 <td valign="top" style="padding-bottom:5px">
-                  <img src="http://pset.babymastodon.com/static/images/email_icons/clock.png" style="padding-right:5px;"></td>
+                    <img src="{{root_url}}{% static 'images/email_icons/clock.png' %}" style="padding-right:5px;"></td>
                 <td valign="top" style="padding-bottom:5px;padding-left:5px">
                   <p style="margin-top:0px;padding-top:0px;">
                   <strong>Real-Time Party Map</strong><br>
@@ -31,7 +40,7 @@
               </tr>
               <tr>
                 <td valign="top" style="padding-bottom:5px">
-                  <img src="http://pset.babymastodon.com/static/images/email_icons/page_search.png" style="padding-right:5px; margin-top:5px"></td>
+                    <img src="{{root_url}}{% static 'images/email_icons/page_search.png' %}" style="padding-right:5px; margin-top:5px"></td>
                 <td valign="top" style="padding-bottom:5px;padding-left:5px">
                   <p style="margin-top:5px;padding-top:0px">
                   <strong>Search</strong><br>
@@ -39,14 +48,14 @@
               </tr>
               <tr>
                 <td valign="top" style="padding-bottom:5px;padding-top:5px">
-                  <img src="http://pset.babymastodon.com/static/images/email_icons/red_heart_add.png" style="padding-right:5px;margin-top:5px;"></td>
+                    <img src="{{root_url}}{% static 'images/email_icons/red_heart_add.png' %}" style="padding-right:5px;margin-top:5px;"></td>
                 <td valign="top" style="padding-bottom:5px;padding-left:5px">
                   <p style="margin-top:5px;padding-top:5px"><strong>Subscriptions</strong><br>
               Subscribe to your classes, friends and parties to stay in the loop on study breaks and pset parties!</p></td>
               </tr>
               <tr>
                 <td valign="top">
-                  <img src="http://pset.babymastodon.com/static/images/email_icons/users_comments.png" style="padding-right:5px;margin-top:5px;padding-top:5px;"></td>
+                    <img src="{{root_url}}{% static 'images/email_icons/users_comments.png' %}" style="padding-right:5px;margin-top:5px;padding-top:5px;"></td>
               <td valign="top" style="padding-bottom:5px;padding-left:0px"><p style="margin-top:5px;padding-left:5px;padding-top:5px"><strong>Comments</strong><br>
               Leave comments and feedback about the parties you attended.</p></td>
               </tr>
@@ -66,10 +75,10 @@
                     </tr>
                     <tr>
                       <td style="background-color:#ddd"></td>
-                      <td align="center" background="http://pset.babymastodon.com/static/images/email_icons/signup_button_bg.png" 
-                        style="background-color:#ddd;display:block;background-repeat:repeat-x;width:160px; font-size:150%; padding:10px"> 
+                      <td align="center" background="{{root_url}}{% static 'images/email_icons/signup_button_bg.png' %}" 
+                        style="background-color:#ddd;display:block;background-repeat:repeat-x;width:160px; font-size:150%;"> 
                         <a href="{{link}}" style="text-decoration:none; color:#555555; 
-                          text-align:middle; font-family:'angie-sans';font-weight:bold" target='_blank'>I'm attending!</a>
+                          text-align:middle; font-family:'angie-sans';font-weight:bold; display: block; line-height: 44px;padding: 0px 10px;" target='_blank'>I'm attending!</a>
                       </td>
                       <td style="background-color:#ddd"></td>
                     </tr>
@@ -82,7 +91,7 @@
         </td></tr></tbody></table>
           </td></tr><tr><td>
           <div style="width:100%;margin-top:10px;color:#666666;font-size:10px"><center><br>
-              InTheLoop | 2012 | http://pset.babymastodon.com | Icons by <a href='http://dryicons.com'>Dryicons</a></center></div>
+                  InTheLoop | 2012 | {{root_url}} | Icons by <a href='http://dryicons.com'>Dryicons</a></center></div>
   </td></tr>
 </tbody>
 </table>

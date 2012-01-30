@@ -59,9 +59,9 @@ def get_newsfeed(request, feedtype, pk, page=1):
     if request.user.is_anonymous():
         qs = qs.filter(actor__user_info__private_activities=False)
     if feedtype=="profile":
-        newsfeed1 = Activity.objects.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
+        newsfeed1 = qs.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
 
-        newsfeed2 = Activity.objects.filter(actor__pk=pk).order_by('-time_created')[:page*NUM_PER_PAGE]
+        newsfeed2 = qs.filter(actor__pk=pk).order_by('-time_created')[:page*NUM_PER_PAGE]
         smax = page*NUM_PER_PAGE-1
         smin = (page-1)*NUM_PER_PAGE-1
         if smin==-1:
@@ -69,10 +69,10 @@ def get_newsfeed(request, feedtype, pk, page=1):
         r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[smax:smin:-1]
         n = User
     if feedtype=='class':
-        r['feed'] = Activity.objects.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
+        r['feed'] = qs.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
         n=Class
     if feedtype=='party':
-        r['feed'] = Activity.objects.filter(target__target_type='Party', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
+        r['feed'] = qs.filter(target__target_type='Party', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
         n=Party
     #get the name of the thingy
     try:
@@ -81,10 +81,28 @@ def get_newsfeed(request, feedtype, pk, page=1):
         pass
     return r
 
+def social_buttons(request):
+    return render(request, 'main/modules/social_buttons.html')
+
 def send_email(request, to, subject, template, rc):
     html = loader.get_template('emails/'+template)
     c = RequestContext(request, rc)
-    from_email = 'InTheLoop@babymastodon.com'
+    from_email = 'InTheLoop@'+request.get_host()
     msg = EmailMultiAlternatives(subject, html.render(c), from_email, [to])
     msg.content_subtype = "html"
     msg.send()
+
+"""
+def send_invite(request):
+    rc={}
+    if request.user.first_name and request.user.last_name:
+        rc['name'] = request.user.first_name + " " + request.user.last_name
+    elif request.user:
+        rc['name'] = request.user.username
+    else:
+        rc['name'] = "Dr. Incognito"
+    rc['link'] = request.get_host()+reverse('main.party_views.party_details', kwargs={'pk':1})
+    rc['event'] = "My Party"
+    send_email(request, 'maxtang@mit.edu','Invite Email','signup.html', rc)
+    return render_to_response("emails/signup.html", rc, context_instance=RequestContext(request))
+"""

@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+<div class="details_panel grid_12">
+    <h1>Invitations sent!</h1>
+    <a class="fright gray_button" href="{{party.get_link}}">Back to party page</a>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error}}</div>{% endif %}
+</div>
+
+
+<div class="clear"></div>
+<div class="space_20"></div>
+
+<div class="input">
+
+    {% if invitees %}
+    <h3 class="grid_8 prefix_2">The following members were notified of your invitation:</h3>
+    <div class="clear"></div>
+    <div class="space_20"></div>
+    <ul id="people_list" class="grid_5 prefix_2 page_list">
+        {% for i in invitees %}
+        <li class="clearfix list_item">
+        <img src="{{ i.get_image }}" class="list_icon"/>
+        <span class="list_text">{{i.get_summary}}</span>
+        {% endfor %}
+    </ul>
+    
+    <div class="clear"></div>
+    <div class="space_30"></div>
+    {% endif %}
+
+
+    {% if emails %}
+    <h3 class="grid_8 prefix_2">We emailed invitations to the following people:</h3>
+    <div class="clear"></div>
+    <div class="space_20"></div>
+    <ul id="people_list" class="grid_5 prefix_2 page_list">
+        {% for i in emails %}
+        <li class="clearfix list_item">
+        <img src="{% static 'images/css/icons/mail32.png' %}" class="list_icon"/>
+        <span class="list_text">{{i}}</span>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+</div> 
+{% endblock %}

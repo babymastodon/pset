@@ -99,7 +99,6 @@ function clean_data(event){
 
 function tick(ob){
     return function(){
-        console.log("moo");
         ob.children("li:last-child").hide().prependTo(ob).fadeIn('slow');
         setTimeout(tick(ob), 5000);
     };

@@ -18,6 +18,7 @@ from main.models import *
 from main.forms import *
 from main.views_common import *
 from people_views import *
+from account_views import fetch_fullname
 
 def party_details(request, pk):
     rc={}
@@ -50,6 +51,51 @@ def invite_friends(request, pk):
     rc={}
     party = get_object_or_404(Party, pk=pk)
     rc['party'] = party
+    if request.method=="POST":
+        data = simplejson.loads(request.POST.get("people_data"))
+        if data:
+            pks = set()
+            emails = set()
+            for key in data:
+                if data[key] == "email":
+                    u = User.objects.filter(email=key)
+                    if u:
+                        pks.ad(u.pk)
+                    else:
+                        emails.add(key)
+                else:
+                    pks.add(key)
+            rc['emails'] = []
+            rc['invitees'] = []
+            for key in pks:
+                invitee = User.objects.filter(pk=key)
+                if invitee:
+                    invitee = invitee[0]
+                    rc['invitees'].append(invitee)
+                    i = Invitation(sender=reqeust.user, invitee=invitee, party=party)
+                    i.save()
+            for email in emails:
+                if re.match(r'[^@]+@mit.edu', email):
+                    username = email.split('@')[0]
+                    first,last = fetch_fullname(username)
+                    if first or last:
+                        name = first + " " + last
+                    else:
+                        name = username
+                    rc['emails'].append(email + " - " + name)
+                    email_rc = {}
+                    root_url = request.get_host()
+                    email_rc['root_url'] = root_url
+                    email_rc['link'] = root_url + reverse('main.party_views.party_details', kwargs={'pk':party.pk})
+                    email_rc['party'] = party
+                    email_rc['sender'] = request.user
+                    send_email(request, email,request.user.get_name() + " has invited you to a pset party!",'signup.html', email_rc)
+            rc['invitees'] = sorted(rc['invitees'], key=lambda x: x.get_name())
+            rc['emails'] = sorted(rc['emails'])
+            return render(request, 'main/party/invitations_sent.html', rc)
+        else:
+            rc['error'] = "The server did not recieve the people list"
+
     return render(request, 'main/party/invite_friends_page.html', rc)
 
 def party_create(request):

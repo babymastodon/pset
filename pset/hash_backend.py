@@ -14,7 +14,8 @@ class HashBackend(ModelBackend):
             if ph.party:
                 ph.party.active=True
                 ph.party.save()
-            ph.delete()
+            if pk.one_time_use:
+                ph.delete()
               
             return user
         except PendingHash.DoesNotExist:

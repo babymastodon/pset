@@ -276,7 +276,7 @@ class Party(models.Model):
             return "Right Now!"
         if s.date() == now.date():
             return "Today"
-        if now.date() - s.date() == timedelta(days=1):
+        if s.date() - now.date() == timedelta(days=1):
             return "Tomorrow"
         if word:
             return s.strftime("%A")
@@ -287,12 +287,13 @@ class Party(models.Model):
 class Invitation(models.Model):
     sender = models.ForeignKey(User, related_name="sent_invitations")
     invitee = models.ForeignKey(User, related_name="recieved_invitations")
-    event = models.ForeignKey(Party)
+    party = models.ForeignKey(Party)
 
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
     hashcode = models.CharField(max_length=100)
+    one_time_use = models.BooleanField(default=True)
     @staticmethod
     def create(user):
         h1 = "%032x" % random.getrandbits(128)

@@ -61,6 +61,9 @@ function on_delete(ob, i){
             return function(){
                 $("this").remove();
                 delete people_list[i];
+                if ($.isEmptyObject(people_list)){
+                    $(".submit_button").hide();
+                }
             };
         }(i));
     };
@@ -73,6 +76,7 @@ function add_people_item(name, id, type, img){
         if (img) li.find(".list_icon").attr("src", img);
         people_list[id] =type;
         li.find(".delete_button").click(on_delete(li, id));
+        $(".submit_button").show();
     }
 }
 
@@ -89,10 +93,12 @@ function add_to_list(){
 }
 
 
-function on_submit(){
-    p = $('input[name="people_data"]');
-    p.val(JSON.stringify(people_list));
-    alert(p.val());
+function submit_form(){
+    if (!$.isEmptyObject(people_list)){
+        p = $('input[name="people_data"]');
+        p.val(JSON.stringify(people_list));
+        $("#invite_form").submit();
+    }
 }
 
 $(document).ready(function(){
@@ -110,5 +116,5 @@ $(document).ready(function(){
         }
     }).focus();
     $("#add_button").click(add_to_list);
-    $("#invite_form").submit(on_submit);
+    $(".submit_button").click(submit_form);
 });

@@ -24,6 +24,4 @@ def all_attending(request, pk):
 def get_all_attending(request, pk):
     party = get_object_or_404(Party, pk=pk)
     attendees = party.attendees.all()
-    if request.user.is_anonymous():
-        attendees = attendees.filter(private_activities=False)
     return attendees

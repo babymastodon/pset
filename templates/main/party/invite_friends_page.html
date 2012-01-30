@@ -51,6 +51,6 @@
 
 <form class="clearfix" id="invite_form" action="." method="POST">{% csrf_token %}
     <input type="hidden" name="people_data" />
-    <a onclick="javascript: $('#invite_form').submit()" class="gray_button submit_button">Submit</a>
+    <a class="gray_button submit_button hidden">Submit</a>
 </form>
 {% endblock %}
