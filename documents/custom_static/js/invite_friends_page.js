@@ -1,4 +1,7 @@
 
+var user_meta;
+var people_list = {};
+
 function autocomplete_callback(ob, response_callback){
     $.ajax({
         type: "GET",
@@ -12,7 +15,12 @@ function autocomplete_callback(ob, response_callback){
         success: function(response_callback){
                      return function(data){
                          if (data.status=="success"){
-                            response_callback(data.result)
+                            response_callback(data.result);
+                            user_meta = {};
+                            for (i in data.metadata){
+                                d = data.metadata[i];
+                                user_meta[d['name']]=d;
+                            }
                          } else {
                              response_callback([]);
                          }
@@ -43,10 +51,48 @@ function box_changed(){
     }
 }
 
-function add_to_list(){
-    if (window.name_type){
-        alert("moo");
+function auto_search(){
+    s = $('input[name="name"]').autocomplete("search");
+}
+
+function on_delete(ob, i){
+    return function(){
+        ob.fadeOut('slow',function(i){
+            return function(){
+                $("this").remove();
+                delete people_list[i];
+            };
+        }(i));
+    };
+}
+
+function add_people_item(name, id, type, img){
+    if (! (id in people_list)){
+        li = $(".templates .list_item").clone().hide().prependTo("#people_list").fadeIn('slow');
+        li.find(".list_text").html(name);
+        if (img) li.find(".list_icon").attr("src", img);
+        people_list[id] =type;
+        li.find(".delete_button").click(on_delete(li, id));
     }
+}
+
+
+function add_to_list(){
+    t = $('input[name="name"]');
+    if (window.name_type=='list'){
+        u = user_meta[t.val()];
+        if (u) add_people_item(u.summary, u.pk, 'pk', u.img);
+    } else if (window.name_type=="email"){
+        u = t.val();
+        add_people_item("Email to: " + u, u, 'email');
+    }
+}
+
+
+function on_submit(){
+    p = $('input[name="people_data"]');
+    p.val(JSON.stringify(people_list));
+    alert(p.val());
 }
 
 $(document).ready(function(){
@@ -55,6 +101,14 @@ $(document).ready(function(){
         delay: 300,
         minLength: 2,
         select: update_box,
-    }).bind("textchange",box_changed);
+        close: add_to_list,
+        autoFocus: true,
+    }).bind("textchange",box_changed).click(auto_search).keydown(function(e){
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code==13){
+            add_to_list();
+        }
+    }).focus();
     $("#add_button").click(add_to_list);
+    $("#invite_form").submit(on_submit);
 });

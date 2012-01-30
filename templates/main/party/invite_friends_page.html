@@ -29,7 +29,7 @@
 
 <div class="clear"></div>
 <div class="space_30"></div>
-<form class="clearfix" id="invite_form" action="." method="POST">{% csrf_token %}
+<div class="input">
 
     <h3 class="grid_4 right">Enter name or MIT email:</h3>
     <input type="text" name="name" class="label_if_blank grid_4 large_gray_text_box" title="Begin typing" value="" />
@@ -38,6 +38,19 @@
     <div class="clear"></div>
     <div class="space_30"></div>
 
-    <a href="javascript: $('#bio_form').submit()" class="gray_button submit_button">Submit</a>
+    <div class="templates">
+        <li class="clearfix list_item">
+        <img src="{% static 'images/css/icons/users32.png'%}" class="list_icon"/>
+        <span class="list_text">MOOMOOMOO</span>
+        <img src="{% static 'images/css/icons/delete32.png' %}" class="icon_button fright delete_button" />
+    </div>
+
+    <ul id="people_list" class="grid_5 prefix_4 page_list">
+    </ul>
+</div>
+
+<form class="clearfix" id="invite_form" action="." method="POST">{% csrf_token %}
+    <input type="hidden" name="people_data" />
+    <a onclick="javascript: $('#invite_form').submit()" class="gray_button submit_button">Submit</a>
 </form>
 {% endblock %}

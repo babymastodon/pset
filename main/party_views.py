@@ -17,6 +17,7 @@ import simplejson, string, re
 from main.models import *
 from main.forms import *
 from main.views_common import *
+from people_views import *
 
 def party_details(request, pk):
     rc={}
@@ -24,10 +25,10 @@ def party_details(request, pk):
     rc['party'] = party
     rc['pk'] = pk
     #list of all attendees
-    attendees = party.attendees.all()[:10]
+    attendees = get_all_attending(request, pk)
     numpeople=len(attendees)
     all_attendees_header = str(numpeople) + (" People " if numpeople!=1 else " Person ") + "Attending"
-    rc['all_attendees'] = {"show_all":reverse("main.people_views.all_attending", kwargs={"pk":pk}), 'list':attendees, 'header':all_attendees_header}
+    rc['all_attendees'] = {"show_all":reverse("main.people_views.all_attending", kwargs={"pk":pk}), 'list':attendees[:10], 'header':all_attendees_header}
     #list of all admins
     admins = party.admins.all()
     rc['admins'] = {'list':admins, 'header':'Admins'}
@@ -223,8 +224,6 @@ def ajax(request):
             result=party_register_ajax(request, party_pk)
         elif verb=='unregister':
             result=party_unregister_ajax(request, party_pk)
-        elif verb=='all_attendees':
-            return all_attendees(request, party_pk)
         else:
             result['status']="verb didn't match"
     except Exception as e:

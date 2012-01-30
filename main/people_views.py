@@ -17,8 +17,13 @@ from main.views_common import *
 
 def all_attending(request, pk):
     rc={}
-    party = get_object_or_404(Party, pk=pk)
-    rc['attendees'] = party.attendees.all()
+    rc['attendees'] = get_all_attending(request, pk)
     rc['title']= 'All Attending'
     return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
 
+def get_all_attending(request, pk):
+    party = get_object_or_404(Party, pk=pk)
+    attendees = party.attendees.all()
+    if request.user.is_anonymous():
+        attendees = attendees.filter(private_activities=False)
+    return attendees
