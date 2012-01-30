@@ -2,8 +2,8 @@
 
 #header{
     height: 50px;
-    margin-bottom: 10px;
     color: $hue1-light;
+    background-color: $gray-mid;
     @include unselectable;
     input, a, label{
         color: $hue1-mid-light;
