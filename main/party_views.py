@@ -86,7 +86,8 @@ def invite_friends(request, pk):
                     email_rc = {}
                     root_url = request.get_host()
                     email_rc['root_url'] = root_url
-                    email_rc['link'] = root_url + reverse('main.party_views.party_details', kwargs={'pk':party.pk})
+                    ih = InviteHash.create(party, email)
+                    email_rc['link'] = root_url +ih.get_invite_link()
                     email_rc['party'] = party
                     email_rc['sender'] = request.user
                     send_email(request, email,request.user.get_name() + " has invited you to a pset party!",'signup.html', email_rc)
@@ -208,12 +209,6 @@ def party_must_login(request, pk):
     rc={}
     rc['pk']=pk
     return render_to_response("main/party/party_login.html", rc, context_instance=RequestContext(request))
-
-def party_register_helper_func(party, user):
-    party.attendees.add(user)
-    party.save()
-    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk, activity_type='attending').exists():
-        Activity.create(actor=user, activity_type="attending", target=party)
 
 def party_register_ajax(request, party_pk):
     r = {}

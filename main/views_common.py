@@ -24,6 +24,12 @@ def string_or_blank(s):
         return str(s)
     return ""
 
+def party_register_helper_func(party, user):
+    party.attendees.add(user)
+    party.save()
+    if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk, activity_type='attending').exists():
+        Activity.create(actor=user, activity_type="attending", target=party)
+
 #replacing the default login_required with our own
 def login_required(f):
     def login_required_func(request, *args, **kwargs):
@@ -36,7 +42,7 @@ def login_required(f):
                 ui.last_seen = timezone.now()
                 ui.save()
             return f(request, *args,**kwargs)
-        return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(args[0].get_full_path()))
+        return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(request.get_full_path()))
     return login_required_func
    
 def all_newsfeed(request, feedtype, pk, page=1):

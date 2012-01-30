@@ -28,6 +28,7 @@ urlpatterns += patterns('main.account_views',
     url(r'^logout/main/$', lambda x: HttpResponseRedirect('/')),
     url(r'^forgotpw/$', 'forgot_password'),
     url(r'^facebook/', include('django_facebook.urls')),
+    url(r'^newaccount/invite/(?P<hashcode>.+)/(?P<pk>\d+)/$', 'invite_hashcode'),
 )
 
 #search views

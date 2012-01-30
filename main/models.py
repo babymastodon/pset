@@ -289,17 +289,33 @@ class Invitation(models.Model):
     invitee = models.ForeignKey(User, related_name="recieved_invitations")
     party = models.ForeignKey(Party)
 
+def create_hash():
+    return "%032x" % random.getrandbits(128)
+
 class PendingHash(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party, null=True)
     hashcode = models.CharField(max_length=100)
-    one_time_use = models.BooleanField(default=True)
     @staticmethod
     def create(user):
-        h1 = "%032x" % random.getrandbits(128)
+        h1 = create_hash()
         ph = PendingHash(user=user, hashcode=h1)
         ph.save()
         return ph
+
+class InviteHash(models.Model):
+    party = models.ForeignKey(Party)
+    hashcode = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    @staticmethod
+    def create(party, email):
+        h = create_hash()
+        ih = InviteHash(party=party, email=email, hashcode = h)
+        ih.save()
+        return ih
+    def get_invite_link(self):
+        return reverse('main.account_views.invite_hashcode', kwargs={'hashcode': self.hashcode, 'pk':self.party.pk})
+
 
 class DummyTarget(models.Model):
     def get_name(self):

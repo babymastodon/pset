@@ -49,7 +49,7 @@ def fetch_fullname(username):
 #function for creating and saving account
 def createAccount(email="", username="", first_name="", last_name="", 
                   password="", is_active=True):
-    user = User.objects.create_user(username, email=email.lower(), password=password)
+    user = User.objects.create_user(username.lower(), email=email.lower(), password=password)
     user.is_active = is_active
     if not first_name and not last_name:
         (first_name, last_name) = fetch_fullname(username)
@@ -196,7 +196,35 @@ def change_password(request):
         rc['error'] = "Passwords don't match"
     rc['form'] = form
     return render(request, 'main/account/change_password.html', rc)
-    
+
+def invite_hashcode(request, hashcode, pk):
+    rc={}
+    ihs = InviteHash.objects.filter(hashcode=hashcode)
+    if not ihs:
+        n = reverse('main.party_views.party_details', kwargs={'pk':pk})+"?attending=1"
+        if request.user.is_authenticated():
+            return redirect(n)
+        link = reverse('main.account_views.login_page')+"?next=" + urllib.quote(n)
+        return render(request, 'main/account/set_password_expired.html', {'link':link})
+    ih = ihs[0]
+    uname = ih.email.split("@")[0]
+    form = ResetPasswordForm()
+    if request.method=="POST":
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            if d['pw1']==d['pw2'] and d['pw1']:
+                u = createAccount(username=uname, password=d['pw1'], email=ih.email)
+                u = authenticate(username=uname, password=d['pw1'])
+                login(request, u)
+                party_register_helper_func(ih.party, u)
+                ihs.delete()
+                return redirect(reverse('main.account_views.bio_info'))
+        rc['error']="Passwords don't match"
+    rc['form'] = form
+    rc['username']=uname
+    return render(request, 'main/account/set_password.html', rc)
+        
 
 def email_sent(request):
     rc={}
@@ -296,7 +324,7 @@ def bio_info(request, new=False):
     
 def login_page(request):
     rc={}
-    n = request.GET.get('next',"/")
+    n = request.GET.get('next',reverse('main.home_views.home_page'))
     if request.user.is_authenticated():
         return HttpResponseRedirect(n)
     form = LoginForm()
