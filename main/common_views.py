@@ -33,8 +33,11 @@ def all_newsfeed(request, feedtype, pk, page=1):
         rc['back'] = get_object_or_404(User, pk=pk).get_link()
     elif feedtype=="class":
         rc['back'] = get_object_or_404(Class, pk=pk).get_link()
-    if feedtype=="party":
+    elif feedtype=="party":
         rc['back'] = get_object_or_404(Party, pk=pk).get_link()
+    elif feedtype=="personalized":
+        rc['back'] = reverse("main.home_views.home_page")
+        rc['feed']['name'] = "You"
     return render(request, 'main/modules/all_newsfeed.html', rc)
 def social_buttons(request):
     return render(request, 'main/modules/social_buttons.html')

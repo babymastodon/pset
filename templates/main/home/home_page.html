@@ -31,22 +31,24 @@
             <span class="list_text">{{k.get_name}}</span>
         </a>
         </li>
+        {% empty %}
+        <li class="clearfix">
+        <img src="{% static 'images/css/icons/unsmile32.png' %}" class="news_icon" />
+        <span class="list_text">You haven't added any classes yet.<br/>Click <b><a href="{% url 'main.account_views.manage_classes' %}" >here</a></b> to get started</span>
+        </li>
         {% endfor %}
     </ul>
 </div>
 <div class="grid_3">
     <div id="mapdiv" style="width: 220px; height: 120px;"></div>
     <div class="space_20"></div>
-    <div class="center" style="font-size: 20px;">
+    <div class="center" style="font-size: 18px;">
         <span class="hcenter"><b>{{numparties}}</b> {% if num_parties = 1 %}party{%else%}parties{%endif%}</span>
         <div class="space_10"></div>
         recommended for you
     </div>
     <div class="space_20"></div>
     <a href="{{class.map_view}}" class="gray_button hcenter">Switch to Map View</a>
-    {% for p in parties %}
-    {{p}}
-    {% endfor %}
 </div>
 <div class="clear"></div>
 <div class="space_40"></div>
