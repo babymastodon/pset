@@ -572,7 +572,7 @@ $tw: 260px - $tb - 2* $tp;
     line-height: 22px;
 }
 .number_list{
-    padding: 0px 20px;
+    padding: 0px 20px 20px 20px;
     li{
         width: 80px;
         font-size: 16px;
@@ -700,8 +700,7 @@ b{
         }
     }
     .page_details_scroll_container{
-        overflow-y: auto;
-        height: 185px;
+        min-height: 140px;
         margin-top: 20px;
         .page_details{
             font-size: 16px;

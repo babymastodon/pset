@@ -15,7 +15,7 @@
     {% csrf_token %}
     <div class="grid_12">
         <input type="hidden" name="refresh_token" value=""/>
-        <div class="title">Host a Pset Party</div>
+        <div class="title">{% block page_title %}Host a Pset Party{% endblock %}</div>
         {% if error %}<div class="errors">{{error}}</div>{% endif %}
         {% comment %}
         <div class="plain_text grid_10 alpha prefix_1">This could be a big event or just a spontaneous get-together.</div>

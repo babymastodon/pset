@@ -36,6 +36,7 @@ def party_details(request, pk):
     #list of all admins
     admins = party.admins.all()
     rc['admins'] = {'list':admins, 'header':'Admins'}
+    rc['isadmin'] = admins.filter(pk=request.user.pk).exists()
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
@@ -102,13 +103,62 @@ def invite_friends(request, pk):
 
     return render(request, 'main/party/invite_friends_page.html', rc)
 
+
+def clean_time(s):
+    return s.lower().lstrip('0')
+@login_required
+def edit_party(request, pk):
+    rc={'error':None}
+    defaults = {}
+    party = get_object_or_404(Party, pk=pk)
+    if not party.admins.filter(pk=request.user.pk):
+        raise Http404
+    defaults['day'] = party.starttime.date().strftime("%m/%d/%y")
+    defaults['title'] = party.title
+    defaults['agenda']= party.agenda
+    defaults['klass']= party.class_obj.get_meta()[0].get_name()
+    defaults['room']=party.room
+    defaults['start_time'] = clean_time(party.starttime.strftime("%I:%M%p"))
+    defaults['end_time'] = clean_time(party.endtime.strftime("%I:%M%p"))
+    defaults['location'] = party.location
+    defaults['lng'] = party.lng
+    defaults['lat'] = party.lat
+    defaults['building_img'] = party.building_img
+    form = PartyCreateForm(defaults)
+    if request.method=="POST":
+        form = PartyCreateForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            party.starttime = datetime.combine(d['day'],d['start_time'])
+            endday = d['day'] if d['start_time'] < d['end_time'] else d['day'] + timedelta(days=1)
+            party.endtime = datetime.combine(endday, d['end_time'])
+            party.title = d['title']
+            party.agenda = d['agenda']
+            party.location = d['location']
+            party.room = d['room']
+            party.lat = d['lat']
+            party.lng = d['lng']
+            party.building_img = d['building_img']
+            klass = re.search("\w+\.\w+", d['klass'])
+            klass_num = ClassNumber.objects.filter(number=klass.group().upper())
+            if klass_num:
+                klass_obj = klass_num[0].class_obj
+                party.class_obj = klass_obj
+                party.save()
+                Activity.create(actor=request.user, activity_type="edited", target=party)
+                return redirect(party.get_link())
+            else:
+                rc['error'] = "Class Number is invalid"
+        else:
+            rc['error'] = "There were errors in the form. Please make sure that all the fields are filled out."
+    rc['form'] = rc['rform'] =  form
+    return render_to_response("main/party/edit_party.html", rc, context_instance=RequestContext(request))
+
 def party_create(request):
     rc={'error':None}
     now = timezone.localtime(timezone.now())
     defaults = {}
     defaults['day'] = now.strftime("%m/%d/%y")
-    def clean_time(s):
-        return s.lower().lstrip('0')
     #set the default field values
     defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
     klass_pk = request.GET.get('class')

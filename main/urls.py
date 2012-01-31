@@ -52,6 +52,7 @@ urlpatterns += patterns('main.party_views',
     url(r'^party/login/(?P<pk>\d+)/$', 'party_must_login'),#view after a successful party unregistration
     url(r'^party/create/$', 'party_create'),#form for creating a new party
     url(r'^party/invite/(?P<pk>\d+)/$', 'invite_friends'),#form for creating a new party
+    url(r'^party/edit/(?P<pk>\d+)/$', 'edit_party'),#form for creating a new party
 )
 
 #views for the people ajax popup

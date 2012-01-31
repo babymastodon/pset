@@ -25,11 +25,16 @@
             {% include 'main/party/invite_friends.html' %}
             {% endwith %}
         </div>
+        {% if isadmin %}
+        <div class="fright">
+            <a href="{% url 'main.party_views.edit_party' pk=party.pk %}" class="gray_button fright" style="margin-right: 10px">Edit Party</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 <div class="clear"></div>
 <div class="grid_8 details_panel">
-    <div class="whitebox clearfix" style="height: 300px">
+    <div class="whitebox clearfix" style="min-height: 300px">
         <img src="{{party.get_image}}" class="details_image" />
         <div class="page_details_scroll_container">
             <ul class="page_details">
