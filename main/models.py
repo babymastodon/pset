@@ -256,7 +256,7 @@ class Party(models.Model):
     lat = models.CharField(max_length=20)
     lng = models.CharField(max_length=20)
     admins = models.ManyToManyField(User, related_name="party_set_admin")
-    attendees = models.ManyToManyField(User, related_name="party_set_attend")
+    attendees = models.ManyToManyField(User, related_name="party_set_attend", through="UserPartyTable")
     active = models.BooleanField(default=True)
     def get_link(self):
         return reverse("main.party_views.party_details", kwargs={'pk': self.pk})
@@ -289,6 +289,10 @@ class Party(models.Model):
         return day_string(self.starttime)
     def get_day_name(self):
         return self.get_day(word=True)
+
+class UserPartyTable(models.Model):
+    user = models.ForeignKey(User)
+    party = models.ForeignKey(Party)
 
 class Invitation(models.Model):
     sender = models.ForeignKey(User, related_name="sent_invitations")

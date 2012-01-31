@@ -25,11 +25,61 @@ def string_or_blank(s):
         return str(s)
     return ""
 
+def create_party_dict(ob, letter, request, color="red"):
+    (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
+    r = {}
+    r['title'] = ob.get_name()
+    r['letter'] = letter
+    r['day_name'] = ob.get_day_name()
+    r['day'] = ob.get_day()
+    r['start_time'] = ob.get_start_time()
+    r['end_time'] = ob.get_end_time()
+    r['agenda'] = "Agenda: " + ob.agenda
+    r['location'] = ob.location
+    r['room'] = "Room: " + ob.room
+    r['detail_url'] = ob.get_link()
+    r['bldg_img'] = ob.get_image()
+    r['lat'] = ob.lat
+    r['lng'] = ob.lng
+    r['class_nums'] = [x.number for x in ob.class_obj.get_meta()]
+    r['class_title'] = ob.class_obj.get_name() 
+    r['color'] = color
+    r['pk'] = ob.pk
+    return r
+
 def party_register_helper_func(party, user):
-    party.attendees.add(user)
+    UserPartyTable(user=user, party=party).save()
     party.save()
     if not Activity.objects.filter(target__target_type='Party', actor=user, target__target_id=party.pk, activity_type='attending').exists():
         Activity.create(actor=user, activity_type="attending", target=party)
+
+def make_party_list(request, queryset, counter=0):
+    #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
+    colorlist = ['red','orange','yellow','green','blue','purple']
+    letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    result_list=[]
+    for i in queryset:
+        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
+        result_list.append(r)
+        counter+=1
+    return result_list
+
+def get_parties_personalized(request):
+    if request.user.is_authenticated():
+        now=timezone.now()
+        queryset = UserPartyTable.objects.filter(
+                (
+                    Q(user__user_info__in=request.user.user_info.followees.all()) |
+                    Q(party__class_obj__in=request.user.user_info.klasses.all()) |
+                    Q(user__user_info=request.user.user_info)
+                ) & (
+                        Q(party__endtime__gt=now)
+                )
+            ).distinct('party').order_by('party__starttime').select_related(depth=1)
+        result_list = make_party_list(request, (a.party for a in queryset))
+        return {'status':'success', 'result_list':result_list}
+    return {"status":"not authenticated"}
+
 
 #replacing the default login_required with our own
 def login_required(f):

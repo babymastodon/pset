@@ -227,7 +227,7 @@ def party_create(request):
                     moo['ph'].save()
                     next_url = reverse('main.account_views.email_sent')
                 if status:
-                    party.attendees.add(creator)
+                    UserPartyTable(user=creator, party=party).save()
                     party.admins.add(creator)
                     party.save()
                     Activity.create(actor=creator, activity_type="created", target=party)
@@ -344,7 +344,7 @@ def party_unregister_ajax(request, party_pk):
     r['link'] = reverse('main.party_views.party_unregistered',kwargs={'pk':party_pk})
     party = Party.objects.filter(pk=party_pk)
     if party and request.user.is_authenticated():
-        party[0].attendees.remove(request.user)
+        UserPartyTable.objects.filter(party=party[0], user = request.user).delete()
     else:
         r['status']='party does not exist'
     return r

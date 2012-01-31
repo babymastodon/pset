@@ -73,6 +73,7 @@ def home_page(request):
             rc['error'] = form.errors
     # passing stuff to the home page
     rc['form'] = form
+    rc['moo'] = get_parties_personalized(request)
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):

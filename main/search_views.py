@@ -14,6 +14,7 @@ from haystack.inputs import Raw
 import logging, simplejson, string, re, urllib, random
 from django.core import serializers
 from django.utils import timezone
+from django.db.models import Q
 
 #import models and forms here
 from main.models import *
@@ -143,39 +144,6 @@ def autocomplete_person(query):
         return {"status":"success", 'result': nums, 'metadata': metadata}
     else:
         return {'status': "no results found"}
-
-def create_party_dict(ob, letter, request, color="red"):
-    (lat,lng) = [(random.random()-.5)*.01+x for x in (42.35886, -71.09356)]
-    r = {}
-    r['title'] = ob.get_name()
-    r['letter'] = letter
-    r['day_name'] = ob.get_day_name()
-    r['day'] = ob.get_day()
-    r['start_time'] = ob.get_start_time()
-    r['end_time'] = ob.get_end_time()
-    r['agenda'] = "Agenda: " + ob.agenda
-    r['location'] = ob.location
-    r['room'] = "Room: " + ob.room
-    r['detail_url'] = ob.get_link()
-    r['bldg_img'] = ob.get_image()
-    r['lat'] = ob.lat
-    r['lng'] = ob.lng
-    r['class_nums'] = [x.number for x in ob.class_obj.get_meta()]
-    r['class_title'] = ob.class_obj.get_name() 
-    r['color'] = color
-    r['pk'] = ob.pk
-    return r
-
-def make_party_list(request, queryset, counter=0):
-    #available colors are: blue brown darkgreen green orange paleblue pink purple red yellow
-    colorlist = ['red','orange','yellow','green','blue','purple']
-    letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    result_list=[]
-    for i in queryset:
-        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
-        result_list.append(r)
-        counter+=1
-    return result_list
 
 def get_parties_by_class(request, class_pk):
     today=timezone.now()
