@@ -2,12 +2,10 @@
 
 #header{
     height: 50px;
-    color: $hue1-light;
-    background-color: $gray-mid;
     @include unselectable;
-    input, a, label{
+    a, label, #account_menu{
         color: $hue1-mid-light;
-        @include text-shadow(1px 1px 1px $hue1-dark);
+        @include single-text-shadow($hue1-dark, 1px, 1px, 2px);
     }
     .logo{
         margin-top: 10px;
@@ -17,6 +15,7 @@
             }
             font-size: 30px;
             line-height: 30px;
+            font-weight: bold;
             display: block;
         }
     }
@@ -26,7 +25,7 @@
         width: 296px;
         @include background(image-url("background.png"));
         overflow: hidden;
-        border: 1px solid $hue1-mid-light;
+        border: 1px solid $white;
         @include border-radius(3px);
         input{
             border: none;
@@ -38,6 +37,7 @@
             padding: 0px;
         }
         input[type='text']{
+            color: $gray-dark;
             padding: 0px 0px 0px 5px;
             width: 262px;
             float: left;
@@ -45,7 +45,7 @@
             background-color: $gray-dark;
             @include background(image-url("background.png"));
             &.blank{
-                color: $gray-mid;
+                color: $gray-mid-dark;
             }
             outline: none;
         }
@@ -108,7 +108,7 @@
                 @include border-corner-radius(bottom,left,5px);
                 @include border-corner-radius(bottom,right,5px);
                 @include border-corner-radius(top,left,5px);
-                @include background(linear-gradient(top,$hue1-mid,$hue1-mid-dark));
+                @include background(linear-gradient(top,rgba($hue1-mid, 0),$hue1-mid-dark), image-url("header_dark.png"));
                 @include box-shadow(1px 1px 3px -2px $hue1-mid-light inset);
             }
         }
