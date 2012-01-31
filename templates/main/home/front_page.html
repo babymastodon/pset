@@ -35,14 +35,14 @@
 {% endcomment %}
 <div class="page_text grid_4">
     <div class="text_block">
-        <h3>InTheLoop</h3> makes it easy for you to find pset parties and connect with your friends. Want to instantly see the hottest pset parties on campus?
+        <h3>InTheLoop</h3> makes it easy for you to connect with classmates and organize pset parties. Click below to see pset parties that are happening right now!
     </div>
     <a href="{% url 'main.search_views.parties_by_date' %}" class="hcenter"><img src="{% static 'images/interact.png' %}"/></a>
     <a href="{% url 'main.search_views.parties_by_date' %}" class="large_gray_button hcenter nofloat">Find Parties Now</a>
 </div>
 <div class="page_text grid_4">
     <div class="text_block">
-        <h3>Partying Already?</h3> Advertize ongoing pset parties or schedule future parties using our time-saving Google Maps interface.
+        <h3>Partying Already?</h3> Advertize ongoing pset parties or schedule future parties by posting them on our website. It's easy! See for yourself:
     </div>
     <a href="{% url 'main.party_views.party_create' %}" class="hcenter"><img src="{% static 'images/school.png' %}"/></a>
     <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Create a Party</a>

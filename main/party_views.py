@@ -11,7 +11,7 @@ from datetime import datetime, date, timedelta
 from django import forms
 import account_views
 from django.utils import timezone
-import simplejson, string, re
+import simplejson, string, re, urllib
 
 #import models and forms here
 from main.models import *
@@ -26,8 +26,11 @@ def party_details(request, pk):
     rc['party'] = party
     rc['pk'] = pk
     attending=request.GET.get('attending',None)
-    if attending and request.user.is_authenticated():
-        party_register_helper_func(party, request.user)
+    if attending:
+        if request.user.is_authenticated():
+            party_register_helper_func(party, request.user)
+        else:
+            return redirect(reverse("main.account_views.login_page") + "?next=" + urllib.quote(request.get_full_path()))
     #list of all attendees
     attendees = get_all_attending(request, pk)
     numpeople=len(attendees)
@@ -36,13 +39,14 @@ def party_details(request, pk):
     #list of all admins
     admins = party.admins.all()
     rc['admins'] = {'list':admins, 'header':'Admins'}
-    rc['isadmin'] = admins.filter(pk=request.user.pk).exists()
+    if request.user.is_authenticated():
+        rc['isadmin'] = admins.filter(pk=request.user.pk).exists()
     #friend rank
     #newsfeed
     page = int(request.GET.get("page","1"))
     if request.user.is_authenticated():
-        if not party.attendees.filter(pk=request.user.pk).exists():
-            rc['not_registered'] = True
+        if party.attendees.filter(pk=request.user.pk).exists():
+            rc['registered'] = True
     rc['newsfeed'] = get_newsfeed(request,'party', pk)
     rc['comments']={'pk':pk, 'target':"Party"}
     return render_to_response("main/party/party_details.html", rc, context_instance=RequestContext(request))
