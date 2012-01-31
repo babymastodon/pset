@@ -14,8 +14,7 @@
     <div class="page_header nounderline clearfix">
         <img src="{% static 'images/css/icons/cup32.png'%}"/>
         <span class="header_text" style="max-width: 600px;">Welcome {{user.get_name}}</span>
-        <a href="{% url 'main.account_views.manage_classes' %}" class="gray_button fright">Manage Classes</a>
-        <a href="{% url 'main.search_views.parties_by_date' %}" class="gray_button fright" style="margin-right: 10px">All Parties</a>
+        <a href="{% url 'main.search_views.parties_by_date' %}" class="gray_button fright" >All Parties</a>
         <a href="{% url 'main.party_views.party_create' %}" class="gray_button fright" style="margin-right: 10px">New Party</a>
     </div>
 </div>
@@ -42,7 +41,7 @@
         {% empty %}
         <li class="clearfix">
         <img src="{% static 'images/css/icons/unsmile32.png' %}" class="news_icon" />
-        <span class="list_text">You haven't added any classes yet.<br/>Click <b><a href="{% url 'main.account_views.manage_classes' %}" >here</a></b> to get started</span>
+        <span class="list_text">You haven't added any classes yet.<br/>Go to the <b><a href="{% url 'main.search_views.search_page' %}" >Search Page</a></b> to find and add classes</span>
         </li>
         {% endfor %}
     </ul>

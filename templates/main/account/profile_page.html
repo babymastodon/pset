@@ -22,7 +22,9 @@
         <span class="header_text">{{person.get_name}}'s Profile</span>
         {% if user.is_authenticated %}
         {% if user = person %}
-        <a href="{% url 'main.account_views.bio_info' %}" class="gray_button fright">Edit Profile</a>
+        <a href="{% url 'main.home_views.home_page' %}" class="gray_button fright">Home</a>
+        <a href="{% url 'main.account_views.account_info' %}" class="gray_button fright" style="margin-right: 10px;">Settings</a>
+        <a href="{% url 'main.account_views.bio_info' %}" class="gray_button fright" style="margin-right: 10px;">Edit Profile</a>
         {% else %}
         <div id="follow" class="gray_button fright {% if following %}hidden{% endif %}">+ Follow</div>
         <div id="unfollow" class="gray_button fright {% if not following %}hidden{% endif %}">Stop Following</div>
@@ -80,7 +82,7 @@
     {% if classes %}
     <div class="page_header clearfix">
         <img src="{% static 'images/css/icons/mapleleaf32.png'%}"/>
-        <span class="header_text">Is in the following classes:</span>
+        <span class="header_text">Is taking the following classes:</span>
     </div>
     <ul class="page_list">
         {% for item in classes %}

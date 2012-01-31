@@ -11,13 +11,14 @@ function init_blank_text_box(ob){
 }
 function addBlankHandlers(){
     ob=$(this);
-    ob.focus(function(){
+    function onfocus(){
         t= $(this);
         if (t.hasClass("blank")){
             t.val("");
         }
         t.removeClass("blank");
-    });
+    }
+    ob.focus(onfocus).keypress(onfocus).mousedown(onfocus);
     ob.blur(function(){
         t=$(this);
         if (t.val()==""){

@@ -165,7 +165,7 @@ def get_parties_by_date(request, day):
 def search_page(request):
     rc={}
     query = request.GET.get('q','')
-    category = request.GET.get('c',None)
+    category = request.GET.get('c','Classes')
     page = int(request.GET.get('page',"1"))
     rc['query']=query
     rc['results'] = exec_search(query=query, category=category, page=page)
