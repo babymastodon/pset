@@ -116,7 +116,7 @@ def edit_party(request, pk):
     defaults['day'] = party.starttime.date().strftime("%m/%d/%y")
     defaults['title'] = party.title
     defaults['agenda']= party.agenda
-    defaults['klass']= party.class_obj.get_meta()[0].get_name()
+    defaults['klass']= string.join([x.number for x in party.class_obj.get_meta()], ', ')
     defaults['room']=party.room
     defaults['start_time'] = clean_time(party.starttime.strftime("%I:%M%p"))
     defaults['end_time'] = clean_time(party.endtime.strftime("%I:%M%p"))

@@ -64,7 +64,7 @@ class AddClassForm(forms.Form):
 
 valid_time_formats = ['%H:%M', '%I:%M%p', '%I:%M %p']
 class PartyCreateForm(forms.Form):
-    klass = forms.CharField(max_length=100, required=True)
+    klass = forms.CharField(required=True)
     title = forms.CharField(max_length=100, required=True)
     day = forms.DateField(required=True)
     start_time = forms.TimeField(input_formats=valid_time_formats, required=True)

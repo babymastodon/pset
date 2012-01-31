@@ -22,6 +22,7 @@
     <div class="page_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
         <span class="header_text" style="width: 420px;">Class Details</span>
+        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a pset party for this class!</a>
     </div>
 </div>
 <div class="clear"></div>
@@ -34,7 +35,6 @@
                 <li><h3>Room:</h3>moo2</li>
             </ul>
         </div>
-        <a href="{% url 'main.party_views.party_create'%}?class={{ class.pk }}" class="fright gray_button">Host a Party</a>
     </div>
 </div>
 <div class="grid_4">
