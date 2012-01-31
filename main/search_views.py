@@ -31,6 +31,11 @@ def parties_by_class(request, pk):
     rc['class_name'] = c.title
     return render_to_response("main/search/parties_by_class.html", rc, context_instance=RequestContext(request))
 
+@login_required
+def personalized_map(request):
+    rc={}
+    return render(request, 'main/search/personalized_map.html', rc)
+
 def userinfo_by_username(request, pk):
     rc = {}
 
@@ -189,6 +194,8 @@ def ajax(request):
         elif verb=='parties_by_class':
             class_pk = request.REQUEST['class']
             result = get_parties_by_class(request, class_pk)
+        elif verb=='personalized_map':
+            result = get_parties_personalized(request)
         elif verb=='parties_by_date':
             day = request.REQUEST['day']
             if day:

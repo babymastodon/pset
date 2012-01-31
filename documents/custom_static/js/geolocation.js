@@ -112,7 +112,7 @@ function query_whereis(loc, callback){
 }
 //adds the static url and other path info to the front of name
 function marker_url(name){
-    return "http://www.mit.edu/~zdrach/static/marker/"+name+".png";
+    return static_url + "images/marker/" +name+".png";
 }
 
 //the callback function will get 2 arguments: the location, and whether it's valid

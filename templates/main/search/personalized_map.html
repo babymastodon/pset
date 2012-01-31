@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block head %}
+{{ block.super}}
+{% endblock %}
+
+{% block main_content %}
+<div id="class_title" class="grid_10">Parties recommended for you</div>
+<div class="grid_2">
+    <a class="gray_button fright" href="{% url 'main.home_views.home_page' %}">Home Page</a>
+</div>
+{% include 'main/search/party_result_list.html' %}
+<script src="{% static 'js/personalized_map.js'%}" type="text/javascript"></script>
+{% endblock %}
