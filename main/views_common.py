@@ -82,8 +82,11 @@ def get_newsfeed(request, feedtype, pk, page=1):
         r['feed'] = slice_query(page, qs)
         n = User
     if feedtype=='class':
+        klass = get_object_or_404(Class, pk=pk)
+        related_parties = klass.party_set.all()#lol, it pulled the correct ids for the IN query
         qs = qs.filter(
-                (Q(target__target_type='Class') & Q(target__target_id=pk) & ~Q(activity_type='comment'))
+                (Q(target__target_type='Class') & Q(target__target_id=pk) & ~Q(activity_type='comment')) |
+                (Q(target__target_type='Party') & Q(target__target_id__in=related_parties))
             )
         r['feed'] = slice_query(page, qs)
         n=Class
