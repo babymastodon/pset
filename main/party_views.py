@@ -104,8 +104,6 @@ def invite_friends(request, pk):
     return render(request, 'main/party/invite_friends_page.html', rc)
 
 
-def clean_time(s):
-    return s.lower().lstrip('0')
 @login_required
 def edit_party(request, pk):
     rc={'error':None}
@@ -113,13 +111,13 @@ def edit_party(request, pk):
     party = get_object_or_404(Party, pk=pk)
     if not party.admins.filter(pk=request.user.pk):
         raise Http404
-    defaults['day'] = party.starttime.date().strftime("%m/%d/%y")
+    defaults['day'] = date_string(party.starttime)
     defaults['title'] = party.title
     defaults['agenda']= party.agenda
     defaults['klass']= string.join([x.number for x in party.class_obj.get_meta()], ', ')
     defaults['room']=party.room
-    defaults['start_time'] = clean_time(party.starttime.strftime("%I:%M%p"))
-    defaults['end_time'] = clean_time(party.endtime.strftime("%I:%M%p"))
+    defaults['start_time'] = time_string(party.starttime)
+    defaults['end_time'] = time_string(party.endtime)
     defaults['location'] = party.location
     defaults['lng'] = party.lng
     defaults['lat'] = party.lat
@@ -156,9 +154,9 @@ def edit_party(request, pk):
 
 def party_create(request):
     rc={'error':None}
-    now = timezone.localtime(timezone.now())
+    now = timezone.now()
     defaults = {}
-    defaults['day'] = now.strftime("%m/%d/%y")
+    defaults['day'] = date_string(now)
     #set the default field values
     defaults['title']=defaults['agenda']=defaults['klass']=defaults['room']=""
     klass_pk = request.GET.get('class')
@@ -166,8 +164,8 @@ def party_create(request):
         klass_qs = Class.objects.filter(pk=klass_pk)
         if klass_qs:
             defaults['klass'] = string.join([x.number for x in klass_qs[0].get_meta()],', ')
-    defaults['start_time'] = clean_time(now.strftime("%I:%M%p"))
-    defaults['end_time'] = clean_time((now+timedelta(hours=1)).strftime("%I:%M%p"))
+    defaults['start_time'] = time_string(now)
+    defaults['end_time'] = time_string(now+timedelta(hours=1))
     defaults['location'] = "W20: Stratton Student Center"
     defaults['lng'] = "-71.094774920000006"
     defaults['lat'] = "42.359042619999997"
@@ -267,6 +265,7 @@ def all_history(request, historytype, pk, page):
         rc['title'] = "All past pset parties"
         rc['back'] = reverse('main.search_views.parties_by_date')
     rc['history']['show_all']=False
+    rc['history']['expanded']=True
     return render(request, 'main/party/all_history.html', rc)
 
 @login_required

@@ -583,6 +583,7 @@ $tw: 260px - $tb - 2* $tp;
 }
 .newsfeed, .comment_feed, .people_list, .page_list{
    margin-left: 32px;
+   overflow: hidden;
     li{
         padding: 5px 0px;
         border-bottom: 1px dotted $gray-mid;
@@ -593,6 +594,7 @@ $tw: 260px - $tb - 2* $tp;
         float: left;
     }
     .people_text, .list_text{
+        white-space: nowrap;
         margin-left: 10px;
         line-height: 24px;
         float: left;

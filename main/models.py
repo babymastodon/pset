@@ -17,6 +17,9 @@ def time_string(t):
 def day_string(t):
     return timezone.localtime(t).strftime("%b %d")
 
+def date_string(t):
+    return timezone.localtime(t).strftime("%m/%d/%y")
+
 def time_ago(t):
     delta = timezone.now()-t
     if delta < timedelta(seconds=20):

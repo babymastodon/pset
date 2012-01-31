@@ -17,7 +17,18 @@
     <li class="clearfix">
     <a class="user_select clearfix" href="{{h.get_link}}">
         <img src="{{h.get_image}}" class="user_thm" />
-        <span class="people_text">{{h.get_name}}</span>
+        <span class="list_text">{{h.get_name}}</span>
+        {% if history.extended %}
+        <span class="fright"> 
+            <span class="list_text">{{h.location}}</span>
+            <span class="list_text">-</span>
+            <span class="list_text">{{h.get_day}}</span>
+        </span>
+        {% else %}
+        <span class="fright"> 
+            <span class="list_text">{{h.get_day}}</span>
+        </span>
+        {% endif %}
     </a>
     </li>
     {% endfor %}

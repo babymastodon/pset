@@ -49,6 +49,7 @@ def login_required(f):
 def get_history(request, historytype, pk=9001, page=1, num=6):
     r={}
     r['show_all'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page})
+    r['extended']=False
     def slice_query(qs):
         return qs.filter(endtime__lt=timezone.now()).order_by('-starttime')[(page-1)*num: (page)*num]
     if historytype=='all':
