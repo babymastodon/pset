@@ -70,7 +70,7 @@ function reset_pagination(pagelist, page){
     manage_nav_events();
 }
 
-function mkstate(query, category, page){
+function mkstate(query, category, page, nopushstate){
     if ( history.pushState && !nopushstate ){
         history.pushState({q:query,c:category, page:page}, document.title, location.pathname+"?q="+query+"&c="+category+"&page="+page);
     }
@@ -87,60 +87,60 @@ function exec_search(options){
     nopushstate = options.nopushstate || false;
     force_category = options.force_category ? "1" : "0";
     query = val2($("#top_search_text"));
-    page = parseInt(options.page || $("#page_nums a.selected").html())
-        if (page!=prev_page || query!=prev_query || category!=prev_category){
-            $.ajax({
-                type:'GET',
-                url:ajax_url,
-                data: {
-                    'verb': 'search_page',
-                'q':query,
-                'c':category,
-                'page': page,
-                'force': force_category,
-                'module': 'search',
-                },
-                success: function(data){
-                             if (data['status']=='success'){
-                                 //toggle the title of the page depending on whether there is a query
-                                 if (query==""){
-                                     $("#search_title").hide();
-                                     $("#no_query_title").show();
-                                 }
-                                 else{
-                                     $("#search_title").show();
-                                     $("#no_query_title").hide();
-                                 }
-            $("#cat_title").html(data.category);
-            $("#q_title").html(query);
-            //empty out the search results page
-            $("#result_col div").remove();
-            //push the new page into the history
-            result = data
-            mkstate(query, result['category'],result['page']);
-            loaded=true;
-            //add teh new search results to the page
-            reset_pagination(result['pagerange'], result['page']);
-            if (parseInt(result['pageresults'])==0){
-                $("#result_template .no_results_found").clone().appendTo("#result_col");
-            }else{
-                for (i=0; i<result['pageresults']; i++){
-                    r = result['result_items'][i];
-                        append_result(r);
-                }
-            }
-            $("#result_num").html(result['totalresults']);
-            $("#result_plural").html(result['totalresults']==1 ? '' : 's');
-            $("#rmin").html(result['rmin']);
-            $("#rmax").html(result['rmax']);
-            goto_cat(result['category']);
-            prev_query = query;
-            prev_category = result['category'];
-            prev_page = result['page'];
+    page = parseInt(options.page || $("#page_nums a.selected").html());
+    mkstate(query, category,page, nopushstate);
+    if (page!=prev_page || query!=prev_query || category!=prev_category){
+        $.ajax({
+            type:'GET',
+            url:ajax_url,
+            data: {
+                'verb': 'search_page',
+            'q':query,
+            'c':category,
+            'page': page,
+            'force': force_category,
+            'module': 'search',
+            },
+            success: function(data){
+                         if (data['status']=='success'){
+                             //toggle the title of the page depending on whether there is a query
+                             if (query==""){
+                                 $("#search_title").hide();
+                                 $("#no_query_title").show();
                              }
+                             else{
+                                 $("#search_title").show();
+                                 $("#no_query_title").hide();
+                             }
+                             $("#cat_title").html(data.category);
+                             $("#q_title").html(query);
+                             //empty out the search results page
+                             $("#result_col div").remove();
+                             //push the new page into the history
+                             result = data
+                                 loaded=true;
+                             //add teh new search results to the page
+                             reset_pagination(result['pagerange'], result['page']);
+                             if (parseInt(result['pageresults'])==0){
+                                 $("#result_template .no_results_found").clone().appendTo("#result_col");
+                             }else{
+                                 for (i=0; i<result['pageresults']; i++){
+                                     r = result['result_items'][i];
+                                     append_result(r);
+                                 }
+                             }
+                             $("#result_num").html(result['totalresults']);
+                             $("#result_plural").html(result['totalresults']==1 ? '' : 's');
+                             $("#rmin").html(result['rmin']);
+                             $("#rmax").html(result['rmax']);
+                             goto_cat(result['category']);
+                             prev_query = query;
+                             prev_category = result['category'];
+                             prev_page = result['page'];
                          }
-            });
-        }
+                     }
+        });
+    }
 }
 
 //the following two functions will initiate a search when there is a keypress event, and then a short delay of no more keypresses (aka, when the user presumably finishes typing a word or pauses for some other reason)

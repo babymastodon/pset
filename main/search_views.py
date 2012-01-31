@@ -68,7 +68,7 @@ def exec_search(query, category=None, page=1, force_category=False):
         """
         wildcard_tokens = string.join([a.lower() + "* OR " + a.lower() for a in query.split()], " OR ")
         user_search = SearchQuerySet().filter(content = Raw(wildcard_tokens)).models(UserInfo)
-        class_search = SearchQuerySet().filter(content=Raw(wildcard_tokens)).models(Class)
+        class_search = SearchQuerySet().filter(content=Raw(wildcard_tokens)).models(ClassNumber)
         if not category:
             category = "Classes"
         if (not force_category) and ((category == "People" and len(user_search) == 0) or (category == "Classes" and len(class_search) == 0)):
@@ -78,9 +78,9 @@ def exec_search(query, category=None, page=1, force_category=False):
             elif len(class_search) > len(user_search):
                 category="Classes"
         if category=="Classes":
-            if re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe']): 
-                #if they are searching for a class number, matches prefixes for course numbers that start in letters
-                sqs = SearchQuerySet().raw_search(wildcard_tokens).models(ClassNumber)
+            if not (re.match(".*\d|\..*", query) or (len(query)==2 and query.lower() in ['cc','ec','es','as','ms','ns','cm','cs','hs','ma','st','sw']) or (len(query)==3 and query.lower() in ['cms','csb','esd','hst','mas','sts','swe'])): 
+                #if they are searching fot not a class number, do a search for class
+                sqs = SearchQuerySet().raw_search(wildcard_tokens).models(Class)
             else:
                 sqs=class_search
             totalresults = len(sqs)
