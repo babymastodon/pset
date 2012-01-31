@@ -105,11 +105,11 @@ def get_history(request, historytype, pk=9001, page=1, num=6, time='history'):
     r['show_all'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page, 'time':time})
     r['extended']=False
     def slice_query(qs):
-        qs=qs.filter(active=True).order_by("-starttime")
+        qs=qs.filter(active=True)
         if time=='history':
-            return qs.filter(endtime__lt=timezone.now())[(page-1)*num: (page)*num]
+            return qs.filter(endtime__lt=timezone.now()).order_by("-starttime")[(page-1)*num: (page)*num]
         elif time=="future":
-            return qs.filter(endtime__gt=timezone.now())[(page-1)*num: (page)*num]
+            return qs.filter(endtime__gt=timezone.now()).order_by("starttime")[(page-1)*num: (page)*num]
         return []
     if historytype=='all':
         r['list'] = slice_query(Party.objects.all())

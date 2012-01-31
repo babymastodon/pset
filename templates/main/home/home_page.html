@@ -58,12 +58,30 @@
 <div class="clear"></div>
 <div class="space_20"></div>
 <div class="grid_4">
+    <div class="people_header clearfix">
+        <img src="{% static 'images/css/icons/gear32.png'%}"/>
+        <span class="header_text">Parties I'm Hosting</span>
+    </div>
+    <ul class="page_list">
+        {% for h in party_host %}
+        <li class="clearfix">
+        <a class="user_select clearfix" href="{{h.get_link}}">
+            <img src="{{h.get_image}}" class="user_thm" />
+            <span class="list_text">{{h.get_name}}</span>
+            <span class="fright"> 
+                <span class="list_text">{{h.get_day}}</span>
+            </span>
+        </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="clear"></div>
+    <div class="space_40"></div>
     <div>
         {% with history=calendar %}
         {% include 'main/party/history_list.html' %}
         {% endwith %}
     </div>
-    <div class="space_40"></div>
 </div>
 <div class="grid_8">
     <div>
