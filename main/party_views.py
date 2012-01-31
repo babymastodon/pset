@@ -65,7 +65,7 @@ def invite_friends(request, pk):
                 if data[key] == "email":
                     u = User.objects.filter(email=key)
                     if u:
-                        pks.ad(u.pk)
+                        pks.add(u[0].pk)
                     else:
                         emails.add(key)
                 else:

@@ -22,13 +22,25 @@
 </div>
 <div class="clear"></div>
 <div class="grid_8 details_panel">
-    <div class="whitebox clearfix" style="height: 250px;">
-        <img src="{{class.get_image}}" class="details_image" />
+    <div class="whitebox clearfix" style="min-height: 250px; padding: 20px;">
+        <img src="{{class.get_image}}" class="details_image" style="margin-right: 20px;" />
         <div class="page_details_scroll_container">
-            <ul class="page_details">
-                <li><h3>Location:</h3>moo</li>
-                <li><h3>Room:</h3>moo2</li>
-            </ul>
+            <span class="plain_text">{{class.description}}</span>
+        </div>
+        <div class="clear"></div>
+        <div class="space_10"></div>
+        <div class="page_subheader clearfix" style="margin: 5px 20px 0px 20px;">
+            <span class="header_text" style="width: 360px;">Class Numbers</span>
+        </div>
+        <div>
+            <div class="clear"></div>
+            <span class="detail_text">
+                <ul class="number_list hcenter clearfix">
+                    {% for c in class.get_meta %}
+                    <li>{{ c.number }}</li>
+                    {% endfor %}
+                </ul>
+            </span>
         </div>
     </div>
 </div>
