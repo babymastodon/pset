@@ -24,11 +24,12 @@
         <a a href="{% url 'main.account_views.manage_classes' %}" class="gray_button fright" style="margin-right: 10px">Manage Classes</a>
     </div>
     <ul class="page_list">
-        {% for k in user.user_info.klasses.all %}
+        {% for k in myclasses %}
         <li class="clearfix">
-        <a class="user_select clearfix" href="{{k.get_link}}">
-            <img src="{{k.get_image}}" class="user_thm" />
-            <span class="list_text">{{k.get_name}}</span>
+        <a class="user_select clearfix" href="{{k.ob.get_link}}">
+            <img src="{{k.ob.get_image}}" class="user_thm" />
+            <span class="list_text" style="width: 310px;">{{k.ob.get_name}}</span>
+            <span class="list_text">{{k.n}} {% if k.n = 1 %}party{% else %}parties{% endif %}</span>
         </a>
         </li>
         {% empty %}
@@ -42,16 +43,15 @@
 <div class="grid_3">
     <div id="mapdiv" style="width: 220px; height: 120px;"></div>
     <div class="space_20"></div>
-    <div class="center" style="font-size: 18px;">
-        <span class="hcenter"><b>{{numparties}}</b> {% if num_parties = 1 %}party{%else%}parties{%endif%}</span>
-        <div class="space_10"></div>
+    <div class="center">
+        <span class="hcenter plain_text"><b style="font-size: 20px;">{{numparties}}</b> {% if numparties = 1 %}party{%else%}parties{%endif%}</span>
         recommended for you
     </div>
     <div class="space_20"></div>
     <a href="{{class.map_view}}" class="gray_button hcenter">Switch to Map View</a>
 </div>
 <div class="clear"></div>
-<div class="space_40"></div>
+<div class="space_20"></div>
 <div class="grid_4">
     moo
 </div>
