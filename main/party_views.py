@@ -231,7 +231,8 @@ def party_create(request):
                     party.admins.add(creator)
                     party.save()
                     Activity.create(actor=creator, activity_type="created", target=party)
-                    Activity.create(actor=creator, activity_type="attending", target=party)
+                    #attending is implied
+                    #Activity.create(actor=creator, activity_type="attending", target=party)
                     for user in party.class_obj.userinfo_set.all().exclude(pk=creator.pk):
                         if user.email_party:
                             email_rc={}
@@ -263,7 +264,7 @@ def all_history(request, historytype, pk, page):
         rc['back'] = klass.get_link()
     elif historytype=="person":
         person = get_object_or_404(User, pk=pk)
-        rc['title'] = "Parties that " + Person.get_name() + " has attended"
+        rc['title'] = "Parties that " + person.get_name() + " has attended"
         rc['back'] = person.get_link()
     else:
         rc['title'] = "All past pset parties"

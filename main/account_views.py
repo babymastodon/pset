@@ -85,6 +85,10 @@ def profile_page(request, pk):
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
 
 @login_required
+def manage_classes(request):
+    pass
+
+@login_required
 def my_profile_page(request):
     return profile_page(request, request.user.pk)
 

@@ -66,20 +66,23 @@ def make_party_list(request, queryset, counter=0):
 
 def get_parties_personalized(request):
     if request.user.is_authenticated():
-        now=timezone.now()
-        queryset = UserPartyTable.objects.filter(
-                (
-                    Q(user__user_info__in=request.user.user_info.followees.all()) |
-                    Q(party__class_obj__in=request.user.user_info.klasses.all()) |
-                    Q(user__user_info=request.user.user_info)
-                ) & (
-                        Q(party__endtime__gt=now)
-                )
-            ).distinct('party').order_by('party__starttime').select_related(depth=1)
-        result_list = make_party_list(request, (a.party for a in queryset))
+        result_list = make_party_list(request, (a.party for a in personalized_party_query(request)))
         return {'status':'success', 'result_list':result_list}
     return {"status":"not authenticated"}
 
+def personalized_party_query(request):
+    now=timezone.now()
+    return UserPartyTable.objects.filter(
+            (
+                Q(user__user_info__in=request.user.user_info.followees.all()) |
+                Q(party__class_obj__in=request.user.user_info.klasses.all()) |
+                Q(user__user_info=request.user.user_info)
+            ) & (
+                    Q(party__endtime__gt=now) &
+                    Q(party__starttime__lt=now+timedelta(days=7)) &
+                    Q(party__active=True)
+            )
+        ).order_by('party', 'party__starttime').distinct('party').select_related(depth=1)
 
 #replacing the default login_required with our own
 def login_required(f):
@@ -119,7 +122,7 @@ def get_history(request, historytype, pk=9001, page=1, num=6):
         r['list']=[]
     return r
 
-def get_newsfeed(request, feedtype, pk, page=1):
+def get_newsfeed(request, feedtype, pk=9001, page=1):
     r={}
     r['link'] = reverse("main.common_views.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
     r['header']="Recent Activity"
@@ -150,6 +153,16 @@ def get_newsfeed(request, feedtype, pk, page=1):
             )
         r['feed'] = slice_query(6, qs)
         n=Party
+    if feedtype=='personalized':
+        ui = request.user.user_info
+        qs = qs.filter(
+                (Q(target__target_type='Party') & Q(target__target_id__in=ui.user.party_set_attend.all())) |
+                (Q(actor__pk__in=ui.followees.all())) |
+                (Q(target__target_type='User') & Q(target__target_id__in=ui.followees.all())) |
+                (Q(target__target_type='Class') & Q(target__target_id__in=ui.klasses.all()))
+            ).order_by("-time_created")
+        r['feed'] = slice_query(15, qs)
+
     #get the name of the thingy
     try:
         r['name'] = n.objects.get(pk=pk).get_name()

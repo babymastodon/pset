@@ -73,7 +73,10 @@ def home_page(request):
             rc['error'] = form.errors
     # passing stuff to the home page
     rc['form'] = form
-    rc['moo'] = get_parties_personalized(request)
+    personalized = personalized_party_query(request)
+    rc['numparties'] = personalized.count()
+    rc['parties'] = (a.party for a in personalized[:5])
+    rc['newsfeed'] = get_newsfeed(request,'personalized')
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):
