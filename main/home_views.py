@@ -32,9 +32,9 @@ def home_page(request):
     now=timezone.now()
     personalized = personalized_party_query(request)
     rc['numparties'] = personalized.count()
-    rc['parties'] = (a.party for a in personalized[:5])
     rc['newsfeed'] = get_newsfeed(request,'personalized')
     rc['myclasses'] = ({'ob':a, 'n':a.party_set.filter(endtime__gt=now, active=True).count()} for a in request.user.user_info.klasses.all())
+    rc['calendar'] = get_history(request, 'person', request.user.pk, time="future")
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):

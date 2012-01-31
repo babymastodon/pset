@@ -31,6 +31,7 @@ def class_details(request, pk):
     rc['num_parties'] = len(parties)
     rc['party_list'] = simplejson.dumps(parties)
     rc['history'] = get_history(request, 'class', pk)
+    rc['calendar'] = get_history(request, 'class', pk, time="future")
     members = get_members(request, pk)
     l = len(members)
     rc['members'] = {'show_all': reverse('main.people_views.all_members', kwargs={'pk':pk}),'header':str(l) + " Member" + ("s" if l!=1 else ""), 'list':members}

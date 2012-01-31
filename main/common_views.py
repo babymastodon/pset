@@ -39,5 +39,6 @@ def all_newsfeed(request, feedtype, pk, page=1):
         rc['back'] = reverse("main.home_views.home_page")
         rc['feed']['name'] = "You"
     return render(request, 'main/modules/all_newsfeed.html', rc)
+
 def social_buttons(request):
     return render(request, 'main/modules/social_buttons.html')

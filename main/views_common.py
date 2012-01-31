@@ -80,7 +80,8 @@ def personalized_party_query(request):
             ) & (
                     Q(party__endtime__gt=now) &
                     Q(party__starttime__lt=now+timedelta(days=7)) &
-                    Q(party__active=True)
+                    Q(party__active=True) &
+                    ~Q(party__pk__in=request.user.party_set_attend.all())
             )
         ).order_by('party', 'party__starttime').distinct('party').select_related(depth=1)
 
@@ -99,12 +100,17 @@ def login_required(f):
         return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(request.get_full_path()))
     return login_required_func
    
-def get_history(request, historytype, pk=9001, page=1, num=6):
+def get_history(request, historytype, pk=9001, page=1, num=6, time='history'):
     r={}
-    r['show_all'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page})
+    r['show_all'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page, 'time':time})
     r['extended']=False
     def slice_query(qs):
-        return qs.filter(endtime__lt=timezone.now()).order_by('-starttime')[(page-1)*num: (page)*num]
+        qs=qs.filter(active=True).order_by("-starttime")
+        if time=='history':
+            return qs.filter(endtime__lt=timezone.now())[(page-1)*num: (page)*num]
+        elif time=="future":
+            return qs.filter(endtime__gt=timezone.now())[(page-1)*num: (page)*num]
+        return []
     if historytype=='all':
         r['list'] = slice_query(Party.objects.all())
     elif historytype=='person':
@@ -120,6 +126,9 @@ def get_history(request, historytype, pk=9001, page=1, num=6):
         r['list'] = slice_query(qs)
     else:
         r['list']=[]
+    if time=="future":
+        r['icon'] = getattr(settings, "STATIC_URL", "static/") + "images/css/icons/clock32.png"
+        r['header'] = "Calendar"
     return r
 
 def get_newsfeed(request, feedtype, pk=9001, page=1):

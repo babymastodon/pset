@@ -57,6 +57,13 @@
 </div>
 <div id="right_col" class="grid_4">
     <div>
+        {% with history=calendar %}
+        {% include 'main/party/history_list.html' %}
+        {% endwith %}
+    </div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
+    <div>
         {% with people=members %}
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
