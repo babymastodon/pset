@@ -531,6 +531,9 @@ $tw: 260px - $tb - 2* $tp;
             overflow: hidden;
         }
     }
+    &.nounderline{
+        border-bottom: none;
+    }
 }
 .space_10{
     height: 10px;

@@ -17,7 +17,7 @@
         {{person.get_name}} does not want to share his/her profile with the public. Please <a href="{% url 'main.account_views.login_page' %}?next={{request.path}}"><b>Login</b></a> to continue.
     </div>
     {% else %}
-    <div class="page_header clearfix">
+    <div class="page_header nounderline clearfix">
         <img src="{% static 'images/css/icons/star32.png'%}"/>
         <span class="header_text">{{person.get_name}}'s Profile</span>
         {% if user.is_authenticated %}
