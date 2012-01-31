@@ -58,7 +58,7 @@ function init_map(){
         mapTypeControl: false,
         mapTypeId: MAP_TYPE_ID,
         overviewMapControl: false,
-        backgroundColor: '#FFF5D9',
+        backgroundColor: '#f1f1f1',
         streetViewControl: false,
     };
     mapStyle = new google.maps.StyledMapType(stylez, {});

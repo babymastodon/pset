@@ -111,7 +111,7 @@ function exec_search(options){
                                      $("#search_title").show();
                                      $("#no_query_title").hide();
                                  }
-            $("#cat_title").html(category);
+            $("#cat_title").html(data.category);
             $("#q_title").html(query);
             //empty out the search results page
             $("#result_col div").remove();

@@ -22,6 +22,30 @@ def all_attending(request, pk):
     rc['title']= 'All Attending'
     return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
 
+def all_followers(request, pk):
+    rc={}
+    rc['attendees'] = get_followers(request, pk)
+    rc['title']= 'All Followers'
+    return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
+
+def all_followees(request, pk):
+    rc={}
+    rc['attendees'] = get_followees(request, pk)
+    rc['title']= 'All Followees'
+    return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
+
+def get_followees(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if (not user.user_info.private_profile) or request.user.is_authenticated():
+        return user.user_info.followees.all()
+    return []
+
+def get_followers(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if (not user.user_info.private_profile) or request.user.is_authenticated():
+        return user.user_info.followers.all()
+    return []
+
 def get_all_attending(request, pk):
     party = get_object_or_404(Party, pk=pk)
     attendees = party.attendees.all()

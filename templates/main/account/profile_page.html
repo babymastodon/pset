@@ -59,14 +59,14 @@
     <div class="clear"></div>
     <div class="space_40"></div>
     <div>
-        {% with people=admins %}
+        {% with people=followees %}
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>
     <div class="clear"></div>
     <div class="space_40"></div>
     <div>
-        {% with people=all_attendees %}
+        {% with people=followers %}
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>

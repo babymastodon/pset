@@ -56,7 +56,7 @@ h3{font-size: 15px;}
     padding-bottom: 60px;
     color: $gray-light;
     a{color: $gray-light;}
-    background-color: rgba($hue1-dark,.2);
+    @include background(linear-gradient(top, rgba($black,.6), rgba($black, .4), rgba($black, .4), rgba($black, .5)), image-url("header_dark.png"));
     #socialbuttons{
         margin: 50px;
     }

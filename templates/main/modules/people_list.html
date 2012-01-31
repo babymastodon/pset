@@ -12,7 +12,7 @@
     {% for p in people.list %}
     <li class="clearfix">
     <a class="user_select clearfix" href="{{p.get_link}}">
-        <img src="{{p.user_info.get_prof_pic}}" class="user_thm" />
+        <img src="{{p.get_image}}" class="user_thm" />
         <span class="people_text">{{p.get_name}}</span>
     </a>
     </li>

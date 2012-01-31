@@ -57,6 +57,8 @@ urlpatterns += patterns('main.party_views',
 #views for the people ajax popup
 urlpatterns += patterns('main.people_views',
     url(r'^party/attending/(?P<pk>\d+)/$', 'all_attending'),#view after a successful party unregistration
+    url(r'^profile/followers/(?P<pk>\d+)/$', 'all_followers'),#view after a successful party unregistration
+    url(r'^profile/followees/(?P<pk>\d+)/$', 'all_followees'),#view after a successful party unregistration
 )
 
 #the ajax handler

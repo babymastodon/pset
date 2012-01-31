@@ -25,7 +25,7 @@
         width: 296px;
         @include background(image-url("background.png"));
         overflow: hidden;
-        border: 1px solid $white;
+        border: 1px solid $gray-mid-dark;
         @include border-radius(3px);
         input{
             border: none;

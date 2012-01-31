@@ -54,6 +54,12 @@ def all_newsfeed(request, feedtype, pk, page=1):
         rc['prev'] = reverse('main.views_common.all_newsfeed', kwargs={'feedtype':feedtype, 'pk':pk, 'page':page-1})
     rc['page'] = page
     rc['feed']['link'] = None
+    if feedtype=="profile":
+        rc['back'] = get_object_or_404(User, pk=pk).get_link()
+    elif feedtype=="class":
+        rc['back'] = get_object_or_404(Class, pk=pk).get_link()
+    if feedtype=="party":
+        rc['back'] = get_object_or_404(Party, pk=pk).get_link()
     return render(request, 'main/modules/all_newsfeed.html', rc)
 
 def get_newsfeed(request, feedtype, pk, page=1):
@@ -68,11 +74,11 @@ def get_newsfeed(request, feedtype, pk, page=1):
         newsfeed1 = qs.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
 
         newsfeed2 = qs.filter(actor__pk=pk).order_by('-time_created')[:page*NUM_PER_PAGE]
-        smax = page*NUM_PER_PAGE-1
-        smin = (page-1)*NUM_PER_PAGE-1
+        smax = -(page*NUM_PER_PAGE+1)
+        smin = -((page-1)*NUM_PER_PAGE+1)
         if smin==-1:
             smin=None
-        r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[smax:smin:-1]
+        r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[smin: smax:-1]
         n = User
     if feedtype=='class':
         r['feed'] = qs.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
