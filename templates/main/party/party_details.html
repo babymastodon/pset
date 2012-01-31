@@ -28,6 +28,8 @@
         {% if isadmin %}
         <div class="fright">
             <a href="{% url 'main.party_views.edit_party' pk=party.pk %}" class="gray_button fright" style="margin-right: 10px">Edit Party</a>
+            <a a href="{% url 'main.party_views.party_cancel' pk=party.pk %}" class="gray_button fright {% if not party.active %}hidden{%endif%}" style="margin-right: 10px">Cancel Party</a>
+            <a href="{% url 'main.party_views.party_uncancel' pk=party.pk %}" class="gray_button fright {% if party.active %}hidden{%endif%}" style="margin-right: 10px">Un-Cancel Party</a>
         </div>
         {% endif %}
     </div>

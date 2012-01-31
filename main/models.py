@@ -258,6 +258,8 @@ class Party(models.Model):
     def get_link(self):
         return reverse("main.party_views.party_details", kwargs={'pk': self.pk})
     def __unicode__(self):
+        if not self.active:
+            return "Cancelled: " + self.title
         return self.title
     def get_name(self):
         return unicode(self)
@@ -344,7 +346,7 @@ class Target(models.Model):
     def __unicode__(self):
         return self.target_type + ": " + self.get_name()
 
-activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined', 'newaccount']]
+activity_types = [(a,a) for a in ['comment','created','attending','edited', 'joined', 'newaccount', 'canceled', 'uncanceled']]
 class Activity(models.Model):
     activity_type = models.CharField(max_length=20, choices=activity_types)
     actor = models.ForeignKey(User)
@@ -366,6 +368,10 @@ class Activity(models.Model):
             return static + 'mapleleaf32.png'
         elif self.activity_type=='newaccount':
             return static + 'glitter32.png'
+        elif self.activity_type=='canceled':
+            return static + 'block32.png'
+        elif self.activity_type=='uncanceled':
+            return static + 'smile32.png'
     def get_content(self):
         if self.activity_type=="comment":
             return self.get_linked_actor() + " left a comment at " + self.target.get_linked_name()
@@ -379,6 +385,10 @@ class Activity(models.Model):
             return self.get_linked_actor() + " added " + self.target.get_linked_name()
         elif self.activity_type=='newaccount':
             return self.get_linked_actor() + " joined InTheLoop!"
+        elif self.activity_type=='canceled':
+            return self.get_linked_actor() + " has canceled " + self.target.get_linked_name()
+        elif self.activity_type=='uncanceled':
+            return self.get_linked_actor() + " has un-canceled " + self.target.get_linked_name()
     def get_time(self):
         return time_ago(self.time_created)
     def get_actor(self):

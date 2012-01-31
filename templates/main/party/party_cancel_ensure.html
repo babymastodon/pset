@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+<div class="details_panel grid_12">
+    <h1>Cancel: {{party.get_name}}</h1>
+    <a class="fright gray_button" href="{{party.get_link}}">Back to party page</a>
+    <div class="clear"></div>
+    {% if error %}<div class="errors">{{error}}</div>{% endif %}
+</div>
+
+
+<div class="clear"></div>
+<div class="space_30"></div>
+<div class="page_details grid_6 prefix_4">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/block32.png'%}"/>
+        <div class="header_text">Cancel Party</div>
+    </div>
+    <div class="plain_text">Are you sure you want to cancel the party? You can always un-cancel it later if you need to.</div>
+    <div class="space_20"></div>
+    <form class="clearfix" action="." method="POST">{% csrf_token %}
+        <input type="hidden" name="people_data" />
+        <input type="submit" class="gray_button fright" value="Cancel Party" />
+    </form>
+</div>
+{% endblock %}

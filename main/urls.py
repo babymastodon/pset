@@ -53,6 +53,8 @@ urlpatterns += patterns('main.party_views',
     url(r'^party/create/$', 'party_create'),#form for creating a new party
     url(r'^party/invite/(?P<pk>\d+)/$', 'invite_friends'),#form for creating a new party
     url(r'^party/edit/(?P<pk>\d+)/$', 'edit_party'),#form for creating a new party
+    url(r'^party/cancel/(?P<pk>\d+)/$', 'party_cancel'),#form for creating a new party
+    url(r'^party/uncancel/(?P<pk>\d+)/$', 'party_uncancel'),#form for creating a new party
 )
 
 #views for the people ajax popup
@@ -60,6 +62,7 @@ urlpatterns += patterns('main.people_views',
     url(r'^party/attending/(?P<pk>\d+)/$', 'all_attending'),#view after a successful party unregistration
     url(r'^profile/followers/(?P<pk>\d+)/$', 'all_followers'),#view after a successful party unregistration
     url(r'^profile/followees/(?P<pk>\d+)/$', 'all_followees'),#view after a successful party unregistration
+    url(r'class/members/(?P<pk>\d+)/$', 'all_members'),#view after a successful party unregistration
 )
 
 #the ajax handler

@@ -34,12 +34,6 @@ def all_followees(request, pk):
     rc['title']= 'All Followees'
     return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
 
-def all_members(request, pk):
-    rc={}
-    rc['attendees'] = get_members(request, pk)
-    rc['title']= 'All Members'
-    return render_to_response("main/modules/people_popup.html", rc, context_instance=RequestContext(request))
-
 def get_followees(request, pk):
     user = get_object_or_404(User, pk=pk)
     if (not user.user_info.private_profile) or request.user.is_authenticated():
@@ -53,10 +47,10 @@ def get_followers(request, pk):
     return []
 
 def get_members(request, pk):
-    klass = get_object_or_404(Class, pk=pk)
-    if request.user.is_anonymous():
-        return klass.userinfo_set.filter(private_profile=False)
-    return klass.userinfo_set.all()
+    class = get_object_or_404(User, pk=pk)
+    if (not user.user_info.private_profile) or request.user.is_authenticated():
+        return user.user_info.followers.all()
+    return []
 
 def get_all_attending(request, pk):
     party = get_object_or_404(Party, pk=pk)

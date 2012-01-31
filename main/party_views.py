@@ -246,6 +246,29 @@ def party_create(request):
     rc['form'] = rc['rform'] =  form
     return render_to_response("main/party/party_create.html", rc, context_instance=RequestContext(request))
 
+
+@login_required
+def party_cancel(request, pk):
+    party = get_object_or_404(Party, pk=pk)
+    if not party.admins.filter(pk=request.user.pk).exists():
+        return redirect(party.get_link())
+    if request.method=="POST":
+        party.active=False
+        party.save()
+        Activity.create(actor=request.user, activity_type="canceled", target=party)
+        return redirect(party.get_link())
+    return render(request, "main/party/party_cancel_ensure.html", {'party':party})
+
+@login_required
+def party_uncancel(request, pk):
+    party = get_object_or_404(Party, pk=pk)
+    if not party.admins.filter(pk=request.user.pk).exists():
+        return redirect(party.get_link())
+    party.active=True
+    party.save()
+    Activity.create(actor=request.user, activity_type="uncanceled", target=party)
+    return redirect(party.get_link())
+
 def party_registered(request, pk):
     rc={}
     p = get_object_or_404(Party, pk=pk)
