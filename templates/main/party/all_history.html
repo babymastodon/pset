@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load url from future %}{% load staticfiles %}
+
+{% block main_content %}
+<div class="grid_12 details_panel">
+    <h1>{{title}}</h1>
+    <a href="{{back}}" class="gray_button fright">Go Back</a>
+</div>
+<div class="clear"></div>
+<div class="space_30"></div>
+<div class="grid_4">
+    <h1 class="fright">Page {{page}}</h1>
+</div>
+<div class="grid_8">
+    {% with expanded=True %}
+    {% include 'main/party/history_list.html' %}
+    {% endwith %}
+{% if next %}
+<a href="{{next}}" class="gray_button fright">Next</a>
+{% endif %}
+{% if prev %}
+<a href="{{prev}}" class="gray_button fright">Prev</a>
+{% endif %}
+</div>
+{% endblock %}

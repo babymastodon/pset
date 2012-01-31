@@ -66,5 +66,12 @@
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>
+    <div class="clear"></div>
+    <div class="space_40"></div>
+    <div>
+        {% with history=history %}
+        {% include 'main/party/history_list.html' %}
+        {% endwith %}
+    </div>
 </div>
 {% endblock %}

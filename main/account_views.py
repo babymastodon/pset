@@ -78,6 +78,7 @@ def profile_page(request, pk):
         rc['followees'] = {"show_all":reverse("main.people_views.all_followees", kwargs={"pk":pk}), 'header':"Is Following", "list":get_followees(request, pk)[0:5]}
         rc['followers'] = {"show_all":reverse("main.people_views.all_followers", kwargs={"pk":pk}), 'header':"Is Being Followed By", "list":get_followers(request, pk)[0:5]}
         rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
+        rc['history'] = get_history(request, 'person', pk)
     else:
         rc['private'] = True
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))

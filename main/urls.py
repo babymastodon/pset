@@ -55,6 +55,7 @@ urlpatterns += patterns('main.party_views',
     url(r'^party/edit/(?P<pk>\d+)/$', 'edit_party'),#form for creating a new party
     url(r'^party/cancel/(?P<pk>\d+)/$', 'party_cancel'),#form for creating a new party
     url(r'^party/uncancel/(?P<pk>\d+)/$', 'party_uncancel'),#form for creating a new party
+    url(r'^history/(?P<historytype>\w+)/(?P<pk>\d+)/(?P<page>\d+)/$', 'all_history'),
 )
 
 #views for the people ajax popup
@@ -71,7 +72,7 @@ urlpatterns += patterns('main.ajax_views',
 )
 
 #misc views
-urlpatterns += patterns('main.views_common',
+urlpatterns += patterns('main.common_views',
     url(r'^newsfeed/(?P<feedtype>\w+)/(?P<pk>\d+)/(?P<page>\d+)/$', 'all_newsfeed'),
     url(r'^socialbuttons/$', 'social_buttons'),
 )

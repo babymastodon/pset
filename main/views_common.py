@@ -46,32 +46,35 @@ def login_required(f):
         return HttpResponseRedirect(reverse('main.account_views.login_page')+"?next="+urllib.quote(request.get_full_path()))
     return login_required_func
    
-def all_newsfeed(request, feedtype, pk, page=1):
-    rc={}
-    page = int(page)
-    rc['feed'] = get_newsfeed(request, feedtype, pk, page)
-    rc['next'] = reverse('main.views_common.all_newsfeed', kwargs={'feedtype':feedtype, 'pk':pk, 'page':page+1})
-    if page>1:
-        rc['prev'] = reverse('main.views_common.all_newsfeed', kwargs={'feedtype':feedtype, 'pk':pk, 'page':page-1})
-    rc['page'] = page
-    rc['feed']['link'] = None
-    if feedtype=="profile":
-        rc['back'] = get_object_or_404(User, pk=pk).get_link()
-    elif feedtype=="class":
-        rc['back'] = get_object_or_404(Class, pk=pk).get_link()
-    if feedtype=="party":
-        rc['back'] = get_object_or_404(Party, pk=pk).get_link()
-    return render(request, 'main/modules/all_newsfeed.html', rc)
-
-def slice_query(page, qs):
-    NUM_PER_PAGE=6
-    return qs.order_by('-time_created')[(page-1)*NUM_PER_PAGE: (page)*NUM_PER_PAGE]
+def get_history(request, historytype, pk=9001, page=1, num=6):
+    r={}
+    r['show_all'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page})
+    def slice_query(qs):
+        return qs.filter(endtime__lt=timezone.now()).order_by('-starttime')[(page-1)*num: (page)*num]
+    if historytype=='all':
+        r['list'] = slice_query(Party.objects.all())
+    elif historytype=='person':
+        user = get_object_or_404(User, pk=pk)
+        if (not user.user_info.private_profile) or request.user.is_authenticated():
+            qs = user.user_info.user.party_set_attend.all()
+            r['list'] = slice_query(qs)
+        else:
+            r['list']=[]
+    elif historytype=='class':
+        klass = get_object_or_404(Class, pk=pk)
+        qs = klass.party_set.all()
+        r['list'] = slice_query(qs)
+    else:
+        r['list']=[]
+    return r
 
 def get_newsfeed(request, feedtype, pk, page=1):
     r={}
-    r['link'] = reverse("main.views_common.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
+    r['link'] = reverse("main.common_views.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
     r['header']="Recent Activity"
     qs = Activity.objects.all()
+    def slice_query(num, qs):
+        return qs.order_by('-time_created')[(page-1)*num: (page)*num]
     if request.user.is_anonymous():
         qs = qs.filter(actor__user_info__private_activities=False)
     if feedtype=="profile":
@@ -79,7 +82,7 @@ def get_newsfeed(request, feedtype, pk, page=1):
                 (Q(target__target_type='User') & Q(target__target_id=pk) & ~Q(activity_type='comment')) |
                 (Q(actor__pk=pk))
                 )
-        r['feed'] = slice_query(page, qs)
+        r['feed'] = slice_query(6, qs)
         n = User
     if feedtype=='class':
         klass = get_object_or_404(Class, pk=pk)
@@ -88,13 +91,13 @@ def get_newsfeed(request, feedtype, pk, page=1):
                 (Q(target__target_type='Class') & Q(target__target_id=pk) & ~Q(activity_type='comment')) |
                 (Q(target__target_type='Party') & Q(target__target_id__in=related_parties))
             )
-        r['feed'] = slice_query(page, qs)
+        r['feed'] = slice_query(6, qs)
         n=Class
     if feedtype=='party':
         qs = qs.filter(
                 (Q(target__target_type='Party') & Q(target__target_id=pk) & ~Q(activity_type='comment'))
             )
-        r['feed'] = slice_query(page, qs)
+        r['feed'] = slice_query(6, qs)
         n=Party
     #get the name of the thingy
     try:
@@ -102,9 +105,6 @@ def get_newsfeed(request, feedtype, pk, page=1):
     except Exception as e:
         pass
     return r
-
-def social_buttons(request):
-    return render(request, 'main/modules/social_buttons.html')
 
 def send_email(request, to, subject, template, rc):
     html = loader.get_template('emails/'+template)

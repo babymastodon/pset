@@ -1,0 +1,28 @@
+
+{% load url from future %}{% load staticfiles %}
+<div class="people_header clearfix">
+    {% if history.icon %}
+    <img src="{{people.icon}}"/>
+    {% else %}
+    <img src="{% static 'images/css/icons/bargraph32.png'%}"/>
+    {% endif %}
+    {% if history.header %}
+    <span class="header_text">{{history.header}}</span>
+    {% else %}
+    <span class="header_text">Party History</span>
+    {% endif %}
+</div>
+<ul class="page_list">
+    {% for h in history.list %}
+    <li class="clearfix">
+    <a class="user_select clearfix" href="{{h.get_link}}">
+        <img src="{{h.get_image}}" class="user_thm" />
+        <span class="people_text">{{h.get_name}}</span>
+    </a>
+    </li>
+    {% endfor %}
+</ul>
+<div class="clear space_10"></div>
+{% if history.show_all %}
+<a href="{{history.show_all}}" class="gray_button fright">Show All</a>
+{% endif %}

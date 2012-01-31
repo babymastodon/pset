@@ -30,9 +30,10 @@ def class_details(request, pk):
     parties = get_parties_by_class(request, pk).get('result_list',[])
     rc['num_parties'] = len(parties)
     rc['party_list'] = simplejson.dumps(parties)
+    rc['history'] = get_history(request, 'class', pk)
     members = get_members(request, pk)
     l = len(members)
-    rc['members'] = {'header':str(l) + " Member" + ("s" if l!=1 else ""), 'list':members}
+    rc['members'] = {'show_all': reverse('main.people_views.all_members', kwargs={'pk':pk}),'header':str(l) + " Member" + ("s" if l!=1 else ""), 'list':members}
     return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
 
 def class_file_upload(request):

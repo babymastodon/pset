@@ -247,6 +247,28 @@ def party_create(request):
     return render_to_response("main/party/party_create.html", rc, context_instance=RequestContext(request))
 
 
+def all_history(request, historytype, pk, page):
+    rc={}
+    page=int(page)
+    rc['history'] = get_history(request, historytype, pk, page, 20)
+    rc['page'] = page
+    rc['next'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page+1})
+    if page>1:
+        rc['prev'] = reverse('main.party_views.all_history', kwargs={'historytype':historytype, 'pk':pk, 'page':page-1})
+    if historytype=="class":
+        klass = get_object_or_404(Class, pk=pk)
+        rc['title'] = "Party history for " + klass.get_name()
+        rc['back'] = klass.get_link()
+    elif historytype=="person":
+        person = get_object_or_404(User, pk=pk)
+        rc['title'] = "Parties that " + Person.get_name() + " has attended"
+        rc['back'] = person.get_link()
+    else:
+        rc['title'] = "All past pset parties"
+        rc['back'] = reverse('main.search_views.parties_by_date')
+    rc['history']['show_all']=False
+    return render(request, 'main/party/all_history.html', rc)
+
 @login_required
 def party_cancel(request, pk):
     party = get_object_or_404(Party, pk=pk)
