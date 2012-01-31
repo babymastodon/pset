@@ -13,7 +13,7 @@
     <h1>{{class.get_name}}</h1>
     {% if user.is_authenticated %}
     <div class="party_details_attend">
-        <div id="add_this_class" class="gray_button fright {% if joined %}hidden{% endif %}">Add This Class</div>
+        <div id="add_this_class" class="gray_button fright {% if joined %}hidden{% endif %}">+ Add This Class</div>
         <div id="drop_this_class" class="gray_button fright {% if not joined %}hidden{% endif %}">Drop This Class</div>
     </div>
     {% endif %}
@@ -62,14 +62,7 @@
 </div>
 <div id="right_col" class="grid_4">
     <div>
-        {% with people=admins %}
-        {% include 'main/modules/people_list.html' %}
-        {% endwith %}
-    </div>
-    <div class="clear"></div>
-    <div class="space_40"></div>
-    <div>
-        {% with people=all_attendees %}
+        {% with people=members %}
         {% include 'main/modules/people_list.html' %}
         {% endwith %}
     </div>

@@ -16,6 +16,7 @@ from django.utils import timezone
 from main.models import *
 from main.forms import *
 from main.views_common import *
+from main.people_views import *
 from main.search_views import get_parties_by_class
 
 def class_details(request, pk):
@@ -29,6 +30,9 @@ def class_details(request, pk):
     parties = get_parties_by_class(request, pk).get('result_list',[])
     rc['num_parties'] = len(parties)
     rc['party_list'] = simplejson.dumps(parties)
+    members = get_members(request, pk)
+    l = len(members)
+    rc['members'] = {'header':str(l) + " Member" + ("s" if l!=1 else ""), 'list':members}
     return render_to_response("main/class/class_details.html", rc, context_instance=RequestContext(request))
 
 def class_file_upload(request):

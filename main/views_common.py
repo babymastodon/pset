@@ -11,6 +11,7 @@ from django.conf import settings
 from datetime import datetime, date
 from django.template import loader, Context
 from django.utils import timezone
+from django.db.models import Q
 import urllib
 from django import forms
 from itertools import chain
@@ -62,29 +63,35 @@ def all_newsfeed(request, feedtype, pk, page=1):
         rc['back'] = get_object_or_404(Party, pk=pk).get_link()
     return render(request, 'main/modules/all_newsfeed.html', rc)
 
+def slice_query(page, qs):
+    NUM_PER_PAGE=6
+    return qs.order_by('-time_created')[(page-1)*NUM_PER_PAGE: (page)*NUM_PER_PAGE]
+
 def get_newsfeed(request, feedtype, pk, page=1):
     r={}
     r['link'] = reverse("main.views_common.all_newsfeed", kwargs={'feedtype':feedtype, 'page':1, 'pk':pk})
     r['header']="Recent Activity"
-    NUM_PER_PAGE=6
     qs = Activity.objects.all()
     if request.user.is_anonymous():
         qs = qs.filter(actor__user_info__private_activities=False)
     if feedtype=="profile":
-        newsfeed1 = qs.filter(target__target_type='User', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[:page*NUM_PER_PAGE]
-
-        newsfeed2 = qs.filter(actor__pk=pk).order_by('-time_created')[:page*NUM_PER_PAGE]
-        smax = -(page*NUM_PER_PAGE+1)
-        smin = -((page-1)*NUM_PER_PAGE+1)
-        if smin==-1:
-            smin=None
-        r['feed'] = sorted(chain(newsfeed1,newsfeed2),key=lambda x: x.time_created)[smin: smax:-1]
+        qs = qs.filter(
+                (Q(target__target_type='User') & Q(target__target_id=pk) & ~Q(activity_type='comment')) |
+                (Q(actor__pk=pk))
+                )
+        r['feed'] = slice_query(page, qs)
         n = User
     if feedtype=='class':
-        r['feed'] = qs.filter(target__target_type='Class', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
+        qs = qs.filter(
+                (Q(target__target_type='Class') & Q(target__target_id=pk) & ~Q(activity_type='comment'))
+            )
+        r['feed'] = slice_query(page, qs)
         n=Class
     if feedtype=='party':
-        r['feed'] = qs.filter(target__target_type='Party', target__target_id=pk).exclude(activity_type='comment').order_by('-time_created')[(page-1)*NUM_PER_PAGE:page*NUM_PER_PAGE]
+        qs = qs.filter(
+                (Q(target__target_type='Party') & Q(target__target_id=pk) & ~Q(activity_type='comment'))
+            )
+        r['feed'] = slice_query(page, qs)
         n=Party
     #get the name of the thingy
     try:
