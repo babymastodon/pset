@@ -58,10 +58,13 @@ def make_party_list(request, queryset, counter=0):
     colorlist = ['red','orange','yellow','green','blue','purple']
     letterlist = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     result_list=[]
+    dup = set()
     for i in queryset:
-        r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
-        result_list.append(r)
-        counter+=1
+        if i.pk not in dup:
+            dup.add(i.pk)
+            r = create_party_dict(i, letterlist[counter%26], request, color=colorlist[(counter/26)%6])
+            result_list.append(r)
+            counter+=1
     return result_list
 
 def get_parties_personalized(request):
@@ -83,7 +86,7 @@ def personalized_party_query(request):
                     Q(party__active=True) &
                     ~Q(party__pk__in=request.user.party_set_attend.all())
             )
-        ).order_by('party', 'party__starttime').distinct('party').select_related(depth=1)
+        ).order_by('party__pk', 'party__starttime').distinct('party__pk').select_related(depth=1)
 
 #replacing the default login_required with our own
 def login_required(f):
