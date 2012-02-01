@@ -206,4 +206,4 @@ for u in ddd:
                 if count<7:
                     if not UserPartyTable.objects.filter(user=u, party=p).exists():
                         UserPartyTable(user=u, party=p).save()
-                        Activity.create(actor=u, activity_type="attending", target=party)
+                        Activity.create(actor=u, activity_type="attending", target=p)
