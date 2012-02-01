@@ -536,6 +536,7 @@ $tw: 260px - $tb - 2* $tp;
     }
 }
 .splash{
+    @include unselectable;
 }
 .space_10{
     height: 10px;
@@ -672,7 +673,7 @@ b{
     font-size: 18px;
     line-height: 22px;
     margin: 20px;
-    width: 260px;
+    width: 420px;
     td{
         padding-bottom: 6px;
         font-size: 16px;

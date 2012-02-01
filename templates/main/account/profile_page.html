@@ -38,8 +38,7 @@
 {% if not private %}
 <div class="clear"></div>
 <div class="space_20"></div>
-<div class="grid_4 details_panel center">
-    <div class="clear"></div>
+<div class="grid_6 details_panel">
     <div class="people_header clearfix">
         {% if people.icon %}
         <img src="{{people.icon}}"/>
@@ -53,11 +52,26 @@
         <tr><td>Class Year:</td><td>{{person.user_info.graduation_year|default_if_none:""}}</td></tr>
         <tr><td>Join Date:</td><td>{{join_date}}</td></tr>
         <tr><td>Last Seen:</td><td>{{last_seen}}</td></tr>
-        <tr><td>Bio:</td></tr>
-        <tr><td colspan=2 class="bio">{{user.user_info.bio}}</td></tr>
+        <tr><td>Bio:</td><td>{{person.user_info.bio}}</td></tr>
     </table>
-    <div class="clear"></div>
-    <div class="space_40"></div>
+</div>
+<div class="grid_6 details_panel">
+    <div class="page_header clearfix">
+        <img src="{% static 'images/css/icons/mapleleaf32.png'%}"/>
+        <span class="header_text">Classes:</span>
+    </div>
+    <ul class="page_list">
+        {% for item in classes %}
+        <li class="clearfix">
+        <img src="{{item.get_image}}" class="user_thm" />
+        <span class="list_text"><b><a href="{% url 'main.class_views.class_details' pk=item.pk %}">{{item.get_name}}</a></b></span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="space_40"></div>
+<div class="grid_4 details_panel center">
     <div>
         {% with people=followees %}
         {% include 'main/modules/people_list.html' %}
@@ -79,22 +93,6 @@
     </div>
 </div>
 <div class="grid_8 details_panel">
-    {% if classes %}
-    <div class="page_header clearfix">
-        <img src="{% static 'images/css/icons/mapleleaf32.png'%}"/>
-        <span class="header_text">Is taking the following classes:</span>
-    </div>
-    <ul class="page_list">
-        {% for item in classes %}
-        <li class="clearfix">
-        <img src="{{item.get_image}}" class="list_icon" />
-        <span class="list_content"><b><a href="{% url 'main.class_views.class_details' pk=item.pk %}">{{item.get_name}}</a></b></span>
-        </li>
-        {% endfor %}
-    </ul>
-    <div class="clear"></div>
-    <div class="space_40"></div>
-    {% endif %}
     <div>
         {% with feed=newsfeed %}
         {% include 'main/modules/feed_list.html' %}

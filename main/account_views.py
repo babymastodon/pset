@@ -77,7 +77,8 @@ def profile_page(request, pk):
         rc['last_seen']=time_ago(user.user_info.last_seen)
         rc['followees'] = {"show_all":reverse("main.people_views.all_followees", kwargs={"pk":pk}), 'header':"Is Following", "list":get_followees(request, pk)[0:5]}
         rc['followers'] = {"show_all":reverse("main.people_views.all_followers", kwargs={"pk":pk}), 'header':"Is Being Followed By", "list":get_followers(request, pk)[0:5]}
-        rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
+        if request.user.is_authenticated():
+            rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
         rc['history'] = get_history(request, 'person', pk)
         rc['history']['header'] = "Parties Attended"
     else:
