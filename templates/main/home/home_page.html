@@ -9,14 +9,16 @@
 </script>
 <script src="{% static 'js/home_page.js'%}" type="text/javascript"></script>
 
+<img class="grid_12 splash" src="{% static 'images/loop.png' %}" />
+<div class="clear"></div>
+<div class="space_40"></div>
+
 <div class="grid_12 details_panel">
     <div class="page_header nounderline clearfix">
         <img src="{% static 'images/css/icons/cup32.png'%}"/>
         <span class="header_text" style="max-width: 600px;">Welcome {{user.get_name}}</span>
     </div>
 </div>
-<div class="clear"></div>
-
 <div class="grid_6">
     <div class="grid_3 alpha">
         <div id="mapdiv" style="width: 220px; height: 120px;"></div>
@@ -61,7 +63,7 @@
     </ul>
 </div>
 <div class="clear"></div>
-<div class="space_40"></div>
+<div class="space_60"></div>
 <div class="grid_4">
     <div class="people_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
