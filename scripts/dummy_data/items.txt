@@ -1,0 +1,71 @@
+kettle
+toaster
+spatula
+spoons
+cups
+forks
+mugs
+spoons
+bowls
+plates
+placemats
+mixing bowls
+glasses
+fruit bowl
+clocks
+curtains
+cushions
+pictures
+hi-fi/stereo
+DVDs
+CDs
+vases
+books
+jugs
+saucepans
+knives
+hooks
+clothes
+shoes
+soap
+washing powder
+sponges
+cloths
+baking trays
+cake tins
+rugs
+towels
+quilts
+mirrors
+broom/brush
+garbage/rubbish bins
+paper
+pens
+pencils
+lights
+vaccum 
+pegs
+shelves
+toilet roll
+food
+drink
+dusters
+coasters
+plants
+bucket
+TV
+DVD player
+boxes
+clothes hangers
+tins
+jewellery
+toiletries
+sheets
+pillows
+pillow cases
+computer/laptop
+kitchen scales
+bathroom scales
+lamps
+doormats
+blinds

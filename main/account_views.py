@@ -236,6 +236,7 @@ def invite_hashcode(request, hashcode, pk):
                 u = createAccount(username=uname, password=d['pw1'], email=ih.email)
                 u = authenticate(username=uname, password=d['pw1'])
                 login(request, u)
+                Activity.create(actor=u, activity_type='newaccount')
                 party_register_helper_func(ih.party, u)
                 ihs.delete()
                 return redirect(reverse('main.account_views.bio_info'))

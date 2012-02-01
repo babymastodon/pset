@@ -83,6 +83,18 @@
         <img src="{{item.get_image}}" class="user_thm" />
         <span class="list_text"><b><a href="{% url 'main.class_views.class_details' pk=item.pk %}">{{item.get_name}}</a></b></span>
         </li>
+        {% empty %}
+        {% if user = person %}
+        <li class="clearfix">
+        <img src="{% static 'images/css/icons/unsmile32.png' %}" class="news_icon" />
+        <span class="list_text">You haven't added any classes yet.<br/>Go to the <b><a href="{% url 'main.search_views.search_page' %}" >Search Page</a></b> to find and add classes</span>
+        </li>
+        {% else %}
+        <li class="clearfix">
+        <img src="{% static 'images/css/icons/unsmile32.png' %}" class="news_icon" />
+        <span class="list_text">{{person.get_name}} hasn't added any classes yet.</span>
+        </li>
+        {% endif %}
         {% endfor %}
     </ul>
 </div>
