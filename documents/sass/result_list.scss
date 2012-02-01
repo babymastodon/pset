@@ -1,26 +1,26 @@
 @import "base";
 
+#result_list_shadow_top{
+    @include box-shadow($gray-mid 2px 2px 3px 0px inset);
+    height: 5px;
+    width: 940px;
+    position: absolute;
+    z-index: 1;
+}
+#result_list_shadow_left{
+    @include box-shadow($gray-mid 2px 0px 3px 0px inset);
+    height: 257px;
+    width: 5px;
+    top: 5px;
+    position: absolute;
+    z-index: 1;
+}
 #result_list{
     height: 262px;
     overflow: hidden;
     margin-bottom: 10px;
     position: relative;
     background-color: $white;
-    #result_list_shadow_top{
-        @include box-shadow($gray-mid 2px 2px 3px 0px inset);
-        height: 5px;
-        width: 940px;
-        position: absolute;
-        z-index: 1;
-    }
-    #result_list_shadow_left{
-        @include box-shadow($gray-mid 2px 0px 3px 0px inset);
-        height: 257px;
-        width: 5px;
-        top: 5px;
-        position: absolute;
-        z-index: 1;
-    }
     #result_list_container{
         z-index: 0;
         background-color: $white;

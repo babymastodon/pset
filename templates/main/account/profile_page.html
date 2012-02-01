@@ -8,7 +8,7 @@
 <script src="{% static 'js/profile_page.js'%}" type="text/javascript"></script>
 
 <div class="grid_3 center">
-    <img src="{{person.get_image}}" class="profile_image" />
+    <img src="{{person.get_image}}" class="profile_image" style="max-height: 148px"/>
 </div>
 <div class="grid_9 details_panel">
     {% if private %}
@@ -22,8 +22,7 @@
         <span class="header_text">{{person.get_name}}'s Profile</span>
         {% if user.is_authenticated %}
         {% if user = person %}
-        <a href="{% url 'main.home_views.home_page' %}" class="gray_button fright">Home</a>
-        <a href="{% url 'main.account_views.account_info' %}" class="gray_button fright" style="margin-right: 10px;">Settings</a>
+        <a href="{% url 'main.account_views.account_info' %}" class="gray_button fright">Settings</a>
         <a href="{% url 'main.account_views.bio_info' %}" class="gray_button fright" style="margin-right: 10px;">Edit Profile</a>
         {% else %}
         <div id="follow" class="gray_button fright {% if following %}hidden{% endif %}">+ Follow</div>
@@ -31,13 +30,31 @@
         {% endif %}
         {% endif %}
     </div>
-    <div class="whitebox clearfix grid_9 alpha omega" style="height: 150px;">
+    <div class="whitebox clearfix grid_9 alpha omega" style="min-height: 100px; overflow-y: auto; overflow-x: hidden;">
+        {% if partyfeed %}
+        <div class="partyitem clearfix">
+            <div class="name big">{{person.get_name}} is attending:</div>
+        </div>
+        {% for p in partyfeed %}
+        <div class="partyitem clearfix">
+            <a href="{{p.get_link}}" class="clearfix">
+                <img src="{{p.get_image}}" />
+                <div class="name">{{p.get_name}}</div>
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="partyitem">
+            <img src="{% static 'images/css/icons/unsmile32.png' %}" />
+            <div class="name big">{{person.get_name}} is not signed up for any parties</div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 </div>
 {% if not private %}
 <div class="clear"></div>
-<div class="space_20"></div>
+<div class="space_60"></div>
 <div class="grid_6 details_panel">
     <div class="people_header clearfix">
         {% if people.icon %}

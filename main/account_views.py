@@ -68,6 +68,7 @@ def profile_page(request, pk):
     rc={}
     user = get_object_or_404(User, pk=pk)
     rc['person']=user
+    now=timezone.now()
     if (not user.user_info.private_profile) or request.user.is_authenticated():
         rc['private']=False
         rc['newsfeed'] = get_newsfeed(request,'profile',pk)
@@ -81,6 +82,7 @@ def profile_page(request, pk):
             rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
         rc['history'] = get_history(request, 'person', pk)
         rc['history']['header'] = "Parties Attended"
+        rc['partyfeed'] = user.party_set_attend.filter(endtime__gt=now)
     else:
         rc['private'] = True
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
