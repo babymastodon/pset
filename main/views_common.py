@@ -172,7 +172,7 @@ def get_newsfeed(request, feedtype, pk=9001, page=1):
                 (Q(actor__pk__in=ui.followees.all())) |
                 (Q(target__target_type='User') & Q(target__target_id__in=ui.followees.all())) |
                 (Q(target__target_type='Class') & Q(target__target_id__in=ui.klasses.all()))
-            ).order_by("pk","-time_created").distinct('pk')
+            ).order_by("-time_created")
         r['feed'] = slice_query(15, qs)
 
     #get the name of the thingy
