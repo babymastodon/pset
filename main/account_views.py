@@ -68,6 +68,7 @@ def profile_page(request, pk):
     rc={}
     user = get_object_or_404(User, pk=pk)
     rc['person']=user
+    now=timezone.now()
     if (not user.user_info.private_profile) or request.user.is_authenticated():
         rc['private']=False
         rc['newsfeed'] = get_newsfeed(request,'profile',pk)
@@ -77,9 +78,11 @@ def profile_page(request, pk):
         rc['last_seen']=time_ago(user.user_info.last_seen)
         rc['followees'] = {"show_all":reverse("main.people_views.all_followees", kwargs={"pk":pk}), 'header':"Is Following", "list":get_followees(request, pk)[0:5]}
         rc['followers'] = {"show_all":reverse("main.people_views.all_followers", kwargs={"pk":pk}), 'header':"Is Being Followed By", "list":get_followers(request, pk)[0:5]}
-        rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
+        if request.user.is_authenticated():
+            rc['following'] = get_followers(request,pk).filter(pk=request.user.user_info.pk).exists()
         rc['history'] = get_history(request, 'person', pk)
         rc['history']['header'] = "Parties Attended"
+        rc['partyfeed'] = user.party_set_attend.filter(endtime__gt=now)
     else:
         rc['private'] = True
     return render_to_response("main/account/profile_page.html", rc, context_instance=RequestContext(request))
@@ -233,6 +236,7 @@ def invite_hashcode(request, hashcode, pk):
                 u = createAccount(username=uname, password=d['pw1'], email=ih.email)
                 u = authenticate(username=uname, password=d['pw1'])
                 login(request, u)
+                Activity.create(actor=u, activity_type='newaccount')
                 party_register_helper_func(ih.party, u)
                 ihs.delete()
                 return redirect(reverse('main.account_views.bio_info'))

@@ -37,7 +37,7 @@ def home_page(request):
     rc['myclasses'] = ({'ob':a, 'n':a.party_set.filter(endtime__gt=now, active=True).count()} for a in request.user.user_info.klasses.all())
     rc['calendar'] = get_history(request, 'person', request.user.pk, time="future")
     rc['party_list'] = simplejson.dumps(personalized[:26])
-    rc['party_host'] = request.user.party_set_admin.all()
+    rc['party_host'] = request.user.party_set_admin.filter(endtime__gt=now)
     return render_to_response("main/home/home_page.html", rc, context_instance=RequestContext(request))
 
 def about(request):

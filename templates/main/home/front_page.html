@@ -33,10 +33,9 @@
 </div>
 <div class="clear"></div>
 {% endcomment %}
-<!-- Spacer for front page -->
-<div class="page_text grid_12" style="">
-  <img src="{% static 'images/words.png' %}">
-</div>
+<img class="grid_12 splash" src="{% static 'images/loop.png' %}" />
+<div class="clear"></div>
+<div class="space_20"></div>
 <div class="page_text grid_4">
     <div class="text_block">
         <h3>InTheLoop</h3> makes it easy for you to connect with classmates and organize pset parties. Click below to see pset parties that are happening right now!
@@ -46,7 +45,7 @@
 </div>
 <div class="page_text grid_4">
     <div class="text_block">
-        <h3>Partying Already?</h3> Advertize ongoing pset parties or schedule future parties by posting them on our website. It's easy! See for yourself:
+        <h3>Partying Already?</h3> Advertize current pset parties or schedule future parties by posting them on our website. It's easy! See for yourself:
     </div>
     <a href="{% url 'main.party_views.party_create' %}" class="hcenter"><img src="{% static 'images/school.png' %}"/></a>
     <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Create a Party</a>

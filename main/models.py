@@ -209,7 +209,7 @@ class UserInfo(FacebookProfileModel):
         meta = self.user.first_name + " " + self.user.last_name
         if self.graduation_year != None:
             meta = meta + ", '" + str(self.graduation_year)
-        return meta 
+        return meta + " - " + self.bio
     
     def get_prof_pic(self):
         if self.image:

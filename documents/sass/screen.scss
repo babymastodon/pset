@@ -535,6 +535,9 @@ $tw: 260px - $tb - 2* $tp;
         border-bottom: none;
     }
 }
+.splash{
+    @include unselectable;
+}
 .space_10{
     height: 10px;
 }
@@ -661,16 +664,57 @@ $tw: 260px - $tb - 2* $tp;
 }
 .whitebox{
     @include box-shadow($gray-mid 2px 2px 3px 0px inset);
+    position: relative;
     background-color: $white;
+    &.noshadow{
+        @include box-shadow(none);
+    }
 }
 b{
     font-weight: bold;
+}
+.partyitem{
+    float: left;
+    padding: 0px;
+    margin: 10px;
+    height: 30px;
+    @include unselectable;
+    white-space: nowrap;
+    a{
+        display: block;
+        @include background(image-url('background_light.png'));
+        @include box-shadow($gray-mid 2px 2px 3px 0px);
+        &:hover{
+            background-position: 0px -50px;
+        }
+        &:active{
+            @include box-shadow($gray-mid 1px 1px 2px 0px);
+            position: relative;
+            top: 1px;
+            left: 1px;
+        }
+    }
+    img{
+        height: 30px;
+        display: block;
+        margin-right: 20px;
+        float: left;
+    }
+    .name{
+        line-height: 30px;
+        font-size: 18px;
+        float: left;
+        margin-right: 10px;
+        &.big{
+            font-size: 22px;
+        }
+    }
 }
 .profile_panel{
     font-size: 18px;
     line-height: 22px;
     margin: 20px;
-    width: 260px;
+    width: 420px;
     td{
         padding-bottom: 6px;
         font-size: 16px;

@@ -9,19 +9,38 @@
 </script>
 <script src="{% static 'js/home_page.js'%}" type="text/javascript"></script>
 
+{% comment %}
+<img class="grid_12 splash" src="{% static 'images/loop.png' %}" />
+<div class="clear"></div>
+<div class="space_40"></div>
+{% endcomment %}
+
 <div class="grid_12 details_panel">
     <div class="page_header nounderline clearfix">
         <img src="{% static 'images/css/icons/cup32.png'%}"/>
         <span class="header_text" style="max-width: 600px;">Welcome {{user.get_name}}</span>
-        <a href="{% url 'main.search_views.parties_by_date' %}" class="gray_button fright" >All Parties</a>
-        <a href="{% url 'main.party_views.party_create' %}" class="gray_button fright" style="margin-right: 10px">New Party</a>
     </div>
 </div>
-<div class="clear"></div>
-<div class="grid_3 center">
-    <a href="{{user.get_link}}">
-    <img src="{{user.get_image}}" class="profile_image" />
-</a>
+<div class="grid_6">
+    <div class="grid_3 alpha">
+        <div id="mapdiv" style="width: 220px; height: 120px;"></div>
+    </div>
+    <div class="grid_3 omega">
+        <div class="center">
+            <span class="hcenter plain_text"><b style="font-size: 20px;">{{numparties}}</b> {% if numparties = 1 %}party{%else%}parties{%endif%}</span>
+            recommended for you
+        </div>
+        <div class="space_20"></div>
+        <a href="{% url 'main.search_views.personalized_map' %}" class="gray_button hcenter">Recommended Parties</a>
+    </div>
+    <div class="clear"></div>
+    <div class="space_20"></div>
+    <div class="page_text grid_3 alpha">
+        <a href="{% url 'main.search_views.parties_by_date' %}" class="large_gray_button hcenter nofloat">Find Parties</a>
+    </div>
+    <div class="page_text grid_3 omega">
+        <a href="{% url 'main.party_views.party_create' %}" class="large_gray_button hcenter nofloat">Create a Party</a>
+    </div>
 </div>
 <div class="grid_6">
     <div class="page_header clearfix">
@@ -33,7 +52,7 @@
         <li class="clearfix">
         <a class="user_select clearfix" href="{{k.ob.get_link}}">
             <img src="{{k.ob.get_image}}" class="user_thm" />
-            <span class="list_text" style="width: 310px;">{{k.ob.get_name}}</span>
+            <span class="list_text" style="width: 310px; overflow: hidden;">{{k.ob.get_name}}</span>
             <span class="list_text">{{k.n}} {% if k.n = 1 %}party{% else %}parties{% endif %}</span>
         </a>
         </li>
@@ -45,18 +64,8 @@
         {% endfor %}
     </ul>
 </div>
-<div class="grid_3">
-    <div id="mapdiv" style="width: 220px; height: 120px;"></div>
-    <div class="space_20"></div>
-    <div class="center">
-        <span class="hcenter plain_text"><b style="font-size: 20px;">{{numparties}}</b> {% if numparties = 1 %}party{%else%}parties{%endif%}</span>
-        recommended for you
-    </div>
-    <div class="space_20"></div>
-    <a href="{% url 'main.search_views.personalized_map' %}" class="gray_button hcenter">Switch to Map View</a>
-</div>
 <div class="clear"></div>
-<div class="space_20"></div>
+<div class="space_80"></div>
 <div class="grid_4">
     <div class="people_header clearfix">
         <img src="{% static 'images/css/icons/gear32.png'%}"/>
